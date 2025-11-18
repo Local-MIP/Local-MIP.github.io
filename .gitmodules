@@ -1,0 +1,3 @@
+[submodule "submodules/solver"]
+	path = submodules/solver
+	url = https://github.com/shaowei-cai-group/Local-MIP

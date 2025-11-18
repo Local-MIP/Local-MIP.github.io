@@ -1,0 +1,30 @@
+# 网站配置
+title: Local-MIP
+description: 本地混合整数规划研究
+url: "https://local-mip.github.io"
+baseurl: ""
+
+# 构建设置
+markdown: kramdown
+theme: minima
+
+# 排除文件
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor/
+  - .bundle/
+
+# 插件
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Markdown设置
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
