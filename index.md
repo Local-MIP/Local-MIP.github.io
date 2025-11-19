@@ -66,6 +66,8 @@ Start from the project root directory (after extracting or cloning the repositor
 
 [Full Quick Start →](/quick-start)
 
+---
+
 ## Software using Local-MIP
 
 Local-MIP is integrated into several state-of-the-art optimization tools:
@@ -76,9 +78,11 @@ Local-MIP is integrated into several state-of-the-art optimization tools:
 * **Reference:** For technical details, refer to the preprint *[arXiv:2510.20499](https://arxiv.org/abs/2510.20499)*.
 
 ### 2. Exact (PB Solver)
-**Exact** is a leading Pseudo-Boolean (PB) solver. It integrates Local-MIP as a key external component to boost performance in the PB Competition 2025.
+**Exact** is a leading Pseudo-Boolean (PB) solver. It integrates Local-MIP as a external component to boost performance in the PB Competition 2025.
 * **Source Code:** [Exact on GitLab](https://gitlab.com/nonfiction-software/exact/-/tree/pb25/src/external/local-mip)
 * **Reference:** See the solver description in *[Exact_PBComp_2025.pdf](https://www.cril.univ-artois.fr/PB25/descr/Exact_PBComp_2025.pdf)*.
+
+---
 
 ## Documentation & Resources
 
