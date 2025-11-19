@@ -440,53 +440,171 @@ table th {
   text-align: left;
 }
 
-/* 代码样式 */
+/* 代码样式 - 浅背景深代码高对比度版本 */
 code {
-  background-color: #f1f5f9;
-  padding: 0.2em 0.45em;
-  border-radius: 8px;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Courier New", monospace;
-  font-size: 0.95rem;
-  color: #0b1220;
-  border: 1px solid #d7e3ff;
+  background: #f0f4ff;
+  padding: 0.25em 0.6em;
+  border-radius: 6px;
+  font-family: "JetBrains Mono", "Fira Code", "SF Mono", "Cascadia Code", "Consolas", "Liberation Mono", Menlo, monospace;
+  font-size: 0.9em;
+  color: #1e40af;
+  border: 1px solid #c7d2fe;
+  font-weight: 600;
 }
 
 pre {
-  background-color: #f8fbff;
-  padding: 16px;
-  border-radius: 12px;
-  overflow-x: auto;
-  border: 1px solid #d7e3ff;
+  background: #fafbff;
+  padding: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid #e0e7ff;
   line-height: 1.6;
-  margin: 1em 0;
-  box-shadow: inset 0 1px 0 rgba(12, 26, 50, 0.04);
-  font-size: 0.95rem;
-  color: #0b1220;
+  margin: 1.5em 0;
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.08),
+              0 2px 4px rgba(0, 0, 0, 0.05);
+  font-size: 0.9rem;
+  position: relative;
 }
 
 pre code {
   background-color: transparent;
-  padding: 0;
+  padding: 1.25rem;
   border: none;
-  font-size: 0.95rem;
-  color: #0b1220;
+  font-size: 0.9rem;
+  color: #1e293b;
   display: block;
+  overflow-x: auto;
+  font-weight: 500;
 }
 
-/* 代码块语言标签样式 */
+/* 代码块容器 - 带语言标签和复制按钮 */
 .highlight {
-  background-color: #f8fbff;
-  border-radius: 12px;
-  border: 1px solid #d7e3ff;
-  margin: 1em 0;
+  background: #fafbff;
+  border-radius: 14px;
+  border: 2px solid #e0e7ff;
+  margin: 1.5em 0;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.08),
+              0 2px 4px rgba(0, 0, 0, 0.05);
 
   pre {
     margin: 0;
     border: none;
-    border-radius: 6px;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
   }
+
+  /* 代码块头部（语言标签区域） */
+  &::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #4f46e5;
+    color: #ffffff;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom-left-radius: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    box-shadow: 0 2px 6px rgba(79, 70, 229, 0.3);
+  }
+
+  /* 特定语言的鲜艳颜色标签 */
+  &[data-lang="bash"]::before,
+  &[data-lang="shell"]::before {
+    background: #059669;
+    box-shadow: 0 2px 6px rgba(5, 150, 105, 0.4);
+  }
+
+  &[data-lang="python"]::before {
+    background: #2563eb;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+  }
+
+  &[data-lang="javascript"]::before,
+  &[data-lang="js"]::before {
+    background: #d97706;
+    box-shadow: 0 2px 6px rgba(217, 119, 6, 0.4);
+  }
+
+  &[data-lang="cpp"]::before,
+  &[data-lang="c++"]::before {
+    background: #6366f1;
+    box-shadow: 0 2px 6px rgba(99, 102, 241, 0.4);
+  }
+
+  &[data-lang="yaml"]::before,
+  &[data-lang="yml"]::before {
+    background: #7c3aed;
+    box-shadow: 0 2px 6px rgba(124, 58, 237, 0.4);
+  }
+
+  &[data-lang="json"]::before {
+    background: #0891b2;
+    box-shadow: 0 2px 6px rgba(8, 145, 178, 0.4);
+  }
+}
+
+/* 复制按钮容器 */
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.code-lang {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+.copy-code-button {
+  background: #ffffff;
+  border: 2px solid #e0e7ff;
+  color: #4f46e5;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.copy-code-button:hover {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+  color: #4338ca;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(79, 70, 229, 0.15);
+}
+
+.copy-code-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.copy-code-button.copied {
+  background: #059669;
+  border-color: #059669;
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(5, 150, 105, 0.4);
+}
+
+.copy-code-button svg {
+  width: 14px;
+  height: 14px;
 }
 
 .highlight table {
@@ -502,9 +620,9 @@ pre code {
 .highlight .gutter {
   width: 3.25rem;
   text-align: right;
-  background: #edf2fb;
-  color: #475569;
-  border-right: 1px solid #d7e3ff;
+  background: #f1f5f9;
+  color: #94a3b8;
+  border-right: 1px solid #e2e8f0;
   user-select: none;
 }
 
@@ -512,74 +630,75 @@ pre code {
   padding: 0.85rem 0.6rem;
   margin: 0;
   color: inherit;
+  text-shadow: none;
 }
 
 .highlight .code pre {
   padding: 0.85rem 1rem;
-  color: #0b1220;
+  color: #1e293b;
 }
 
-/* 改进的语法高亮 */
-.highlight .c { color: #9ca3af; font-style: italic; } /* Comment */
-.highlight .err { color: #f97316; } /* Error */
-.highlight .k { color: #60a5fa; font-weight: bold; } /* Keyword */
-.highlight .o { color: #e2e8f0; } /* Operator */
-.highlight .cm { color: #9ca3af; font-style: italic; } /* Comment.Multiline */
-.highlight .cp { color: #94a3b8; font-weight: bold; } /* Comment.Preproc */
-.highlight .c1 { color: #9ca3af; font-style: italic; } /* Comment.Single */
-.highlight .cs { color: #94a3b8; font-weight: bold; font-style: italic; } /* Comment.Special */
-.highlight .gd { color: #ef4444; background-color: rgba(239, 68, 68, 0.08); } /* Generic.Deleted */
+/* 高对比度语法高亮 - 深色鲜艳配色（浅色背景） */
+.highlight .c { color: #6b7280; font-style: italic; } /* Comment */
+.highlight .err { color: #dc2626; } /* Error */
+.highlight .k { color: #2563eb; font-weight: bold; } /* Keyword */
+.highlight .o { color: #0f172a; } /* Operator */
+.highlight .cm { color: #6b7280; font-style: italic; } /* Comment.Multiline */
+.highlight .cp { color: #6b7280; font-weight: bold; } /* Comment.Preproc */
+.highlight .c1 { color: #6b7280; font-style: italic; } /* Comment.Single */
+.highlight .cs { color: #6b7280; font-weight: bold; font-style: italic; } /* Comment.Special */
+.highlight .gd { color: #dc2626; background-color: rgba(220, 38, 38, 0.1); } /* Generic.Deleted */
 .highlight .ge { font-style: italic; } /* Generic.Emph */
-.highlight .gr { color: #ef4444; } /* Generic.Error */
-.highlight .gh { color: #38bdf8; font-weight: bold; } /* Generic.Heading */
-.highlight .gi { color: #22c55e; background-color: rgba(34, 197, 94, 0.08); } /* Generic.Inserted */
-.highlight .go { color: #cbd5e1; } /* Generic.Output */
-.highlight .gp { color: #cbd5e1; } /* Generic.Prompt */
+.highlight .gr { color: #dc2626; } /* Generic.Error */
+.highlight .gh { color: #0891b2; font-weight: bold; } /* Generic.Heading */
+.highlight .gi { color: #059669; background-color: rgba(5, 150, 105, 0.1); } /* Generic.Inserted */
+.highlight .go { color: #475569; } /* Generic.Output */
+.highlight .gp { color: #475569; } /* Generic.Prompt */
 .highlight .gs { font-weight: bold; } /* Generic.Strong */
-.highlight .gu { color: #a855f7; font-weight: bold; } /* Generic.Subheading */
-.highlight .gt { color: #f97316; } /* Generic.Traceback */
-.highlight .kc { color: #38bdf8; font-weight: bold; } /* Keyword.Constant */
-.highlight .kd { color: #60a5fa; font-weight: bold; } /* Keyword.Declaration */
-.highlight .kn { color: #60a5fa; font-weight: bold; } /* Keyword.Namespace */
-.highlight .kp { color: #60a5fa; font-weight: bold; } /* Keyword.Pseudo */
-.highlight .kr { color: #60a5fa; font-weight: bold; } /* Keyword.Reserved */
-.highlight .kt { color: #60a5fa; font-weight: bold; } /* Keyword.Type */
-.highlight .m { color: #38bdf8; } /* Literal.Number */
-.highlight .s { color: #f5d0fe; } /* Literal.String */
-.highlight .na { color: #e2e8f0; } /* Name.Attribute */
-.highlight .nb { color: #38bdf8; } /* Name.Builtin */
-.highlight .nc { color: #a855f7; font-weight: bold; } /* Name.Class */
-.highlight .no { color: #38bdf8; } /* Name.Constant */
-.highlight .nd { color: #a855f7; } /* Name.Decorator */
-.highlight .ni { color: #e2e8f0; } /* Name.Entity */
-.highlight .ne { color: #f97316; font-weight: bold; } /* Name.Exception */
-.highlight .nf { color: #22c55e; font-weight: bold; } /* Name.Function */
-.highlight .nl { color: #e2e8f0; } /* Name.Label */
-.highlight .nn { color: #e2e8f0; } /* Name.Namespace */
-.highlight .nt { color: #22c55e; } /* Name.Tag */
-.highlight .nv { color: #f59e0b; } /* Name.Variable */
-.highlight .ow { color: #60a5fa; font-weight: bold; } /* Operator.Word */
-.highlight .w { color: #e2e8f0; } /* Text.Whitespace */
-.highlight .mf { color: #38bdf8; } /* Literal.Number.Float */
-.highlight .mh { color: #38bdf8; } /* Literal.Number.Hex */
-.highlight .mi { color: #38bdf8; } /* Literal.Number.Integer */
-.highlight .mo { color: #38bdf8; } /* Literal.Number.Oct */
-.highlight .sb { color: #f5d0fe; } /* Literal.String.Backtick */
-.highlight .sc { color: #f5d0fe; } /* Literal.String.Char */
-.highlight .sd { color: #f5d0fe; } /* Literal.String.Doc */
-.highlight .s2 { color: #f5d0fe; } /* Literal.String.Double */
-.highlight .se { color: #f5d0fe; } /* Literal.String.Escape */
-.highlight .sh { color: #f5d0fe; } /* Literal.String.Heredoc */
-.highlight .si { color: #f5d0fe; } /* Literal.String.Interpol */
-.highlight .sx { color: #f5d0fe; } /* Literal.String.Other */
-.highlight .sr { color: #f5d0fe; } /* Literal.String.Regex */
-.highlight .s1 { color: #f5d0fe; } /* Literal.String.Single */
-.highlight .ss { color: #f5d0fe; } /* Literal.String.Symbol */
-.highlight .bp { color: #38bdf8; } /* Name.Builtin.Pseudo */
-.highlight .vc { color: #f59e0b; } /* Name.Variable.Class */
-.highlight .vg { color: #f59e0b; } /* Name.Variable.Global */
-.highlight .vi { color: #f59e0b; } /* Name.Variable.Instance */
-.highlight .il { color: #005cc5; } /* Literal.Number.Integer.Long */
+.highlight .gu { color: #7c3aed; font-weight: bold; } /* Generic.Subheading */
+.highlight .gt { color: #d97706; } /* Generic.Traceback */
+.highlight .kc { color: #2563eb; font-weight: bold; } /* Keyword.Constant */
+.highlight .kd { color: #2563eb; font-weight: bold; } /* Keyword.Declaration */
+.highlight .kn { color: #2563eb; font-weight: bold; } /* Keyword.Namespace */
+.highlight .kp { color: #2563eb; font-weight: bold; } /* Keyword.Pseudo */
+.highlight .kr { color: #2563eb; font-weight: bold; } /* Keyword.Reserved */
+.highlight .kt { color: #2563eb; font-weight: bold; } /* Keyword.Type */
+.highlight .m { color: #0891b2; } /* Literal.Number */
+.highlight .s { color: #d97706; } /* Literal.String */
+.highlight .na { color: #0f172a; } /* Name.Attribute */
+.highlight .nb { color: #0891b2; } /* Name.Builtin */
+.highlight .nc { color: #7c3aed; font-weight: bold; } /* Name.Class */
+.highlight .no { color: #0891b2; } /* Name.Constant */
+.highlight .nd { color: #7c3aed; } /* Name.Decorator */
+.highlight .ni { color: #0f172a; } /* Name.Entity */
+.highlight .ne { color: #dc2626; font-weight: bold; } /* Name.Exception */
+.highlight .nf { color: #059669; font-weight: bold; } /* Name.Function */
+.highlight .nl { color: #0f172a; } /* Name.Label */
+.highlight .nn { color: #0f172a; } /* Name.Namespace */
+.highlight .nt { color: #059669; } /* Name.Tag */
+.highlight .nv { color: #dc2626; } /* Name.Variable */
+.highlight .ow { color: #2563eb; font-weight: bold; } /* Operator.Word */
+.highlight .w { color: #0f172a; } /* Text.Whitespace */
+.highlight .mf { color: #0891b2; } /* Literal.Number.Float */
+.highlight .mh { color: #0891b2; } /* Literal.Number.Hex */
+.highlight .mi { color: #0891b2; } /* Literal.Number.Integer */
+.highlight .mo { color: #0891b2; } /* Literal.Number.Oct */
+.highlight .sb { color: #d97706; } /* Literal.String.Backtick */
+.highlight .sc { color: #d97706; } /* Literal.String.Char */
+.highlight .sd { color: #d97706; } /* Literal.String.Doc */
+.highlight .s2 { color: #d97706; } /* Literal.String.Double */
+.highlight .se { color: #d97706; } /* Literal.String.Escape */
+.highlight .sh { color: #d97706; } /* Literal.String.Heredoc */
+.highlight .si { color: #d97706; } /* Literal.String.Interpol */
+.highlight .sx { color: #d97706; } /* Literal.String.Other */
+.highlight .sr { color: #d97706; } /* Literal.String.Regex */
+.highlight .s1 { color: #d97706; } /* Literal.String.Single */
+.highlight .ss { color: #d97706; } /* Literal.String.Symbol */
+.highlight .bp { color: #0891b2; } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #dc2626; } /* Name.Variable.Class */
+.highlight .vg { color: #dc2626; } /* Name.Variable.Global */
+.highlight .vi { color: #dc2626; } /* Name.Variable.Instance */
+.highlight .il { color: #0891b2; } /* Literal.Number.Integer.Long */
 
 /* 页脚样式 - 突出Logo版本 */
 .site-footer {
@@ -840,8 +959,29 @@ hr {
   }
 
   pre {
-    padding: 12px;
     font-size: 0.85em;
+  }
+
+  pre code {
+    padding: 1rem;
+    font-size: 0.85em;
+  }
+
+  .copy-code-button {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+    top: 0.4rem;
+    right: 0.4rem;
+  }
+
+  .copy-code-button svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .highlight::before {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.7rem;
   }
 
   .footer-content {

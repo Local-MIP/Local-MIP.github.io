@@ -140,7 +140,7 @@
       </div>
     </footer>
 
-    <!-- JavaScript for mobile navigation and back to top -->
+    <!-- JavaScript for mobile navigation, back to top, and code blocks -->
     <script>
       // Mobile navigation toggle
       const navToggle = document.getElementById('nav-toggle');
@@ -197,6 +197,110 @@
           });
         });
       }
+
+      // Code block enhancements
+      document.addEventListener('DOMContentLoaded', function() {
+        // Add language labels and copy buttons to code blocks
+        const codeBlocks = document.querySelectorAll('pre');
+
+        codeBlocks.forEach(function(pre) {
+          // Skip if already processed
+          if (pre.querySelector('.copy-code-button')) return;
+
+          const code = pre.querySelector('code');
+          if (!code) return;
+
+          // Detect language from class name
+          let language = 'code';
+          const classes = code.className.split(' ');
+          for (let cls of classes) {
+            if (cls.startsWith('language-')) {
+              language = cls.replace('language-', '');
+              break;
+            } else if (cls.startsWith('highlight-')) {
+              language = cls.replace('highlight-', '');
+              break;
+            }
+          }
+
+          // Add data-lang attribute for CSS styling
+          const parent = pre.parentElement;
+          if (parent && parent.classList.contains('highlight')) {
+            parent.setAttribute('data-lang', language);
+          }
+
+          // Create copy button
+          const copyButton = document.createElement('button');
+          copyButton.className = 'copy-code-button';
+          copyButton.innerHTML = `
+            <svg viewBox="0 0 16 16" fill="currentColor">
+              <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+              <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+            </svg>
+            Copy
+          `;
+
+          // Position button
+          copyButton.style.position = 'absolute';
+          copyButton.style.top = '0.5rem';
+          copyButton.style.right = '0.5rem';
+          copyButton.style.zIndex = '10';
+
+          // Make pre position relative
+          pre.style.position = 'relative';
+
+          // Add copy functionality
+          copyButton.addEventListener('click', function() {
+            // Try to find code without line numbers (exclude .gutter elements)
+            let textToCopy = '';
+            const codeContent = pre.querySelector('.highlight .code pre') ||
+                               pre.querySelector('td.code') ||
+                               pre.querySelector('.rouge-code');
+
+            if (codeContent) {
+              textToCopy = codeContent.textContent;
+            } else {
+              // Fallback: use code element but try to exclude gutter
+              const gutterElement = pre.querySelector('.gutter');
+              if (gutterElement) {
+                // Clone the code element and remove gutter
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = code.innerHTML;
+                const gutterClone = tempDiv.querySelector('.gutter');
+                if (gutterClone) gutterClone.remove();
+                textToCopy = tempDiv.textContent;
+              } else {
+                textToCopy = code.textContent;
+              }
+            }
+
+            navigator.clipboard.writeText(textToCopy).then(function() {
+              copyButton.innerHTML = `
+                <svg viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                </svg>
+                Copied!
+              `;
+              copyButton.classList.add('copied');
+
+              setTimeout(function() {
+                copyButton.innerHTML = `
+                  <svg viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                  </svg>
+                  Copy
+                `;
+                copyButton.classList.remove('copied');
+              }, 2000);
+            }).catch(function(err) {
+              console.error('Failed to copy:', err);
+            });
+          });
+
+          pre.appendChild(copyButton);
+        });
+      });
     </script>
   </body>
 </html>
