@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Home
-description: LLocal-MIP is an efficient local search solver for mixed integer programming.
+description: Local-MIP is an efficient local search solver for mixed integer programming.
 keywords: MIP solver, mixed integer programming, local search, lift move operator, breakthrough move, mixed tight move, local feasible domain, dynamic weighting, MIPLIB, optimization solver
 ---
 
@@ -11,7 +11,7 @@ keywords: MIP solver, mixed integer programming, local search, lift move operato
   <p style="font-size: 1.15em; margin: 0 0 0.4em;">Local-MIP is an efficient local search solver for mixed integer programming.</p>
   <div class="hero-actions">
     <a class="btn btn-primary" href="/quick-start">Quick Start</a>
-    <a class="btn btn-primary" href="/download">Download Software</a>
+    <a class="btn btn-primary" href="/download">Download</a>
     <a class="btn btn-primary" href="https://github.com/shaowei-cai-group/Local-MIP">Source Code</a>
     <a class="btn btn-primary" href="/documentation">Tutorials</a>
     <a class="btn btn-primary" href="/examples">Customization Examples</a>
@@ -24,8 +24,8 @@ keywords: MIP solver, mixed integer programming, local search, lift move operato
     <a class="pill" href="https://lcs.ios.ac.cn/~caisw/">Project Leader: Shaowei Cai</a>
     <a class="pill" href="https://linpeng0105.github.io/">Developer: Peng Lin</a>
   </div>
-    <div class="stat-grid">
-    <a class="pill" href="/examples">Customizable modules: Start, Restart, Neighbor Operators, Weighting Scheme, Scoring Functions</a>
+  <div class="stat-grid">
+    <a class="pill" href="/examples">Customizable Modules: Initialization, Restart Strategies, Neighbor Operators, Weighting Schemes, Scoring Functions</a>
   </div>
 </div>
 
@@ -33,25 +33,25 @@ keywords: MIP solver, mixed integer programming, local search, lift move operato
 
 <div class="feature-grid">
   <div class="card">
-    <h3>Fast Optimization</h3>
-    <p>On the general benchmark MIPLIB, Local-MIP achieves top-tier performance among open-source solvers with second-level fast optimization capability</p>
+    <h3>Rapid Optimization</h3>
+    <p>Local-MIP delivers top-tier performance among open-source solvers on the general MIPLIB benchmark, capable of finding high-quality solutions within seconds.</p>
   </div>
   <div class="card">
     <h3>Highly Customizable</h3>
-    <p>Local-MIP provides rich APIs and callback functions, enabling users to design custom algorithm modules for their specific scenarios</p>
+    <p>Featuring a comprehensive API and flexible callback system, Local-MIP empowers users to design and tailor algorithm modules for specific scenarios.</p>
   </div>
   <div class="card">
-    <h3>Independent and Easy Integration</h3>
-    <p>No third-party dependencies. Accepts standard MPS and LP format files, and can be easily integrated into other solvers</p>
+    <h3>Seamless Integration</h3>
+    <p>Zero third-party dependencies. Local-MIP natively supports standard MPS and LP formats and can be easily integrated into other solvers as a component.</p>
   </div>
 </div>
 
 ## Quick Start
 
-Work from the solver root (after extracting or cloning the repository).
+Start from the project root directory (after extracting or cloning the repository).
 
 1. **Download:** Grab the latest release from the [download page](/download).
-2. **Build:** Compile with the provided script:
+2. **Build:** Compile using the provided script:
 
     ```bash
     ./build.sh release
@@ -66,18 +66,26 @@ Work from the solver root (after extracting or cloning the repository).
 
 [Full Quick Start →](/quick-start)
 
+## Software using Local-MIP
+
+Local-MIP is integrated into several state-of-the-art optimization tools:
+
+### 1. NVIDIA cuOpt
+**NVIDIA cuOpt** is a world-record-holding GPU-accelerated solver for route optimization and logistics. It utilizes Local-MIP to enhance its solving capabilities.
+* **Official Site:** [NVIDIA cuOpt Product Page](https://www.nvidia.com/en-us/ai-data-science/products/cuopt/)
+* **Reference:** For technical details, refer to the preprint *[arXiv:2510.20499](https://arxiv.org/abs/2510.20499)*.
+
+### 2. Exact (PB Solver)
+**Exact** is a leading Pseudo-Boolean (PB) solver. It integrates Local-MIP as a key external component to boost performance in the PB Competition 2025.
+* **Source Code:** [Exact on GitLab](https://gitlab.com/nonfiction-software/exact/-/tree/pb25/src/external/local-mip)
+* **Reference:** See the solver description in *[Exact_PBComp_2025.pdf](https://www.cril.univ-artois.fr/PB25/descr/Exact_PBComp_2025.pdf)*.
+
 ## Documentation & Resources
 
-- [Documentation](/documentation) — concepts, parameters, and callbacks.
-- [Examples](/examples) — basic usage and callback walk-throughs.
-- [Parameters Reference](/documentation#parameters-reference) — complete flag listing.
-- [MIPLIB Records](/miplib-records) and [Papers](/papers) — performance and publications.
-
-## Recognition & Citation
-
-- CP 2024 Best Paper Award.
-- 10 new records on the MIPLIB benchmark suite.
-- Cite: **Peng Lin, Shaowei Cai, Mengchuan Zou, Jinkun Lin.** *Local-MIP: Efficient local search for mixed integer programming.* Artificial Intelligence, 348 (2025), 104405. See [papers](/papers) for details.
+- [Documentation](/documentation) — Core concepts, parameters, and callbacks.
+- [Examples](/examples) — Basic usage and callback implementation walkthroughs.
+- [Parameters Reference](/documentation#parameters-reference) — A complete list of command-line flags.
+- [MIPLIB Records](/miplib-records) and [Papers](/papers) — Performance benchmarks and academic publications.
 
 ---
 
