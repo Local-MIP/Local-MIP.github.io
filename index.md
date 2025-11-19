@@ -73,12 +73,12 @@ Start from the project root directory (after extracting or cloning the repositor
 Local-MIP is integrated into several state-of-the-art optimization tools:
 
 ### 1. NVIDIA cuOpt
-**NVIDIA cuOpt** is a world-record-holding GPU-accelerated solver for route optimization and logistics. It utilizes Local-MIP to enhance its solving capabilities.
+**NVIDIA cuOpt** is a GPU-accelerated solver.
 * **Official Site:** [NVIDIA cuOpt Product Page](https://www.nvidia.com/en-us/ai-data-science/products/cuopt/)
 * **Reference:** For technical details, refer to the preprint *[arXiv:2510.20499](https://arxiv.org/abs/2510.20499)*.
 
-### 2. Exact (PB Solver)
-**Exact** is a leading Pseudo-Boolean (PB) solver. It integrates Local-MIP as a external component to boost performance in the PB Competition 2025.
+### 2. Exact
+**Exact** is a leading Pseudo-Boolean (PB) solver.
 * **Source Code:** [Exact on GitLab](https://gitlab.com/nonfiction-software/exact/-/tree/pb25/src/external/local-mip)
 * **Reference:** See the solver description in *[Exact_PBComp_2025.pdf](https://www.cril.univ-artois.fr/PB25/descr/Exact_PBComp_2025.pdf)*.
 
