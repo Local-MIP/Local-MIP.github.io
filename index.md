@@ -71,7 +71,7 @@ keywords: MIP solver, mixed integer programming, local search, lift move operato
   </div>
   <div class="card">
     <h3>Seamless Integration</h3>
-    <p>Zero third-party dependencies. Local-MIP natively supports standard MPS and LP formats and can be easily integrated into other solvers as a component.</p>
+    <p>Zero third-party dependencies. Local-MIP natively supports standard MPS and LP formats and can be easily integrated into other solvers via C++ or Python interfaces.</p>
   </div>
 </div>
 
@@ -90,7 +90,7 @@ Start from the project root directory (after extracting or cloning the repositor
 
     ```bash
     cd build
-    ./Local-MIP -model_file ../test-set/2club200v15p5scn.mps --time_limit 300
+    ./Local-MIP --model_file ../test-set/2club200v15p5scn.mps --time_limit 300
     ```
 
 [Full Quick Start →](/quick-start)
@@ -115,10 +115,20 @@ Local-MIP is integrated into several state-of-the-art optimization tools:
 
 ## Documentation & Resources
 
-- [Documentation](/documentation) — Core concepts, parameters, and callbacks.
-- [Examples](/examples) — Basic usage and callback implementation walkthroughs.
-- [Parameters Reference](/documentation#parameters-reference) — A complete list of command-line flags.
-- [MIPLIB Records](/miplib-records) and [Papers](/papers) — Performance benchmarks and academic publications.
+### Getting Started
+- [Quick Start](/quick-start) — Get up and running in 3 steps: download, build, and solve.
+- [Download](/download) — Access the latest source code and release versions.
+
+### Technical Documentation
+- [Documentation](/documentation) — Comprehensive user guides and technical references.
+  - [User Guide](/documentation#user-guide) — Installation, CLI usage, and library integration.
+  - [Parameters Reference](/documentation#parameters-reference) — A complete list of command-line flags and options.
+  - [Callback System](/documentation#callback-system) — Detailed guide on customizing solver behavior.
+- [Examples](/examples) — Practical code examples and callback implementation walkthroughs.
+
+### Performance & Research
+- [MIPLIB Records](/miplib-records) — New best-found solutions for the MIPLIB open instances.
+- [Papers](/papers) — Academic publications and research background.
 
 ---
 
