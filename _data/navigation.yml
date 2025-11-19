@@ -1,0 +1,32 @@
+- title: Quick Start
+  url: /quick-start
+- title: Download
+  url: /download
+- title: Docs
+  url: /documentation
+  children:
+    - title: Installation & Build
+      url: /documentation#installation--build
+    - title: Command-Line Usage
+      url: /documentation#command-line-usage
+    - title: Use as a Library
+      url: /documentation#use-as-a-library
+    - title: Terminology & Concepts
+      url: /documentation#terminology--concepts
+    - title: Parameters Reference
+      url: /documentation#parameters-reference
+    - title: Callback System
+      url: /documentation#callback-system
+- title: Examples
+  url: /examples
+  children:
+    - title: Basic Example
+      url: /examples#basic-example
+    - title: Callback Examples
+      url: /examples#callback-examples
+    - title: Advanced Customization
+      url: /examples#advanced-customization
+- title: Papers
+  url: /papers
+- title: Records
+  url: /miplib-records

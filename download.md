@@ -1,104 +1,226 @@
 ---
 layout: default
-title: 下载
+title: Download
 ---
 
-**导航**: [首页](/) | [Get Started](get-started.md) | [下载](download.md)
+# Download
 
-# 下载
+Get the latest version of Local-MIP and access previous releases.
 
-获取Local-MIP的最新版本和历史版本。
+---
 
-## 最新版本
+## Latest Release: v2.0
 
-### v1.0.0 (2025-01-18)
+The current stable version of Local-MIP with full features and improvements.
 
-最新稳定版本，推荐下载。
+### Download Links
 
-| 平台 | 下载链接 | 文件大小 |
-|------|---------|---------|
-| Windows (64-bit) | [下载 .exe](#) | 25 MB |
-| macOS (Intel) | [下载 .dmg](#) | 23 MB |
-| macOS (Apple Silicon) | [下载 .dmg](#) | 22 MB |
-| Linux (64-bit) | [下载 .tar.gz](#) | 21 MB |
-| 源代码 | [GitHub Release](#) | - |
+**Primary Download:**
+- **[Download v2.0 (.zip)](https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.0.zip)** - Recommended
 
-**更新内容**：
-- 首次发布
-- 支持标准MIP求解
-- 包含预处理和割平面算法
-- 提供Python和C++ API
+**Alternative:**
+- **[GitHub Release Page](https://github.com/shaowei-cai-group/Local-MIP/releases/tag/v2.0)** - View full release notes
+- **[Source Code (GitHub)](https://github.com/shaowei-cai-group/Local-MIP)** - Clone or download from repository
 
-## Python包安装
+### What's Included
 
-通过pip安装（推荐）：
+- Complete source code
+- CLI solver
+- C++ static library and headers
+- Python bindings (pybind11)
+- Example code and demonstrations
+- Test instances
+- Documentation
 
-```bash
-pip install localmip
-```
+### Quick Start
 
-从源码安装：
+After downloading:
 
 ```bash
-git clone https://github.com/Local-MIP/localmip.git
-cd localmip
-pip install -e .
+# Extract
+unzip Local-MIP-2.0.zip
+cd Local-MIP-2.0
+
+# Build
+./build.sh release
+
+# Run
+cd build
+./Local-MIP -i ../test-set/2club200v15p5scn.mps -t 300
 ```
 
-## 历史版本
+[Full Quick Start Guide →](/quick-start)
 
-### v0.9.0-beta (2024-12-15)
+---
 
-测试版本，用于早期用户反馈。
+## Previous Versions
 
-| 平台 | 下载链接 |
-|------|---------|
-| Windows | [下载](#) |
-| macOS | [下载](#) |
-| Linux | [下载](#) |
+### Local-MIP 1.0 (Archived)
 
-**更新内容**：
-- Beta版功能预览
-- 基础求解器实现
+**Important Note:** The experimental results reported in the referenced papers (CP 2024 and Artificial Intelligence 2025) were obtained using Local-MIP 1.0.
 
-## 系统要求
+Local-MIP 1.0 has been archived and is available in the `archive/Local-MIP-1.0/` directory of the repository.
 
-### 最低配置
-- 操作系统：Windows 10+, macOS 10.15+, Linux (Ubuntu 20.04+)
-- 内存：4 GB RAM
-- 处理器：双核 2.0 GHz
-- 磁盘空间：100 MB
+**Access:**
+- Download the latest release and navigate to `archive/Local-MIP-1.0/`
+- Or clone the repository: `git clone https://github.com/shaowei-cai-group/Local-MIP.git`
 
-### 推荐配置
-- 内存：8 GB RAM 或更多
-- 处理器：四核 2.5 GHz 或更高
-- 磁盘空间：500 MB
+**Use Cases:**
+- Reproducing experimental results from papers
+- Comparing with the current version
+- Historical reference
 
-## 验证下载
+---
 
-所有发布文件都提供SHA256校验和，用于验证下载完整性：
+## Installation Methods
+
+### Method 1: Direct Download (Recommended)
+
+Download the ZIP file and extract:
 
 ```bash
-# Linux/macOS
-shasum -a 256 localmip-1.0.0.tar.gz
-
-# Windows (PowerShell)
-Get-FileHash localmip-1.0.0.exe -Algorithm SHA256
+wget https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.0.zip
+unzip v2.0.zip
+cd Local-MIP-2.0
 ```
 
-## 许可证
+### Method 2: Git Clone
 
-Local-MIP采用MIT许可证发布。详见[LICENSE](https://github.com/Local-MIP/LICENSE)文件。
+Clone the repository for the latest development version:
 
-## 下一步
+```bash
+git clone https://github.com/shaowei-cai-group/Local-MIP.git
+cd Local-MIP
+```
 
-- 查看[Get Started](get-started.md)快速入门指南
-- 阅读[完整文档](docs.md)
-- 访问[GitHub仓库](https://github.com/Local-MIP)
+To checkout a specific version:
 
-## 获取支持
+```bash
+git clone https://github.com/shaowei-cai-group/Local-MIP.git
+cd Local-MIP
+git checkout v2.0
+```
 
-- GitHub Issues: [提交问题](https://github.com/Local-MIP/issues)
-- Email: your-email@example.com
+---
 
-[返回首页](/)
+## System Requirements
+
+### Minimum Requirements
+
+- **CMake:** Version 3.15 or later
+- **Compiler:** C++20 compatible compiler
+  - GCC 10+ or
+  - Clang 12+
+- **Libraries:** pthreads
+- **Tools:** bash, make, standard POSIX utilities
+- **Disk Space:** Approximately 100 MB
+
+### Supported Platforms
+
+- **Linux:** Ubuntu 20.04+, Debian 11+, Fedora 34+, or equivalent
+- **macOS:** 10.15 (Catalina) or later
+- **Windows:** Via WSL2 or compatible POSIX environment
+
+### Recommended Configuration
+
+- **RAM:** 4 GB or more
+- **CPU:** Multi-core processor (for parallel builds)
+- **Storage:** SSD for faster build times
+
+---
+
+## Build Instructions
+
+### Release Build (Recommended)
+
+For optimal performance:
+
+```bash
+./build.sh release
+```
+
+Produces:
+- `build/Local-MIP` - Optimized CLI binary
+- `build/libLocalMIP.a` - Static library
+
+### Debug Build
+
+For development and debugging:
+
+```bash
+./build.sh debug
+```
+
+Includes assertions, logging, and debug symbols.
+
+### Clean Build
+
+Remove all build artifacts:
+
+```bash
+./build.sh clean
+```
+
+---
+
+## Verification
+
+### Verify Installation
+
+After building, verify the installation:
+
+```bash
+cd build
+./Local-MIP --help
+```
+
+### Run Tests
+
+Execute the test suite:
+
+```bash
+cd build
+ctest --output-on-failure
+```
+
+---
+
+## License
+
+Local-MIP is released under the **MIT License** (or check the LICENSE file in the repository).
+
+**Key Points:**
+- Free for academic and commercial use
+- Open source
+- Permissive licensing
+
+[View Full License](https://github.com/shaowei-cai-group/Local-MIP/blob/main/LICENSE)
+
+---
+
+## Getting Help
+
+### Documentation
+
+- [Quick Start Guide](/quick-start) - Get started quickly
+- [User Guide](/documentation) - Complete documentation
+- [Examples](/examples) - Code examples and demos
+
+### Support
+
+- **GitHub Issues:** [Report bugs or request features](https://github.com/shaowei-cai-group/Local-MIP/issues)
+- **GitHub Discussions:** [Ask questions and discuss](https://github.com/shaowei-cai-group/Local-MIP/discussions)
+- **Source Code:** [Browse on GitHub](https://github.com/shaowei-cai-group/Local-MIP)
+
+---
+
+## Version History
+
+| Version | Release Date | Highlights |
+|---------|--------------|------------|
+| v2.0 | 2025 | Current stable release with enhanced features |
+| v1.0 | 2024 | Initial release (archived, used in papers) |
+
+---
+
+[← Back to Home](/) | [Quick Start →](/quick-start)

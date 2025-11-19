@@ -1,0 +1,56 @@
+{% unless page.url == "/" %}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol class="breadcrumb-list">
+    <li class="breadcrumb-item">
+      <a href="{{ '/' | relative_url }}">
+        <svg class="breadcrumb-icon" width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
+        </svg>
+        首页
+      </a>
+    </li>
+
+    {%- assign crumbs = page.url | split: '/' -%}
+    {%- assign crumb_limit = crumbs | size | minus: 1 -%}
+    {%- assign crumb_path = '' -%}
+    {%- assign is_last_crumb = false -%}
+
+    {%- for crumb in crumbs offset: 1 limit: crumb_limit -%}
+      {%- unless crumb == '' -%}
+        {%- assign crumb_path = crumb_path | append: '/' | append: crumb -%}
+        {%- assign crumb_page = site.pages | where: "url", crumb_path | first -%}
+        {%- unless crumb_page -%}
+          {%- assign crumb_path_with_slash = crumb_path | append: '/' -%}
+          {%- assign crumb_page = site.pages | where: "url", crumb_path_with_slash | first -%}
+        {%- endunless -%}
+
+        {%- comment -%} 检查是否是最后一个面包屑且与当前页面相同 {%- endcomment -%}
+        {%- assign is_current_page = false -%}
+        {%- if crumb_path == page.url or crumb_path_with_slash == page.url -%}
+          {%- assign is_current_page = true -%}
+        {%- endif -%}
+
+        <li class="breadcrumb-item {% if is_current_page %}active{% endif %}" {% if is_current_page %}aria-current="page"{% endif %}>
+          <span class="breadcrumb-separator">/</span>
+          {%- if is_current_page -%}
+            {%- comment -%} 当前页面，显示为普通文本而非链接 {%- endcomment -%}
+            <span>{{ crumb_page.title | default: crumb | replace: '-', ' ' | replace: '_', ' ' | capitalize }}</span>
+          {%- else -%}
+            {%- comment -%} 非当前页面，显示为链接 {%- endcomment -%}
+            {%- if crumb_page and crumb_page.title -%}
+              <a href="{{ crumb_path | relative_url }}">{{ crumb_page.title }}</a>
+            {%- else -%}
+              {%- assign crumb_name = crumb | replace: '-', ' ' | replace: '_', ' ' | capitalize -%}
+              <a href="{{ crumb_path | relative_url }}">{{ crumb_name }}</a>
+            {%- endif -%}
+          {%- endif -%}
+        </li>
+
+        {%- if is_current_page -%}
+          {%- assign is_last_crumb = true -%}
+        {%- endif -%}
+      {%- endunless -%}
+    {%- endfor -%}
+  </ol>
+</nav>
+{% endunless %}

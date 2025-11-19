@@ -1,0 +1,45 @@
+<header class="site-header" role="banner">
+  <div class="wrapper nav-wrapper">
+    <a class="brand" rel="author" href="{{ "/" | relative_url }}">
+      <span class="site-title">&nbsp;&nbsp;</span>
+      <img src="{{ '/assets/images/localmip.png' | relative_url }}" alt="Local-MIP logo" class="brand-logo" />
+      <span class="site-title">&nbsp;&nbsp;{{ site.title | escape }}</span>
+    </a>
+
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+    <label for="nav-toggle" class="nav-toggle-label" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      <ul class="nav-list">
+        {%- assign nav_items = site.data.navigation -%}
+        {%- if nav_items -%}
+          {%- for item in nav_items -%}
+            <li class="nav-item {% if item.children %}has-children{% endif %}">
+              <a href="{{ item.url | relative_url }}">{{ item.title | escape }}</a>
+              {%- if item.children -%}
+                <ul class="nav-dropdown">
+                  {%- for child in item.children -%}
+                    <li><a href="{{ child.url | relative_url }}">{{ child.title | escape }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        {%- else -%}
+          {%- assign default_paths = site.pages | map: "path" -%}
+          {%- assign page_paths = site.header_pages | default: default_paths -%}
+          {%- for path in page_paths -%}
+            {%- assign my_page = site.pages | where: "path", path | first -%}
+            {%- if my_page.title -%}
+              <li class="nav-item"><a href="{{ my_page.url | relative_url }}">{{ my_page.title | escape }}</a></li>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </ul>
+    </nav>
+  </div>
+</header>

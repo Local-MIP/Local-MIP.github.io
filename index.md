@@ -1,51 +1,82 @@
 ---
 layout: default
-title: 首页
+title: Home
+description: Local-MIP is a local-search solver for mixed integer programming with a lightweight CLI, focused C++ API, and pybind11 bindings.
+keywords: MIP求解器, 混合整数规划, 局部搜索算法, C++优化库, pybind11, MIPLIB, 整数规划求解, Local-MIP, optimization solver
 ---
-
-<div style="text-align: center; margin: 2rem 0;">
-  <img src="assets/images/localmip.png" alt="Local-MIP Logo" style="max-width: 300px; width: 100%;">
-</div>
 
 # Local-MIP
 
-一个关于本地混合整数规划的研究项目。
+<div class="hero">
+  <p style="font-size: 1.15em; margin: 0 0 0.4em;">local search solver for mixed integer programming with a lightweight CLI, focused C++ API, and pybind11 bindings.</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="/quick-start">Quick Start</a>
+    <a class="btn btn-primary" href="/download">Download</a>
+    <a class="btn btn-primary" href="https://github.com/shaowei-cai-group/Local-MIP">GitHub</a>
+  </div>
+  <div class="stat-grid">
+    <span class="pill">CP 2024 Best Paper</span>
+    <span class="pill">C++20</span>
+    <span class="pill">Callback-friendly API</span>
+    <span class="pill">10 MIPLIB records</span>
+  </div>
+</div>
 
-**导航**: [首页](/) | [Get Started](get-started.md) | [下载](download.md)
+## What is Local-MIP?
 
-## 关于项目
+Local-MIP is a local-search solver for mixed integer programming with an emphasis on customization. Use it as a self-contained command-line solver or embed it as a static library to control starts, restarts, weights, neighborhoods, and scoring functions.
 
-在这里介绍你的项目背景和目标。
+## Highlights
 
-## 主要内容
+<div class="feature-grid">
+  <div class="card">
+    <h3>Lean CLI</h3>
+    <p>Ship a single binary for MPS/LP solving with sensible defaults and composable flags.</p>
+    <code>./Local-MIP -i model.mps -t 300 -b 1 -l 1</code>
+  </div>
+  <div class="card">
+    <h3>Callback System</h3>
+    <p>Register start, restart, weight, neighbor, and scoring callbacks to tailor search behavior.</p>
+  </div>
+  <div class="card">
+    <h3>Bindings &amp; API</h3>
+    <p>pybind11 bindings and a focused C++ API keep integration straightforward.</p>
+  </div>
+</div>
 
-### 软件工具
+## Get Started Fast
 
-- [工具1](#) - 工具1的简要描述
-- [工具2](#) - 工具2的简要描述
+Work from the solver root (after extracting or cloning the repository).
 
-### 研究论文
+1. **Download:** Grab the latest release from the [download page](/download).
+2. **Build:** Compile with the provided script:
 
-#### 2024年
+    ```bash
+    ./build.sh release
+    ```
 
-- **论文标题1** - 作者名. *会议/期刊名*, 年份. [[PDF](#)] [[补充材料](#)]
-- **论文标题2** - 作者名. *会议/期刊名*, 年份. [[PDF](#)]
+3. **Run:** Solve your first instance:
 
-#### 2023年
+    ```bash
+    cd build
+    ./Local-MIP -i ../test-set/2club200v15p5scn.mps -t 300 -b 1 -l 1
+    ```
 
-- **论文标题3** - 作者名. *会议/期刊名*, 年份. [[PDF](#)]
+[Full Quick Start →](/quick-start)
 
-### 相关资源
+## Documentation & Resources
 
-- [Get Started](get-started.md) - 快速入门指南
-- [下载](download.md) - 获取最新版本
-- [文档](docs.md) - Markdown使用指南
+- [Documentation](/documentation) — concepts, parameters, and callbacks.
+- [Examples](/examples) — basic usage and callback walk-throughs.
+- [Parameters Reference](/documentation#parameters-reference) — complete flag listing.
+- [MIPLIB Records](/miplib-records) and [Papers](/papers) — performance and publications.
 
-## 联系方式
+## Recognition & Citation
 
-- GitHub: [Local-MIP](https://github.com/Local-MIP)
-- Email: your-email@example.com
+- CP 2024 Best Paper Award.
+- 10 new records on the MIPLIB benchmark suite.
+- Cite: **Peng Lin, Shaowei Cai, Mengchuan Zou, Jinkun Lin.** *Local-MIP: Efficient local search for mixed integer programming.* Artificial Intelligence, 348 (2025), 104405. See [papers](/papers) for details.
 
 ---
 
-最后更新：2025年1月
+**Latest Release:** v2.0 | **License:** [MIT License](https://github.com/shaowei-cai-group/Local-MIP/blob/main/LICENSE)

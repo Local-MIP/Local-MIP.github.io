@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Primary Meta Tags -->
+    <title>{% if page.title %}{{ page.title | escape }} | {% endif %}{{ site.title | escape }}</title>
+    <meta name="title" content="{% if page.title %}{{ page.title | escape }} | {% endif %}{{ site.title | escape }}">
+    <meta name="description" content="{{ page.description | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+    <meta name="keywords" content="{% if page.keywords %}{{ page.keywords }}{% else %}MIP求解器, 混合整数规划, 局部搜索, C++, 优化算法, Local-MIP{% endif %}">
+    <meta name="author" content="Shaowei Cai Research Group">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    <meta property="og:title" content="{% if page.title %}{{ page.title | escape }} | {% endif %}{{ site.title | escape }}">
+    <meta property="og:description" content="{{ page.description | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+    <meta property="og:image" content="{{ '/assets/images/localmip.png' | absolute_url }}">
+    <meta property="og:site_name" content="{{ site.title }}">
+    <meta property="og:locale" content="zh_CN">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ page.url | absolute_url }}">
+    <meta name="twitter:title" content="{% if page.title %}{{ page.title | escape }} | {% endif %}{{ site.title | escape }}">
+    <meta name="twitter:description" content="{{ page.description | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+    <meta name="twitter:image" content="{{ '/assets/images/localmip.png' | absolute_url }}">
+
+    <!-- Additional SEO Tags -->
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ '/assets/images/localmip.png' | relative_url }}">
+    <link rel="apple-touch-icon" href="{{ '/assets/images/localmip.png' | relative_url }}">
+
+    <!-- SEO Tags Plugin -->
+    {% seo %}
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+
+    <!-- Feed -->
+    {% feed_meta %}
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "{{ site.title }}",
+      "description": "{{ site.description }}",
+      "url": "{{ site.url }}",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Linux, macOS, Windows",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "Shaowei Cai Research Group"
+      }
+    }
+    </script>
+  </head>
+
+  <body>
+    <!-- Include Header -->
+    {% include header.html %}
+
+    <!-- Main Content -->
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <!-- Breadcrumbs Navigation -->
+        {% include breadcrumbs.html %}
+
+        {{ content }}
+      </div>
+    </main>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top" aria-label="返回顶部" title="返回顶部">
+      <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+        <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+      </svg>
+    </button>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="wrapper">
+        <div class="footer-content">
+          <!-- Logo Section -->
+          <div class="footer-section footer-logo-section">
+            <div class="footer-logo-container">
+              <img src="{{ '/assets/images/localmip.png' | relative_url }}" alt="Local-MIP Logo" class="footer-logo">
+            </div>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="/quick-start">Quick Start</a></li>
+              <li><a href="/documentation">Documentation</a></li>
+              <li><a href="/examples">Examples</a></li>
+              <li><a href="/download">Download</a></li>
+            </ul>
+          </div>
+
+          <!-- Resources -->
+          <div class="footer-section">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="/papers">Publications</a></li>
+              <li><a href="/miplib-records">MIPLIB Records</a></li>
+              <li><a href="https://github.com/shaowei-cai-group/Local-MIP" target="_blank" rel="noopener">GitHub Repository</a></li>
+              <li><a href="https://github.com/shaowei-cai-group/Local-MIP/issues" target="_blank" rel="noopener">Issue Tracker</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+          <div class="footer-bottom-content">
+            <p class="footer-copyright">
+              &copy; {{ 'now' | date: "%Y" }} Local-MIP Project. Released under the
+              <a href="https://github.com/shaowei-cai-group/Local-MIP/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.
+            </p>
+            <p class="footer-credit">
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript for mobile navigation and back to top -->
+    <script>
+      // Mobile navigation toggle
+      const navToggle = document.getElementById('nav-toggle');
+      const navList = document.querySelector('.nav-list');
+
+      if (navToggle && navList) {
+        navToggle.addEventListener('change', function() {
+          if (this.checked) {
+            navList.style.display = 'flex';
+          } else {
+            navList.style.display = 'none';
+          }
+        });
+      }
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(event) {
+        const header = document.querySelector('.site-header');
+        if (navToggle && !header.contains(event.target)) {
+          navToggle.checked = false;
+          if (window.innerWidth <= 900) {
+            navList.style.display = 'none';
+          }
+        }
+      });
+
+      // Handle window resize
+      window.addEventListener('resize', function() {
+        if (window.innerWidth > 900 && navList) {
+          navList.style.display = 'flex';
+        } else if (!navToggle.checked && navList) {
+          navList.style.display = 'none';
+        }
+      });
+
+      // Back to top button functionality
+      const backToTopButton = document.getElementById('back-to-top');
+
+      if (backToTopButton) {
+        // Show/hide button based on scroll position
+        window.addEventListener('scroll', function() {
+          if (window.pageYOffset > 300) {
+            backToTopButton.classList.add('visible');
+          } else {
+            backToTopButton.classList.remove('visible');
+          }
+        });
+
+        // Scroll to top when clicked
+        backToTopButton.addEventListener('click', function() {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

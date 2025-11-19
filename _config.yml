@@ -1,30 +1,37 @@
-# 网站配置
+# Site Configuration
 title: Local-MIP
-description: 本地混合整数规划研究
+description: A Local Search Solver for Mixed Integer Programming
 url: "https://local-mip.github.io"
 baseurl: ""
 
-# 构建设置
+# Build Settings
 markdown: kramdown
-theme: minima
 
-# 排除文件
+# Exclude Files
 exclude:
   - README.md
   - Gemfile
   - Gemfile.lock
   - vendor/
   - .bundle/
+  - submodules/
+  - update-solver.sh
+  - 布局错误.jpg
 
-# 插件
+# Plugins
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
-# Markdown设置
+# Markdown Settings
 kramdown:
   input: GFM
   syntax_highlighter: rouge
   syntax_highlighter_opts:
     block:
-      line_numbers: false
+      line_numbers: true
+
+# Collections (if needed in future)
+# collections:
+#   agents:
+#     output: true
