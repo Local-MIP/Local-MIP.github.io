@@ -8,24 +8,53 @@ keywords: MIP solver, mixed integer programming, local search, lift move operato
 # Local-MIP
 
 <div class="hero">
-  <p style="font-size: 1.15em; margin: 0 0 0.4em;">Local-MIP is an efficient local search solver for mixed integer programming.</p>
+  <p class="hero-tagline">An efficient local search algorithm for mixed integer programming</p>
+
   <div class="hero-actions">
     <a class="btn btn-primary" href="/quick-start">Quick Start</a>
     <a class="btn btn-primary" href="/download">Download</a>
     <a class="btn btn-primary" href="https://github.com/shaowei-cai-group/Local-MIP">Source Code</a>
     <a class="btn btn-primary" href="/documentation">Tutorials</a>
-    <a class="btn btn-primary" href="/examples">Customization Examples</a>
+    <a class="btn btn-primary" href="/examples">Examples</a>
   </div>
-  <div class="stat-grid">
-    <a class="pill" href="assets/pdf/best-paper.pdf">CP 2024 Best Paper</a>
-    <a class="pill" href="https://www.sciencedirect.com/science/article/abs/pii/S0004370225001249?via%3Dihub">AIJ 2025</a>
+
+  <div class="hero-section">
+    <h4 class="hero-section-title"></h4>
+    <div class="hero-links">
+      <a class="hero-link" href="https://lcs.ios.ac.cn/~caisw/">
+        <span class="hero-link-badge">Project Leader</span>
+        <span class="hero-link-text">Shaowei Cai</span>
+      </a>
+      <a class="hero-link" href="https://linpeng0105.github.io/">
+        <span class="hero-link-badge">Developer</span>
+        <span class="hero-link-text">Peng Lin</span>
+      </a>
+    </div>
   </div>
-  <div class="stat-grid">
-    <a class="pill" href="https://lcs.ios.ac.cn/~caisw/">Project Leader: Shaowei Cai</a>
-    <a class="pill" href="https://linpeng0105.github.io/">Developer: Peng Lin</a>
+
+  <div class="hero-section">
+    <h4 class="hero-section-title"></h4>
+    <div class="hero-links">
+      <a class="hero-link" href="assets/pdf/best-paper.pdf">
+        <span class="hero-link-badge">🏆 CP 2024 Best Paper Award</span>
+        <span class="hero-link-text">Peng Lin, Mengchuan Zou, Shaowei Cai</span>
+      </a>
+      <a class="hero-link" href="https://www.sciencedirect.com/science/article/abs/pii/S0004370225001249?via%3Dihub">
+        <span class="hero-link-badge">📄 Artificial Intelligence 2025</span>
+        <span class="hero-link-text">Peng Lin, Shaowei Cai, Mengchuan Zou, Jinkun Lin</span>
+      </a>
+    </div>
   </div>
-  <div class="stat-grid">
-    <a class="pill" href="/examples">Customizable Modules: Initialization, Restart Strategies, Neighbor Operators, Weighting Schemes, Scoring Functions</a>
+
+  <div class="hero-section">
+    <h4 class="hero-section-title">Customizable Modules</h4>
+    <div class="hero-tags">
+      <span class="hero-tag">Initialization</span>
+      <span class="hero-tag">Restart Strategies</span>
+      <span class="hero-tag">Neighbor Operators</span>
+      <span class="hero-tag">Weighting Schemes</span>
+      <span class="hero-tag">Scoring Functions</span>
+    </div>
   </div>
 </div>
 

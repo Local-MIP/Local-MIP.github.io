@@ -344,6 +344,13 @@ blockquote {
   margin: 0.5rem 0 1.5rem;
   border: 1px solid #d5e2ff;
   box-shadow: 0 12px 34px rgba(12, 26, 50, 0.1);
+  text-align: center;
+}
+
+.hero-tagline {
+  font-size: 1.15em;
+  margin: 0 auto 0.8em;
+  color: #1f2937;
 }
 
 .hero p {
@@ -355,6 +362,99 @@ blockquote {
   gap: 12px;
   flex-wrap: wrap;
   margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+}
+
+/* Hero 分区样式 */
+.hero-section {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.hero-section-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #475569;
+  margin: 0 0 0.75rem 0;
+}
+
+/* Hero 链接容器 */
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+/* Hero 链接卡片 */
+.hero-link {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+  min-width: 140px;
+  text-align: center;
+}
+
+.hero-link:hover {
+  background: #f8fafc;
+  border-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+.hero-link-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #2563eb;
+  margin-bottom: 0.25rem;
+  text-align: center;
+  width: 100%;
+}
+
+.hero-link-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f172a;
+  text-align: center;
+  width: 100%;
+}
+
+.hero-link-role {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 0.15rem;
+  text-align: center;
+  width: 100%;
+}
+
+/* Hero 标签容器 */
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+/* Hero 标签 */
+.hero-tag {
+  display: inline-block;
+  padding: 0.4rem 0.75rem;
+  background: #ffffff;
+  color: #334155;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
 }
 
 .btn {
@@ -961,6 +1061,24 @@ hr {
 
   .stat-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* Hero 响应式样式 */
+  .hero-links {
+    flex-direction: column;
+  }
+
+  .hero-link {
+    width: 100%;
+  }
+
+  .hero-tags {
+    gap: 0.4rem;
+  }
+
+  .hero-tag {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.6rem;
   }
 
   table {
