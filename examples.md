@@ -1,11 +1,13 @@
 ---
 layout: default
 title: Examples
+description: Code examples demonstrating Local-MIP's callback system to customize operators, scoring functions, and search strategies for mixed integer programming.
+keywords: Local-MIP examples, callback system, custom operators, lift scoring, neighbor scoring, MIP customization, C++ API
 ---
 
 # Examples
 
-Code examples and demonstrations for using Local-MIP's C++ API and callback system.
+Code examples and demonstrations for using Local-MIP's C++ API and callback system to customize search behavior.
 
 ---
 

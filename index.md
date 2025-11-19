@@ -1,50 +1,52 @@
 ---
 layout: default
 title: Home
-description: Local-MIP is a local-search solver for mixed integer programming with a lightweight CLI, focused C++ API, and pybind11 bindings.
-keywords: MIP求解器, 混合整数规划, 局部搜索算法, C++优化库, pybind11, MIPLIB, 整数规划求解, Local-MIP, optimization solver
+description: LLocal-MIP is an efficient local search solver for mixed integer programming.
+keywords: MIP solver, mixed integer programming, local search, lift move operator, breakthrough move, mixed tight move, local feasible domain, dynamic weighting, MIPLIB, optimization solver
 ---
 
 # Local-MIP
 
 <div class="hero">
-  <p style="font-size: 1.15em; margin: 0 0 0.4em;">local search solver for mixed integer programming with a lightweight CLI, focused C++ API, and pybind11 bindings.</p>
+  <p style="font-size: 1.15em; margin: 0 0 0.4em;">Local-MIP is an efficient local search solver for mixed integer programming.</p>
   <div class="hero-actions">
     <a class="btn btn-primary" href="/quick-start">Quick Start</a>
-    <a class="btn btn-primary" href="/download">Download</a>
-    <a class="btn btn-primary" href="https://github.com/shaowei-cai-group/Local-MIP">GitHub</a>
+    <a class="btn btn-primary" href="/download">Download Software</a>
+    <a class="btn btn-primary" href="https://github.com/shaowei-cai-group/Local-MIP">Source Code</a>
+    <a class="btn btn-primary" href="/documentation">Tutorials</a>
+    <a class="btn btn-primary" href="/examples">Customization Examples</a>
   </div>
   <div class="stat-grid">
-    <span class="pill">CP 2024 Best Paper</span>
-    <span class="pill">C++20</span>
-    <span class="pill">Callback-friendly API</span>
-    <span class="pill">10 MIPLIB records</span>
+    <a class="pill" href="assets/pdf/best-paper.pdf">CP 2024 Best Paper</a>
+    <a class="pill" href="https://www.sciencedirect.com/science/article/abs/pii/S0004370225001249?via%3Dihub">AIJ 2025</a>
+  </div>
+  <div class="stat-grid">
+    <a class="pill" href="https://lcs.ios.ac.cn/~caisw/">Project Leader: Shaowei Cai</a>
+    <a class="pill" href="https://linpeng0105.github.io/">Developer: Peng Lin</a>
+  </div>
+    <div class="stat-grid">
+    <a class="pill" href="/examples">Customizable modules: Start, Restart, Neighbor Operators, Weighting Scheme, Scoring Functions</a>
   </div>
 </div>
-
-## What is Local-MIP?
-
-Local-MIP is a local-search solver for mixed integer programming with an emphasis on customization. Use it as a self-contained command-line solver or embed it as a static library to control starts, restarts, weights, neighborhoods, and scoring functions.
 
 ## Highlights
 
 <div class="feature-grid">
   <div class="card">
-    <h3>Lean CLI</h3>
-    <p>Ship a single binary for MPS/LP solving with sensible defaults and composable flags.</p>
-    <code>./Local-MIP -i model.mps -t 300 -b 1 -l 1</code>
+    <h3>Fast Optimization</h3>
+    <p>On the general benchmark MIPLIB, Local-MIP achieves top-tier performance among open-source solvers with second-level fast optimization capability</p>
   </div>
   <div class="card">
-    <h3>Callback System</h3>
-    <p>Register start, restart, weight, neighbor, and scoring callbacks to tailor search behavior.</p>
+    <h3>Highly Customizable</h3>
+    <p>Local-MIP provides rich APIs and callback functions, enabling users to design custom algorithm modules for their specific scenarios</p>
   </div>
   <div class="card">
-    <h3>Bindings &amp; API</h3>
-    <p>pybind11 bindings and a focused C++ API keep integration straightforward.</p>
+    <h3>Independent and Easy Integration</h3>
+    <p>No third-party dependencies. Accepts standard MPS and LP format files, and can be easily integrated into other solvers</p>
   </div>
 </div>
 
-## Get Started Fast
+## Quick Start
 
 Work from the solver root (after extracting or cloning the repository).
 
@@ -59,7 +61,7 @@ Work from the solver root (after extracting or cloning the repository).
 
     ```bash
     cd build
-    ./Local-MIP -i ../test-set/2club200v15p5scn.mps -t 300 -b 1 -l 1
+    ./Local-MIP -model_file ../test-set/2club200v15p5scn.mps --time_limit 300
     ```
 
 [Full Quick Start →](/quick-start)

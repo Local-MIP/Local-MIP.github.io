@@ -196,69 +196,147 @@ The Python module links against the core static library. See `python-bindings/sa
 
 #### Mixed Integer Programming (MIP)
 
-Local-MIP solves problems in the canonical minimization form:
+**Problem Definition (following AIJ 2025 paper):**
+
+A Mixed Integer Programming (MIP) problem optimizes a linear objective function subject to linear constraints, with some variables restricted to integer values. Local-MIP solves problems in the canonical minimization form:
 
 $$
 \begin{aligned}
 \min_{x} \quad & c^\top x \\
-\text{s.t.} \quad
-& A^{(\le)} x \le b^{(\le)}, \\
-& A^{(=)} x = b^{(=)}, \\
+\text{s.t.} \quad & Ax \le b, \\
 & \ell \le x \le u, \\
-& x_i \in \mathbb{Z} \quad \forall i \in I, \\
-& x_i \in \{0,1\} \quad \forall i \in B, \\
-& x_j \in \mathbb{R} \quad \forall j \notin I \cup B,
+& x_j \in \mathbb{Z} \quad \forall j \in I,
 \end{aligned}
 $$
 
 where:
-- $I$ is the index set of general integers
-- $B$ is the index set of binaries
-- Other variables are continuous
+- $x \in \mathbb{R}^n$ is the variable vector ($n$ variables)
+- $c \in \mathbb{R}^n$ is the objective coefficient vector
+- $A \in \mathbb{R}^{m \times n}$ is the constraint matrix ($m$ constraints)
+- $b \in \mathbb{R}^m$ is the right-hand side vector
+- $\ell, u \in \mathbb{R}^n$ are the lower and upper bound vectors
+- $I \subseteq \{1, \ldots, n\}$ is the index set of integer variables
 
-**Key Concepts:**
-- Objective coefficients $c$
-- Constraint matrices $A^{(\le)}, A^{(=)}$
-- Bounds $\ell, u$
-- Feasibility: constraint satisfaction
-- Optimality: no better feasible objective
+**Standard Form Components:**
+
+1. **Objective function:** $c^\top x$ (linear function to minimize)
+2. **General linear constraints:** $Ax \le b$ (row $i$ is $A_i \cdot x \le b_i$)
+3. **Global bounds:** $\ell \le x \le u$ (variable-specific lower/upper bounds)
+4. **Integrality constraints:** $x_j \in \mathbb{Z}$ for $j \in I$
+
+**Solution Concepts:**
+
+- **Solution $s$:** A vector assigning values to each variable, where $s_j$ denotes the value assigned to variable $x_j$
+- **Feasible solution:** A solution satisfying all constraints:
+  - General linear constraints: $A_i \cdot s \le b_i$ for all $i \in \{1, \ldots, m\}$
+  - Global bounds: $\ell_j \le s_j \le u_j$ for all $j \in \{1, \ldots, n\}$
+  - Integrality constraints: $s_j \in \mathbb{Z}$ for all $j \in I$
+- **Infeasible solution:** A solution violating one or more constraints
+- **Objective value:** For solution $s$, the objective value is $obj(s) = c^\top s$
+- **Optimal solution:** A feasible solution with the minimum objective value among all feasible solutions
+- **Best-found solution $s^*$:** The best feasible solution discovered during search
+- **Current solution $s^{cur}$:** The solution being modified at each search step
+
+**Constraint Classification:**
+
+- **Satisfied constraint:** $A_i \cdot s \le b_i$ (constraint condition holds)
+- **Violated constraint:** $A_i \cdot s > b_i$ (constraint condition fails)
+- **Tight constraint:** $A_i \cdot s = b_i$ (equality holds)
+
+**Problem Types:**
+
+- **Pure Integer Programming (IP):** All variables are integers ($I = \{1, \ldots, n\}$)
+- **Binary Integer Programming (BIP):** All variables are binary ($x_j \in \{0, 1\}$)
+- **Mixed Integer Programming (MIP):** Some variables are integers, others continuous ($I \subset \{1, \ldots, n\}$)
 
 #### Local Search for MIP
 
-**Core Components:**
+**Fundamental Components:**
 
-- **State:** A numerical assignment $x$ (not necessarily feasible) plus feasibility status
-- **Move (delta):** A modification $(i, \Delta)$ applied to a variable, potentially bundled as multi-variable operation
-- **Neighborhood:** Set of candidate moves considered from current state
-- **Iteration/step:** Discrete progression index; stagnation measured by steps since last improvement
-- **Constraint violation:** Degree to which constraints are broken; violation weights bias attention
-- **Scoring:** When infeasible, weighted violation scores guide search; when feasible, true objective drives improvement
+- **Operator:** Defines how to modify variables to generate candidate solutions
+- **Operation:** An instantiation of an operator on a specified variable
+- **Scoring function:** Evaluates different candidate operations to select the most promising one for execution
+- **Neighborhood:** The set of candidate moves considered from the current state
 
-**Local-MIP Specific Components:**
+**Local Search Framework:**
 
-1. **Best-from-Multiple-Selection (BMS)**
-   - Sample a small set of constraints/moves
-   - Take best candidate to balance exploration and exploitation
+Local search for MIP iteratively modifies the current solution $s^{cur}$ by applying operations that change variable values. At each step:
 
-2. **Tabu Memory**
-   - Short-term prohibition of reversing recent moves to prevent cycling
-   - Parameterized by base tenure and variation
+1. Generate candidate operations using operators
+2. Evaluate operations using scoring functions
+3. Select and execute the best operation
+4. Update $s^{cur}$ and track $s^*$ (best feasible solution found)
+5. Continue until termination criterion (time limit, local optimum, etc.)
 
-3. **Restarts**
-   - Periodic perturbation of search state to escape stagnation
+**Local-MIP Architecture:**
 
-4. **Starts**
-   - Strategies for building initial assignment (zero, random, heuristic)
+Local-MIP employs a **two-mode architecture** that adapts based on the current solution's feasibility:
 
-5. **Weight Updates**
-   - Schemes adapting constraint weights over time
-   - Emphasize difficult or newly violated constraints
+**1. Feasible Mode** (when $s^{cur}$ is feasible)
 
-**Scoring and Selection:**
+*Primary goal:* Improve objective value while strictly maintaining feasibility.
 
-- **Infeasible Phase:** Neighbor scoring ranks moves by expected reduction in constraint violation (with optional bonuses for breakthroughs)
-- **Feasible Phase:** Lift scoring ranks moves by projected objective improvement
-- **Tie-breaking:** Multi-level comparison (primary score, secondary bonus/subscore, randomness) to diversify choices
+**Key Concepts:**
+
+- **Local feasible domain** $lfd(x_j, s)$: The range within which variable $x_j$ can be modified without violating any constraints, given current solution $s$. For constraint $i$:
+
+  $$lfcd(x_j, con_i, s) = \begin{cases}
+  [\ell_j, u_j] & \text{if } A_{ij} = 0 \\
+  [\ell_j, s_j + \frac{b_i - A_i \cdot s}{A_{ij}}] & \text{if } A_{ij} > 0 \\
+  [s_j + \frac{b_i - A_i \cdot s}{A_{ij}}, u_j] & \text{if } A_{ij} < 0
+  \end{cases}$$
+
+  Then $lfd(x_j, s) = \bigcap_i lfcd(x_j, con_i, s)$ (intersection of all constraint domains).
+
+- **Lift move operator** $lm(x_j, s)$: Modifies variable $x_j$ to a new value within $lfd(x_j, s)$ that maximizes objective improvement while maintaining feasibility:
+
+  $$lm(x_j, s) = \arg\min_{v \in lfd(x_j, s)} c_j \cdot v$$
+
+- **Lift process:** Iteratively applies lift moves until no further objective improvement is possible (local optimum reached).
+
+- **Lift scoring:** $score_{lift}(op)$ measures the objective improvement of operation $op$.
+
+**2. Infeasible Mode** (when $s^{cur}$ violates one or more constraints)
+
+*Two scenarios:*
+- **Initial search:** Find the first feasible solution
+- **Optimization search:** Find feasible solutions better than $s^*$
+
+**Novel Operators:**
+
+- **Breakthrough move operator** $bm(x_j, s)$: Modifies variable $x_j$ to surpass the best-known objective value $obj(s^*)$:
+
+  $$\text{Target: } c_j \cdot (s_j + \delta) < obj(s^*) - c^\top s + c_j \cdot s_j$$
+
+- **Mixed tight move operator** $mtm(x_j, con_i, s)$: Modifies variable $x_j$ to satisfy and tighten constraint $con_i$:
+
+  $$\text{Target: } s_j' = s_j + \frac{b_i - A_i \cdot s}{A_{ij}} \quad \text{(makes } A_i \cdot s' = b_i \text{)}$$
+
+**Dynamic Weighting Scheme:**
+
+- Objective weight: $w(obj)$
+- Constraint weights: $w(con_i)$ for each constraint $i$
+- Weight update: Increase weights of violated constraints; occasional smoothing prevents excessive accumulation
+- Balances priority between objective optimization and constraint satisfaction
+
+**Two-Level Scoring Structure:**
+
+1. **Progress score** $score_{progress}(op)$ (first level):
+   - $score_{progress}^{obj}(op)$: Progress toward better objective
+   - $score_{progress}^{con_i}(op)$: Progress toward satisfying constraint $i$
+   - Weighted combination: $w(obj) \cdot score_{progress}^{obj}(op) + \sum_i w(con_i) \cdot score_{progress}^{con_i}(op)$
+
+2. **Bonus score** $score_{bonus}(op)$ (second level):
+   - **Breakthrough bonus** $bonus_{break}(op)$: Rewards surpassing $obj(s^*)$
+   - **Robustness bonus** $bonus_{robust}^{con_i}(op)$: Rewards maintaining strict inequality (deeper feasibility)
+   - Provides strategic guidance and finer-grained tie-breaking
+
+**Additional Components:**
+
+- **Best-from-Multiple-Selection (BMS):** Samples a small set of operations and selects the best to balance exploration and exploitation
+- **Tabu strategy:** Prohibits reversing recent moves for a tenure period to prevent cycling
+- **Restart mechanism:** Periodic perturbation to escape stagnation (triggered after specified no-improvement steps)
+- **Weight update:** Increases weights of frequently violated constraints; occasional smoothing prevents excessive accumulation
 
 ---
 

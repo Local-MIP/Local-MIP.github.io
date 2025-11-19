@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Quick Start
-description: Get up and running with Local-MIP in just a few minutes. Learn how to download, build, and run your first MIP instance.
-keywords: Local-MIP安装, MIP求解器入门, C++编译, CMake构建, 快速开始教程, 混合整数规划教程
+description: Get up and running with Local-MIP in minutes. Learn how to build and run the local search solver for mixed integer programming with novel operators and two-mode architecture.
+keywords: Local-MIP installation, MIP solver tutorial, local search, lift move operator, breakthrough move, mixed tight move, C++ compiler, CMake build
 ---
 
 # Quick Start
