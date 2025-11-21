@@ -63,7 +63,6 @@ Local-MIP 1.0 has been archived and is available in the `archive/Local-MIP-1.0/`
 
 **Access:**
 - Download the latest release and navigate to `archive/Local-MIP-1.0/`
-- Or clone the repository: `git clone https://github.com/shaowei-cai-group/Local-MIP.git`
 
 **Use Cases:**
 - Reproducing experimental results from papers
@@ -93,14 +92,6 @@ git clone https://github.com/shaowei-cai-group/Local-MIP.git
 cd Local-MIP
 ```
 
-To checkout a specific version:
-
-```bash
-git clone https://github.com/shaowei-cai-group/Local-MIP.git
-cd Local-MIP
-git checkout v2.0
-```
-
 ---
 
 ## System Requirements
@@ -113,19 +104,6 @@ git checkout v2.0
   - Clang 12+
 - **Libraries:** pthreads
 - **Tools:** bash, make, standard POSIX utilities
-- **Disk Space:** Approximately 100 MB
-
-### Supported Platforms
-
-- **Linux:** Ubuntu 20.04+, Debian 11+, Fedora 34+, or equivalent
-- **macOS:** 10.15 (Catalina) or later
-- **Windows:** Via WSL2 or compatible POSIX environment
-
-### Recommended Configuration
-
-- **RAM:** 4 GB or more
-- **CPU:** Multi-core processor (for parallel builds)
-- **Storage:** SSD for faster build times
 
 ---
 
@@ -187,7 +165,7 @@ ctest --output-on-failure
 
 ## License
 
-Local-MIP is released under the **MIT License** (or check the LICENSE file in the repository).
+Local-MIP is released under the **MIT License**.
 
 **Key Points:**
 - Free for academic and commercial use
@@ -223,4 +201,4 @@ Local-MIP is released under the **MIT License** (or check the LICENSE file in th
 
 ---
 
-[← Back to Home](/) | [Quick Start →](/quick-start)
+[← Back to Home](/) | [Documentations →](/documentation)

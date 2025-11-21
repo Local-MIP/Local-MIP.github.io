@@ -19,11 +19,6 @@ Before you begin, ensure your system meets these requirements:
 - **C++20 compiler** (GCC or Clang) and pthreads
 - **bash**, make, and standard POSIX utilities
 
-### Supported Platforms
-- Linux (recommended)
-- macOS
-- Windows (via WSL or compatible environment)
-
 ---
 
 ## Get Started in 3 Steps
@@ -68,7 +63,7 @@ Navigate to the build directory and run your first MIP instance:
 
 ```bash
 cd build
-./Local-MIP -i ../test-set/2club200v15p5scn.mps -t 300 -b 1 -l 1
+./Local-MIP --model_file ../test-set/2club200v15p5scn.mps --time_limit 300
 ```
 
 **Expected Output:**
@@ -100,7 +95,6 @@ The basic syntax is:
 | `-i` | `model_file` | Path to input model file (.mps/.lp) | Required |
 | `-t` | `time_limit` | Time limit in seconds | 10 |
 | `-s` | `sol_path` | Path to output solution file (.sol) | "" |
-| `-b` | `bound_strengthen` | Bound strengthen level (0-off, 1-ip, 2-mip) | 1 |
 | `-l` | `log_obj` | Log objective values during search | true |
 | `-S` | `random_seed` | Random seed (0 uses default) | 0 |
 
@@ -201,4 +195,4 @@ If you encounter problems:
 
 ---
 
-[← Back to Home](/) | [Documentation →](/documentation)
+[← Back to Home](/) | [DownLoad →](/download)
