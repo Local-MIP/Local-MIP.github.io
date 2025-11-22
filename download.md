@@ -16,9 +16,11 @@ The current stable version of Local-MIP with full features and improvements.
 ### Download Links
 
 **Primary Download:**
+
 - **[Download v2.0 (.zip)](https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.0.zip)** - Recommended
 
 **Alternative:**
+
 - **[GitHub Release Page](https://github.com/shaowei-cai-group/Local-MIP/releases/tag/v2.0)** - View full release notes
 - **[Source Code (GitHub)](https://github.com/shaowei-cai-group/Local-MIP)** - Clone or download from repository
 
@@ -32,25 +34,6 @@ The current stable version of Local-MIP with full features and improvements.
 - Test instances
 - Documentation
 
-### Quick Start
-
-After downloading:
-
-```bash
-# Extract
-unzip Local-MIP-2.0.zip
-cd Local-MIP-2.0
-
-# Build
-./build.sh release
-
-# Run
-cd build
-./Local-MIP -i ../test-set/2club200v15p5scn.mps -t 300
-```
-
-[Full Quick Start Guide →](/quick-start)
-
 ---
 
 ## Previous Versions
@@ -62,12 +45,8 @@ cd build
 Local-MIP 1.0 has been archived and is available in the `archive/Local-MIP-1.0/` directory of the repository.
 
 **Access:**
-- Download the latest release and navigate to `archive/Local-MIP-1.0/`
 
-**Use Cases:**
-- Reproducing experimental results from papers
-- Comparing with the current version
-- Historical reference
+- Download the latest release and navigate to `archive/Local-MIP-1.0/`
 
 ---
 
@@ -80,7 +59,7 @@ Download the ZIP file and extract:
 ```bash
 wget https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.0.zip
 unzip v2.0.zip
-cd Local-MIP-2.0
+cd Local-MIP
 ```
 
 ### Method 2: Git Clone
@@ -102,7 +81,6 @@ cd Local-MIP
 - **Compiler:** C++20 compatible compiler
   - GCC 10+ or
   - Clang 12+
-- **Libraries:** pthreads
 - **Tools:** bash, make, standard POSIX utilities
 
 ---
@@ -118,6 +96,7 @@ For optimal performance:
 ```
 
 Produces:
+
 - `build/Local-MIP` - Optimized CLI binary
 - `build/libLocalMIP.a` - Static library
 
@@ -168,6 +147,7 @@ ctest --output-on-failure
 Local-MIP is released under the **MIT License**.
 
 **Key Points:**
+
 - Free for academic and commercial use
 - Open source
 - Permissive licensing
