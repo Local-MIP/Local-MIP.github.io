@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- Root `*.md` pages (for example `index.md`, `quick-start.md`, `download.md`) form the site content; each requires YAML front matter with `layout` and `title`.
+- Root `*.md` pages (for example `index.md`, `quick-start.md`, `software.md`) form the site content; each requires YAML front matter with `layout` and `title`.
 - `_config.yml` holds Jekyll settings, navigation, and plugin lists; update nav entries here when adding pages.
 - `assets/css/style.scss` customizes the Minima theme; keep styles minimal and mobile-friendly. Images live in `assets/images/`.
 - `submodules/solver` tracks the upstream Local-MIP solver; refresh via `update-solver.sh`.
@@ -15,7 +15,7 @@
 - Update solver submodule: `bash update-solver.sh`.
 
 ## Coding Style & Naming Conventions
-- Author content in GitHub-flavored Markdown; prefer relative links (`/download`) over hard-coded hosts.
+- Author content in GitHub-flavored Markdown; prefer relative links (`/software`) over hard-coded hosts.
 - Keep headings concise and sequential (`##` after `#`), and use fenced code blocks with a language hint (```bash).
 - Front matter keys are lowercase with hyphens (`title`, `layout`, `description`); avoid duplicating titles inside content unless needed.
 - SCSS follows two-space indentation; limit page-specific inline styles to small, focused snippets like the hero buttons in `index.md`.

@@ -1,10 +1,10 @@
 ---
 layout: default
-title: Download
+title: Software
 ---
 
 <div class="doc-layout">
-  <nav class="doc-sidebar" aria-label="Download navigation">
+  <nav class="doc-sidebar" aria-label="Software navigation">
     <div class="doc-sidebar-title">On this page</div>
     <ul class="doc-sidebar-list">
       <li><a href="#latest-release-v20">Latest Release</a></li>
@@ -15,7 +15,7 @@ title: Download
           <li><a href="#method-2-git-clone">Git Clone</a></li>
         </ul>
       </li>
-      <li><a href="#system-requirements">System Requirements</a></li>
+      <li><a href="#system-requirements">Requirements</a></li>
       <li><a href="#build-instructions">Build Instructions</a></li>
       <li><a href="#verification">Verification</a></li>
       <li><a href="#license">License</a></li>
@@ -25,7 +25,7 @@ title: Download
   </nav>
 
   <div class="doc-content" markdown="1">
-# Download
+# Software
 
 Get the latest version of Local-MIP and access previous releases.
 
@@ -183,7 +183,7 @@ Local-MIP is released under the **MIT License**.
 ### Documentation
 
 - [Quick Start Guide](/quick-start) - Get started quickly
-- [User Guide](/documentation) - Complete documentation
+- [Tutorials](/tutorials) - Complete documentation
 - [Examples](/examples) - Code examples and demos
 
 ### Support
@@ -203,7 +203,7 @@ Local-MIP is released under the **MIT License**.
 
 ---
 
-[← Back to Home](/) | [Documentations →](/documentation)
+[← Back to Home](/) | [Tutorials →](/tutorials)
 
   </div>
 </div>

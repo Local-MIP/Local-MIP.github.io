@@ -10,16 +10,16 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, lift move o
     <div class="doc-sidebar-title">On this page</div>
     <ul class="doc-sidebar-list">
       <li><a href="#requirements">Requirements</a></li>
-      <li><a href="#get-started-in-3-steps">Get Started in 3 Steps</a>
+      <li><a href="#get-started-in-3-steps">Get Started</a>
         <ul class="doc-sidebar-sublist">
-          <li><a href="#step-1-download-and-extract">Step 1</a></li>
-          <li><a href="#step-2-build">Step 2</a></li>
-          <li><a href="#step-3-run">Step 3</a></li>
+          <li><a href="#step-1-download-and-extract">Download</a></li>
+          <li><a href="#step-2-build">Build</a></li>
+          <li><a href="#step-3-run">Run</a></li>
         </ul>
       </li>
       <li><a href="#basic-usage">Basic Usage</a>
         <ul class="doc-sidebar-sublist">
-          <li><a href="#command-line-parameters">Command-Line Parameters</a></li>
+          <li><a href="#command-line-parameters">Command-Line</a></li>
           <li><a href="#using-a-parameter-configuration-file">Parameter File</a></li>
         </ul>
       </li>
@@ -151,8 +151,8 @@ The repository includes `default.set` as a template with all available parameter
 
 ### Explore More
 
-- **[Download Page](/download)** - Get the latest version and previous releases
-- **[Documentation](/documentation)** - Complete user guide and parameter reference
+- **[Software Page](/software)** - Get the latest version and previous releases
+- **[Tutorials](/tutorials)** - Complete guide and parameter reference
 - **[Examples](/examples)** - Code examples for C++ API and callbacks
 
 ### Use as a Library
@@ -213,14 +213,14 @@ Solution: Use release build (./build.sh release) instead of debug build
 
 If you encounter problems:
 
-1. Check the [Documentation](/documentation) for detailed information
+1. Check the [Tutorials](/tutorials) for detailed information
 2. Review the [Examples](/examples) for code samples
 3. Visit the [GitHub repository](https://github.com/shaowei-cai-group/Local-MIP) for source code
 4. Open an [issue on GitHub](https://github.com/shaowei-cai-group/Local-MIP/issues) for bug reports
 
 ---
 
-[← Back to Home](/) | [DownLoad →](/download)
+[← Back to Home](/) | [Software →](/software)
 
   </div>
 </div>

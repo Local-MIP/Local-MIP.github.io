@@ -12,9 +12,9 @@ keywords: MIP solver, mixed integer programming, local search, lift move operato
 
   <div class="hero-actions">
     <a class="btn btn-primary" href="/quick-start">Quick Start</a>
-    <a class="btn btn-primary" href="/download">Download</a>
+    <a class="btn btn-primary" href="/software">Software</a>
     <a class="btn btn-primary" href="https://github.com/shaowei-cai-group/Local-MIP">Source Code</a>
-    <a class="btn btn-primary" href="/documentation">Tutorials</a>
+    <a class="btn btn-primary" href="/tutorials">Tutorials</a>
     <a class="btn btn-primary" href="/examples">Examples</a>
   </div>
 
@@ -79,7 +79,7 @@ keywords: MIP solver, mixed integer programming, local search, lift move operato
 
 Start from the project root directory (after extracting or cloning the repository).
 
-1. **Download:** Grab the latest release from the [download page](/download).
+1. **Software:** Grab the latest release from the [software page](/software).
 2. **Build:** Compile using the provided script:
 
     ```bash
@@ -117,13 +117,13 @@ Local-MIP is integrated into several state-of-the-art optimization tools:
 
 ### Getting Started
 - [Quick Start](/quick-start) — Get up and running in 3 steps: download, build, and solve.
-- [Download](/download) — Access the latest source code and release versions.
+- [Software](/software) — Access the latest source code and release versions.
 
 ### Technical Documentation
-- [Documentation](/documentation) — Comprehensive user guides and technical references.
-  - [User Guide](/documentation#user-guide) — Installation, CLI usage, and library integration.
-  - [Parameters Reference](/documentation#parameters-reference) — A complete list of command-line flags and options.
-  - [Callback System](/documentation#callback-system) — Detailed guide on customizing solver behavior.
+- [Tutorials](/tutorials) — Comprehensive guides and technical references.
+  - [Command-Line Usage](/tutorials#command-line-usage) — Installation, CLI usage, and library integration.
+  - [Parameters Reference](/tutorials#parameters-reference) — A complete list of command-line flags and options.
+  - [Callback System](/tutorials#callback-system) — Detailed guide on customizing solver behavior.
 - [Examples](/examples) — Practical code examples and callback implementation walkthroughs.
 
 ### Performance & Research

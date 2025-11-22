@@ -55,12 +55,12 @@ The following table presents the 10 MIPLIB open instances where Local-MIP has es
 
 - **[MIPLIB Website](https://miplib.zib.de)** - Official MIPLIB benchmark library
 - **[Papers](/papers)** - Publications describing Local-MIP's algorithms
-- **[Download](/download)** - Get Local-MIP to try on MIPLIB instances
-- **[Documentation](/documentation)** - Learn how to use Local-MIP
+- **[Software](/software)** - Get Local-MIP to try on MIPLIB instances
+- **[Tutorials](/tutorials)** - Learn how to use Local-MIP
 
 ---
 
-[← Back to Home](/) | [Papers](/papers) | [Documentation](/documentation)
+[← Back to Home](/) | [Papers](/papers) | [Tutorials](/tutorials)
 
   </div>
 </div>

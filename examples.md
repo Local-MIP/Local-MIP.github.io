@@ -10,34 +10,22 @@ keywords: Local-MIP examples, callback system, custom operators, lift scoring, n
     <div class="doc-sidebar-title">On this page</div>
     <ul class="doc-sidebar-list">
       <li><a href="#overview">Overview</a></li>
-      <li><a href="#table-of-contents">Table of Contents</a></li>
-      <li><a href="#basic-example">Basic Example</a>
-        <ul class="doc-sidebar-sublist">
-          <li><a href="#simple-api">Simple API</a></li>
-        </ul>
-      </li>
-      <li><a href="#callback-examples">Callback Examples</a>
-        <ul class="doc-sidebar-sublist">
-          <li><a href="#start-callback">Start Callback</a></li>
-          <li><a href="#restart-callback">Restart Callback</a></li>
-          <li><a href="#weight-callback">Weight Callback</a></li>
-        </ul>
-      </li>
-      <li><a href="#advanced-customization">Advanced Customization</a>
-        <ul class="doc-sidebar-sublist">
-          <li><a href="#neighbor-config">Neighbor Config</a></li>
-          <li><a href="#neighbor-userdata">Neighbor Userdata</a></li>
-          <li><a href="#neighbor-scoring">Neighbor Scoring</a></li>
-          <li><a href="#lift-scoring">Lift Scoring</a></li>
-        </ul>
-      </li>
-      <li><a href="#building-all-examples">Building All Examples</a></li>
+      <li><a href="#simple-api">Simple API</a></li>
+      <li><a href="#start-callback">Start Callback</a></li>
+      <li><a href="#restart-callback">Restart Callback</a></li>
+      <li><a href="#weight-callback">Weight Callback</a></li>
+      <li><a href="#neighbor-config">Neighbor Config</a></li>
+      <li><a href="#neighbor-userdata">Neighbor Userdata</a></li>
+      <li><a href="#neighbor-scoring">Neighbor Scoring</a></li>
+      <li><a href="#lift-scoring">Lift Scoring</a></li>
+      <li><a href="#building-all-examples">Build</a></li>
       <li><a href="#running-examples">Running Examples</a></li>
       <li><a href="#next-steps">Next Steps</a></li>
     </ul>
   </nav>
 
   <div class="doc-content" markdown="1">
+
 # Examples
 
 Code examples and demonstrations for using Local-MIP's C++ API and callback system to customize search behavior.
@@ -60,31 +48,13 @@ All examples should be run from the `example/` directory where `test-set/` resid
 
 ---
 
-## Table of Contents
-
-1. [Basic Example](#basic-example)
-   - [Simple API](#simple-api)
-2. [Callback Examples](#callback-examples)
-   - [Start Callback](#start-callback)
-   - [Restart Callback](#restart-callback)
-   - [Weight Callback](#weight-callback)
-3. [Advanced Customization](#advanced-customization)
-   - [Neighbor Config](#neighbor-config)
-   - [Neighbor Userdata](#neighbor-userdata)
-   - [Neighbor Scoring](#neighbor-scoring)
-   - [Lift Scoring](#lift-scoring)
-
----
-
-## Basic Example
-
-### Simple API
+## Simple API
 
 **Location:** `example/simple-api/`
 
 A minimal example demonstrating basic solver usage.
 
-#### What It Does
+### What It Does
 
 - Creates a solver instance
 - Loads a MIP problem from file
@@ -92,7 +62,7 @@ A minimal example demonstrating basic solver usage.
 - Runs the solver
 - Retrieves solution results
 
-#### Code Example
+### Code Example
 
 ```cpp
 #include "local_mip/Local_MIP.h"
@@ -120,7 +90,7 @@ int main()
 }
 ```
 
-#### Key API Methods
+### Key API Methods
 
 | Method | Description |
 |--------|-------------|
@@ -132,7 +102,7 @@ int main()
 | `is_feasible()` | Check if feasible solution found |
 | `get_obj_value()` | Get objective value |
 
-#### Building
+### Building
 
 From the `example/simple-api/` directory:
 
@@ -142,14 +112,14 @@ g++ -O3 -std=c++20 simple_api.cpp -I../../src -L../../build -lLocalMIP -lpthread
 
 Or use the example build script.
 
-#### Running
+### Running
 
 ```bash
 cd example
 ./simple-api/simple_api_demo
 ```
 
-#### Expected Output
+### Expected Output
 
 ```
 c model name: 2club200v15p5scn
@@ -165,25 +135,23 @@ Solution written to: example_simple.sol
 
 ---
 
-## Callback Examples
-
-### Start Callback
+## Start Callback
 
 **Location:** `example/start-callback/`
 
 Demonstrates custom initialization strategies before search begins.
 
-#### Purpose
+### Purpose
 
 Initialize variable values using custom logic instead of the default start method.
 
-#### Key Features
+### Key Features
 
 - Access to all variables via context
 - Use RNG for reproducible randomization
 - Pass custom state via `user_data`
 
-#### Code Snippet
+### Code Snippet
 
 ```cpp
 void my_start_callback(Start::Start_Ctx& ctx, void* user_data)
@@ -208,7 +176,7 @@ void my_start_callback(Start::Start_Ctx& ctx, void* user_data)
 }
 ```
 
-#### Use Cases
+### Use Cases
 
 - Random initialization
 - Heuristic-based initialization
@@ -216,23 +184,23 @@ void my_start_callback(Start::Start_Ctx& ctx, void* user_data)
 
 ---
 
-### Restart Callback
+## Restart Callback
 
 **Location:** `example/restart-callback/`
 
 Demonstrates custom restart strategies when search stagnates.
 
-#### Purpose
+### Purpose
 
 Control what happens when the solver triggers a restart (perturb solution, reset weights, etc.).
 
-#### Key Features
+### Key Features
 
 - Modify current variable values
 - Adjust constraint weights
 - Implement custom restart strategies
 
-#### Code Snippet
+### Code Snippet
 
 ```cpp
 void my_restart_callback(Restart::Restart_Ctx& ctx, void* user_data)
@@ -256,7 +224,7 @@ void my_restart_callback(Restart::Restart_Ctx& ctx, void* user_data)
 }
 ```
 
-#### Use Cases
+### Use Cases
 
 - Diversification strategies
 - Weight reset schemes
@@ -264,23 +232,23 @@ void my_restart_callback(Restart::Restart_Ctx& ctx, void* user_data)
 
 ---
 
-### Weight Callback
+## Weight Callback
 
 **Location:** `example/weight-callback/`
 
 Demonstrates custom constraint weight update methods.
 
-#### Purpose
+### Purpose
 
 Customize how constraint weights are updated during search to guide the solver.
 
-#### Key Features
+### Key Features
 
 - Increase weights on violated constraints
 - Adjust objective weight when feasible
 - Implement custom weight schemes
 
-#### Code Snippet
+### Code Snippet
 
 ```cpp
 void my_weight_callback(Weight::Weight_Ctx& ctx, void* user_data)
@@ -303,7 +271,7 @@ void my_weight_callback(Weight::Weight_Ctx& ctx, void* user_data)
 }
 ```
 
-#### Use Cases
+### Use Cases
 
 - Adaptive weight adjustment
 - Problem-specific weight schemes
@@ -311,25 +279,23 @@ void my_weight_callback(Weight::Weight_Ctx& ctx, void* user_data)
 
 ---
 
-## Advanced Customization
-
-### Neighbor Config
+## Neighbor Config
 
 **Location:** `example/neighbor-config/`
 
 Demonstrates custom neighborhood operation configuration.
 
-#### Purpose
+### Purpose
 
 Mix built-in neighborhood operators with custom ones to define the search neighborhood.
 
-#### Key Features
+### Key Features
 
 - Configure which built-in operators to use
 - Add custom neighbor generation logic
 - Control operator probabilities
 
-#### Code Snippet
+### Code Snippet
 
 ```cpp
 void my_neighbor_callback(Neighbor::Neighbor_Ctx& ctx, void* user_data)
@@ -351,7 +317,7 @@ void my_neighbor_callback(Neighbor::Neighbor_Ctx& ctx, void* user_data)
 }
 ```
 
-#### Use Cases
+### Use Cases
 
 - Problem-specific neighborhood structures
 - Large neighborhood search
@@ -359,23 +325,23 @@ void my_neighbor_callback(Neighbor::Neighbor_Ctx& ctx, void* user_data)
 
 ---
 
-### Neighbor Userdata
+## Neighbor Userdata
 
 **Location:** `example/neighbor-userdata/`
 
 Demonstrates passing custom state through callbacks via `user_data`.
 
-#### Purpose
+### Purpose
 
 Show how to maintain custom statistics or state across callback invocations.
 
-#### Key Features
+### Key Features
 
 - Pass custom data structures to callbacks
 - Track statistics across calls
 - Implement stateful strategies
 
-#### Code Snippet
+### Code Snippet
 
 ```cpp
 struct MyData {
@@ -404,7 +370,7 @@ int main()
 }
 ```
 
-#### Use Cases
+### Use Cases
 
 - Adaptive strategies based on history
 - Statistics collection
@@ -412,23 +378,23 @@ int main()
 
 ---
 
-### Neighbor Scoring
+## Neighbor Scoring
 
 **Location:** `example/scoring-neighbor/`
 
 Demonstrates custom scoring functions for the infeasible phase (seeking feasibility).
 
-#### Purpose
+### Purpose
 
 Customize how candidate moves are ranked when the current solution is infeasible.
 
-#### Key Features
+### Key Features
 
 - Multi-level tie-breaking
 - Bonus scores for breakthrough moves
 - Custom scoring criteria
 
-#### Code Snippet
+### Code Snippet
 
 ```cpp
 void my_neighbor_scoring(Scoring::Neighbor_Ctx& ctx, size_t var_idx, double delta, void* user_data)
@@ -451,7 +417,7 @@ void my_neighbor_scoring(Scoring::Neighbor_Ctx& ctx, size_t var_idx, double delt
 }
 ```
 
-#### Use Cases
+### Use Cases
 
 - Progress bonus strategies
 - Age-based tie-breaking
@@ -459,23 +425,23 @@ void my_neighbor_scoring(Scoring::Neighbor_Ctx& ctx, size_t var_idx, double delt
 
 ---
 
-### Lift Scoring
+## Lift Scoring
 
 **Location:** `example/scoring-lift/`
 
 Demonstrates custom scoring functions for the feasible phase (optimizing objective).
 
-#### Purpose
+### Purpose
 
 Customize how candidate moves are ranked when the current solution is feasible and we're optimizing.
 
-#### Key Features
+### Key Features
 
 - Objective-based scoring
 - Variable degree tie-breaking
 - Custom optimization criteria
 
-#### Code Snippet
+### Code Snippet
 
 ```cpp
 void my_lift_scoring(Scoring::Lift_Ctx& ctx, size_t var_idx, double delta, void* user_data)
@@ -500,7 +466,7 @@ void my_lift_scoring(Scoring::Lift_Ctx& ctx, size_t var_idx, double delta, void*
 }
 ```
 
-#### Use Cases
+### Use Cases
 
 - Custom objective prioritization
 - Tie-breaking strategies
@@ -543,13 +509,13 @@ cd example
 
 ## Next Steps
 
-- **[Documentation](/documentation)** - Detailed callback reference and API documentation
+- **[Tutorials](/tutorials)** - Detailed callback reference and API documentation
 - **[Papers](/papers)** - Academic publications describing the algorithms
 - **[GitHub](https://github.com/shaowei-cai-group/Local-MIP)** - Source code and issues
 
 ---
 
-[← Back to Home](/) | [Documentation](/documentation) | [Papers →](/papers)
+[← Back to Home](/) | [Tutorials](/tutorials) | [Papers →](/papers)
 
   </div>
 </div>

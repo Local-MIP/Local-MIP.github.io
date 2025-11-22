@@ -1,31 +1,45 @@
 - title: Quick Start
   url: /quick-start
-- title: Download
-  url: /download
-- title: Docs
-  url: /documentation
+- title: Software
+  url: /software
+- title: Tutorials
+  url: /tutorials
   children:
-    - title: Installation & Build
-      url: /documentation#installation--build
     - title: Command-Line Usage
-      url: /documentation#command-line-usage
+      url: /tutorials#command-line-usage
     - title: Use as a Library
-      url: /documentation#use-as-a-library
-    - title: Terminology & Concepts
-      url: /documentation#terminology--concepts
+      url: /tutorials#use-as-a-library
+    - title: Terminology
+      url: /tutorials#terminology
     - title: Parameters Reference
-      url: /documentation#parameters-reference
+      url: /tutorials#parameters-reference
     - title: Callback System
-      url: /documentation#callback-system
+      url: /tutorials#callback-system
+    - title: Additional Resources
+      url: /tutorials#additional-resources
 - title: Examples
   url: /examples
   children:
-    - title: Basic Example
-      url: /examples#basic-example
-    - title: Callback Examples
-      url: /examples#callback-examples
-    - title: Advanced Customization
-      url: /examples#advanced-customization
+    - title: Simple API
+      url: /examples#simple-api
+    - title: Start Callback
+      url: /examples#start-callback
+    - title: Restart Callback
+      url: /examples#restart-callback
+    - title: Weight Callback
+      url: /examples#weight-callback
+    - title: Neighbor Config
+      url: /examples#neighbor-config
+    - title: Neighbor Userdata
+      url: /examples#neighbor-userdata
+    - title: Neighbor Scoring
+      url: /examples#neighbor-scoring
+    - title: Lift Scoring
+      url: /examples#lift-scoring
+    - title: Building All Examples
+      url: /examples#building-all-examples
+    - title: Running Examples
+      url: /examples#running-examples
 - title: Papers
   url: /papers
 - title: Records

@@ -1,98 +1,69 @@
 ---
 layout: default
-title: Documentation
+title: Tutorials
 ---
 
 <div class="doc-layout">
-  <nav class="doc-sidebar" aria-label="Documentation navigation">
+  <nav class="doc-sidebar" aria-label="Tutorials navigation">
     <div class="doc-sidebar-title">On this page</div>
     <ul class="doc-sidebar-list">
-      <li><a href="#user-guide">User Guide</a>
+      <li><a href="#command-line-usage">Command-Line</a>
         <ul class="doc-sidebar-sublist">
-          <li><a href="#installation--build">Installation &amp; Build</a></li>
-          <li><a href="#command-line-usage">Command-Line Usage</a></li>
-          <li><a href="#use-as-a-library">Use as a Library</a></li>
+          <li><a href="#basic-usage">Basic Usage</a></li>
+          <li><a href="#parameter-configuration-file">Parameter File</a></li>
         </ul>
       </li>
-      <li><a href="#technical-documentation">Technical Documentation</a>
+      <li><a href="#use-as-a-library">Use as a Library</a>
         <ul class="doc-sidebar-sublist">
-          <li><a href="#terminology--concepts">Terminology &amp; Concepts</a></li>
-          <li><a href="#parameters-reference">Parameters Reference</a></li>
-          <li><a href="#callback-system">Callback System</a></li>
+          <li><a href="#c-static-library">C++</a></li>
+          <li><a href="#python-bindings">Python</a></li>
         </ul>
       </li>
-      <li><a href="#additional-resources">Additional Resources</a></li>
+      <li><a href="#terminology">Terminology</a>
+        <ul class="doc-sidebar-sublist">
+          <li><a href="#mixed-integer-programming-mip">MIP</a></li>
+          <li><a href="#local-search-for-mip">LS for MIP</a></li>
+        </ul>
+      </li>
+      <li><a href="#parameters-reference">Parameters Reference</a></li>
+      <li><a href="#callback-system">Callback System</a>
+        <ul class="doc-sidebar-sublist">
+          <li><a href="#callback-overview">Overview</a></li>
+          <li><a href="#common-read-only-context">Common Context</a></li>
+          <li><a href="#start-callback">Initialization</a></li>
+          <li><a href="#restart-callback">Restart</a></li>
+          <li><a href="#weight-callback">Weight</a></li>
+          <li><a href="#neighbor-callback">Neighbor</a></li>
+          <li><a href="#neighbor-scoring-callback-infeasible-phase">Neighbor Scoring</a></li>
+          <li><a href="#lift-scoring-callback-feasible-phase">Lift Scoring</a></li>
+          <li><a href="#how-to-register-callbacks">Register</a></li>
+          <li><a href="#callback-tips">Tips</a></li>
+        </ul>
+      </li>
     </ul>
   </nav>
 
   <div class="doc-content" markdown="1">
-# Documentation
+# Tutorials
 
-Complete documentation for Local-MIP, including user guides, technical references, and API documentation.
-
----
-
-## User Guide
-
-### Installation & Build
-
-#### System Requirements
-
-- **CMake** ≥ 3.15
-- **C++20 compiler** (GCC 10+ or Clang 12+) and pthreads
-- bash, make, and standard POSIX utilities
-
-#### Build Steps
-
-**Release Build (Recommended):**
-
-```bash
-./build.sh release
-```
-
-This creates:
-
-- `build/Local-MIP` - Optimized CLI binary
-- `build/libLocalMIP.a` - Static library for integration
-
-**Debug Build:**
-
-```bash
-./build.sh debug
-```
-
-Includes assertions, logging, and debug symbols for development.
-
-**Clean Build Artifacts:**
-
-```bash
-./build.sh clean
-```
-
-#### Running Tests
-
-Local-MIP includes comprehensive tests:
-
-```bash
-cd build
-
-# Run unit tests
-ctest --output-on-failure -R "^(api|callbacks|constraint_recognition|scoring|model_manager|reader|move_operations|neighbor_config)$"
-
-# Run integration tests
-ctest --output-on-failure -R "^integration$"
-
-# Run all tests
-ctest --output-on-failure
-```
+Local-MIP references for CLI usage, library integration, core concepts, parameters, and callbacks.
 
 ---
 
-### Command-Line Usage
+<style>
+  /* Keep flag values on a single line */
+  .doc-content table th:nth-child(3),
+  .doc-content table td:nth-child(3),
+  .doc-content table code {
+    white-space: nowrap;
+  }
+</style>
 
-#### Basic Usage
+## Command-Line Usage
 
-Run the solver from the `build/` directory:
+### Basic Usage
+
+Run the solver from `build/` after downloading or building:
 
 ```bash
 cd build
@@ -105,20 +76,20 @@ cd build
 ./Local-MIP -i <model_file> [options]
 ```
 
-#### Parameter Configuration File
+### Parameter Configuration File
 
-Use a `.set` file to configure parameters:
+Use a `.set` file to load parameters:
 
 ```bash
 ./Local-MIP --param_set_file ../default.set --model_file ../test-set/instance.mps
 ```
 
-**Format Rules:**
+**Format:**
 
 - One parameter per line: `parameter_name = value`
 - Lines starting with `#` or `;` are comments
 - Command-line arguments override configuration file values
-- See `default.set` for template and descriptions
+- See `default.set` for a template and descriptions
 
 **Example Configuration File:**
 
@@ -141,9 +112,11 @@ log_obj = true
 
 ---
 
-### Use as a Library
+## Use as a Library
 
-#### C++ Static Library
+Library artifacts come from the download/build steps and can be linked directly from the generated outputs.
+
+### C++ Static Library
 
 After building, the static library `build/libLocalMIP.a` and headers in `src/` are available for integration.
 
@@ -180,7 +153,7 @@ g++ -O3 -std=c++20 my_program.cpp -I/path/to/src -L/path/to/build -lLocalMIP -lp
 
 See the [Examples page](/examples) for more detailed code examples.
 
-#### Python Bindings
+### Python Bindings
 
 Located in `python-bindings/` directory.
 
@@ -202,11 +175,9 @@ The Python module links against the core static library. See `python-bindings/sa
 
 ---
 
-## Technical Documentation
+## Terminology
 
-### Terminology & Concepts
-
-#### Mixed Integer Programming (MIP)
+### Mixed Integer Programming (MIP)
 
 **Problem Definition (following AIJ 2025 paper):**
 
@@ -262,7 +233,7 @@ where:
 - **Binary Integer Programming (BIP):** All variables are binary ($x_j \in \{0, 1\}$)
 - **Mixed Integer Programming (MIP):** Some variables are integers, others continuous ($I \subset \{1, \ldots, n\}$)
 
-#### Local Search for MIP
+### Local Search for MIP
 
 **Fundamental Components:**
 
@@ -279,7 +250,7 @@ Local search for MIP iteratively modifies the current solution $s^{cur}$ by appl
 2. Evaluate operations using scoring functions
 3. Select and execute the best operation
 4. Update $s^{cur}$ and track $s^*$ (best feasible solution found)
-5. Continue until termination criterion (time limit, local optimum, etc.)
+5. Continue until the termination criterion (time limit, local optimum, etc.)
 
 **Local-MIP Architecture:**
 
@@ -287,7 +258,7 @@ Local-MIP employs a **two-mode architecture** that adapts based on the current s
 
 **1. Feasible Mode** (when $s^{cur}$ is feasible)
 
-*Primary goal:* Improve objective value while strictly maintaining feasibility.
+*Primary goal:* Improve the objective value while maintaining feasibility.
 
 **Key Concepts:**
 
@@ -311,7 +282,7 @@ Local-MIP employs a **two-mode architecture** that adapts based on the current s
 
 **2. Infeasible Mode** (when $s^{cur}$ violates one or more constraints)
 
-*Two scenarios:*
+*Scenarios:*
 
 - **Initial search:** Find the first feasible solution
 - **Optimization search:** Find feasible solutions better than $s^*$
@@ -354,11 +325,11 @@ Local-MIP employs a **two-mode architecture** that adapts based on the current s
 
 ---
 
-### Parameters Reference
+## Parameters Reference
 
 Complete list of all command-line parameters and configuration options.
 
-#### General Parameters
+### General Parameters
 
 | Parameter | Description | Flag | Type | Range | Default |
 |-----------|-------------|------|------|-------|---------|
@@ -368,7 +339,7 @@ Complete list of all command-line parameters and configuration options.
 | `time_limit` | Time limit in seconds | `-t` | double | [0, 1e8] | `10` |
 | `random_seed` | Random seed for local search (0 uses default) | `-S` | int | [0, 2147483647] | `0` |
 
-#### Tolerance Parameters
+### Tolerance Parameters
 
 | Parameter | Description | Flag | Type | Range | Default |
 |-----------|-------------|------|------|-------|---------|
@@ -376,7 +347,7 @@ Complete list of all command-line parameters and configuration options.
 | `opt_tolerance` | Optimality tolerance | `-O` | double | [0, 1] | `1e-4` |
 | `zero_tolerance` | Zero value tolerance | `-Z` | double | [0, 1e-3] | `1e-9` |
 
-#### Search Parameters
+### Search Parameters
 
 | Parameter | Description | Flag | Type | Range | Default |
 |-----------|-------------|------|------|-------|---------|
@@ -385,7 +356,7 @@ Complete list of all command-line parameters and configuration options.
 | `restart_step` | No-improvement steps before restart (0 disables) | `-r` | int | [0, 100000000] | `1000000` |
 | `smooth_prob` | Weight smoothing probability (in 1/10000) | `-0` | int | [0, 10000] | `1` |
 
-#### BMS Parameters
+### BMS Parameters
 
 | Parameter | Description | Flag | Type | Range | Default |
 |-----------|-------------|------|------|-------|---------|
@@ -397,14 +368,14 @@ Complete list of all command-line parameters and configuration options.
 | `bms_easy_ops` | BMS easy operations | `-q` | int | [0, 100000000] | `5` |
 | `bms_random_ops` | BMS random operations | `-g` | int | [0, 100000000] | `250` |
 
-#### Tabu Parameters
+### Tabu Parameters
 
 | Parameter | Description | Flag | Type | Range | Default |
 |-----------|-------------|------|------|-------|---------|
 | `tabu_base` | Base tabu tenure | `-a` | int | [0, 100000000] | `4` |
 | `tabu_var` | Tabu tenure variation (minimum 1) | `-e` | int | [1, 100000000] | `7` |
 
-#### Other Parameters
+### Other Parameters
 
 | Parameter | Description | Flag | Type | Range | Default |
 |-----------|-------------|------|------|-------|---------|
@@ -412,7 +383,7 @@ Complete list of all command-line parameters and configuration options.
 | `break_eq_feas` | Break feasibility on equality constraints | `-z` | boolean | - | `false` |
 | `split_eq` | Split equality constraints into two inequalities | `-j` | boolean | - | `true` |
 
-#### Strategy Parameters
+### Strategy Parameters
 
 | Parameter | Description | Flag | Type | Values | Default |
 |-----------|-------------|------|------|--------|---------|
@@ -424,11 +395,11 @@ Complete list of all command-line parameters and configuration options.
 
 ---
 
-### Callback System
+## Callback System
 
-Local-MIP exposes multiple callback hooks to customize solver behavior.
+Local-MIP exposes callback hooks to customize solver behavior.
 
-#### Callback Overview
+### Callback Overview
 
 All callbacks share a common read-only context that provides access to the current search state.
 
@@ -438,10 +409,10 @@ All callbacks share a common read-only context that provides access to the curre
 2. Restart Callback - Control restart behavior
 3. Weight Callback - Customize weight updates
 4. Neighbor Callback - Generate custom neighbor moves
-5. Neighbor Scoring Callback - Score moves in infeasible phase
-6. Lift Scoring Callback - Score moves in feasible phase
+5. Neighbor Scoring Callback - Score moves in infeasible search
+6. Lift Scoring Callback - Score moves in feasible search
 
-#### Common Read-only Context (`Readonly_Ctx`)
+### Common Read-only Context
 
 Available in every callback via `ctx.m_shared`:
 
@@ -482,7 +453,7 @@ Available in every callback via `ctx.m_shared`:
 - `m_binary_idx_list` - Binary variable indices
 - `m_non_fixed_var_idx_list` - Non-fixed variable indices
 
-#### Start Callback
+### Start Callback
 
 **Purpose:** Initialize variable values before search begins.
 
@@ -499,7 +470,7 @@ void callback(Start::Start_Ctx& ctx, void* user_data)
 
 **Example Use Case:** Random initialization of binary variables
 
-#### Restart Callback
+### Restart Callback
 
 **Purpose:** Control actions at restart (e.g., perturb solutions, reset weights).
 
@@ -517,7 +488,7 @@ void callback(Restart::Restart_Ctx& ctx, void* user_data)
 
 **Example Use Case:** Flip subset of binaries and reset weights
 
-#### Weight Callback
+### Weight Callback
 
 **Purpose:** Customize constraint weight updates.
 
@@ -534,7 +505,7 @@ void callback(Weight::Weight_Ctx& ctx, void* user_data)
 
 **Example Use Case:** Increase weights for violated constraints
 
-#### Neighbor Callback
+### Neighbor Callback
 
 **Purpose:** Generate custom neighbor moves.
 
@@ -553,7 +524,7 @@ void callback(Neighbor::Neighbor_Ctx& ctx, void* user_data)
 
 **Example Use Case:** Mix built-in neighbors with custom operators
 
-#### Neighbor Scoring Callback (Infeasible Phase)
+### Neighbor Scoring Callback (Infeasible Phase)
 
 **Purpose:** Rank neighbor candidates while seeking feasibility.
 
@@ -572,9 +543,9 @@ void callback(Scoring::Neighbor_Ctx& ctx, size_t var_idx, double delta, void* us
 
 **Example Use Case:** Multi-level tie-breaker with bonus scores
 
-#### Lift Scoring Callback (Feasible Phase)
+### Lift Scoring Callback (Feasible Phase)
 
-**Purpose:** Score candidate moves in feasible optimization phase.
+**Purpose:** Score candidate moves in feasible optimization.
 
 **Signature:**
 
@@ -591,7 +562,7 @@ void callback(Scoring::Lift_Ctx& ctx, size_t var_idx, double delta, void* user_d
 
 **Example Use Case:** Use variable degree as tie-breaker
 
-#### How to Register Callbacks
+### How to Register Callbacks
 
 **C++ API:**
 
@@ -607,7 +578,7 @@ void callback(Scoring::Lift_Ctx& ctx, size_t var_idx, double delta, void* user_d
 - Analogous registration functions with opaque context capsules
 - Extend binding for field-level access
 
-#### Callback Tips
+### Callback Tips
 
 - Use `user_data` to pass custom state across calls
 - `ctx.m_shared` is read-only; mutate only the writable fields

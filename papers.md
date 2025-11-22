@@ -9,10 +9,6 @@ title: Papers
     <ul class="doc-sidebar-list">
       <li><a href="#citation-notice">Citation Notice</a></li>
       <li><a href="#publications">Publications</a>
-        <ul class="doc-sidebar-sublist">
-          <li><a href="#1-journal-version-artificial-intelligence-2025">Journal Version</a></li>
-          <li><a href="#2-conference-version-cp-2024--best-paper-award">Conference Version</a></li>
-        </ul>
       </li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -108,7 +104,7 @@ If you are reproducing experimental results from these papers, please use Local-
 ## Contact
 
 For questions about the papers or research collaboration:
-
+- peng.lin.csor@gmail.com
 - **GitHub Issues:** [Local-MIP Repository](https://github.com/shaowei-cai-group/Local-MIP/issues)
 - **GitHub Discussions:** [Start a discussion](https://github.com/shaowei-cai-group/Local-MIP/discussions)
 
