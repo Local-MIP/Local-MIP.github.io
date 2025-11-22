@@ -5,6 +5,17 @@ description: Local-MIP establishes 10 new records on MIPLIB open instances, demo
 keywords: MIPLIB records, MIP benchmark, mixed integer programming, local search, optimization records, MIPLIB 2017, open instances
 ---
 
+<div class="doc-layout">
+  <nav class="doc-sidebar" aria-label="MIPLIB records navigation">
+    <div class="doc-sidebar-title">On this page</div>
+    <ul class="doc-sidebar-list">
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#new-best-known-solutions">New Best-Known Solutions</a></li>
+      <li><a href="#related-resources">Related Resources</a></li>
+    </ul>
+  </nav>
+
+  <div class="doc-content" markdown="1">
 # MIPLIB Benchmark Records
 
 Local-MIP establishes **10 new records** on challenging MIPLIB open instances, demonstrating state-of-the-art performance through its novel local search operators and two-mode architecture.
@@ -50,3 +61,6 @@ The following table presents the 10 MIPLIB open instances where Local-MIP has es
 ---
 
 [← Back to Home](/) | [Papers](/papers) | [Documentation](/documentation)
+
+  </div>
+</div>

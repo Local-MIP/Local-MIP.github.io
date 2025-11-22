@@ -534,6 +534,78 @@ blockquote {
   color: #475569;
 }
 
+/* Documentation layout with sticky sidebar */
+.doc-layout {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.doc-sidebar {
+  position: sticky;
+  top: 90px;
+  align-self: flex-start;
+  width: 150px;
+  max-height: calc(100vh - 110px);
+  padding: 0.85rem 0.95rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+  overflow-y: auto;
+}
+
+.doc-sidebar-title {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #475569;
+  margin: 0 0 0.6rem 0;
+  font-weight: 700;
+}
+
+.doc-sidebar-list,
+.doc-sidebar-sublist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.doc-sidebar-list > li {
+  margin-bottom: 0.6rem;
+}
+
+.doc-sidebar-sublist {
+  padding-left: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+.doc-sidebar a {
+  color: #0f172a;
+  font-weight: 600;
+  font-size: 0.7rem;
+  text-decoration: none;
+  display: inline-block;
+  padding: 0.1rem 0;
+}
+
+.doc-sidebar a:hover,
+.doc-sidebar a:focus {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.doc-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.doc-content h2,
+.doc-content h3,
+.doc-content h4 {
+  scroll-margin-top: 100px;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -681,17 +753,15 @@ pre code {
 
 .copy-code-button {
   background: #ffffff;
-  border: 2px solid #e0e7ff;
+  border: 1px solid #e0e7ff;
   color: #4f46e5;
-  padding: 0.35rem 0.75rem;
-  border-radius: 8px;
+  padding: 0.16rem 0.4rem;
+  border-radius: 5px;
   font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
+  display: inline-block;
 }
 
 .copy-code-button:hover {
@@ -711,11 +781,6 @@ pre code {
   border-color: #059669;
   color: #ffffff;
   box-shadow: 0 0 16px rgba(5, 150, 105, 0.4);
-}
-
-.copy-code-button svg {
-  width: 14px;
-  height: 14px;
 }
 
 .highlight table {
@@ -1148,6 +1213,18 @@ hr {
     right: 1.5rem;
     width: 44px;
     height: 44px;
+  }
+
+  .doc-layout {
+    flex-direction: column;
+  }
+
+  .doc-sidebar {
+    position: static;
+    width: 100%;
+    max-height: none;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+    order: -1;
   }
 }
 

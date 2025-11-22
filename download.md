@@ -3,6 +3,28 @@ layout: default
 title: Download
 ---
 
+<div class="doc-layout">
+  <nav class="doc-sidebar" aria-label="Download navigation">
+    <div class="doc-sidebar-title">On this page</div>
+    <ul class="doc-sidebar-list">
+      <li><a href="#latest-release-v20">Latest Release</a></li>
+      <li><a href="#previous-versions">Previous Versions</a></li>
+      <li><a href="#installation-methods">Installation Methods</a>
+        <ul class="doc-sidebar-sublist">
+          <li><a href="#method-1-direct-download-recommended">Direct Download</a></li>
+          <li><a href="#method-2-git-clone">Git Clone</a></li>
+        </ul>
+      </li>
+      <li><a href="#system-requirements">System Requirements</a></li>
+      <li><a href="#build-instructions">Build Instructions</a></li>
+      <li><a href="#verification">Verification</a></li>
+      <li><a href="#license">License</a></li>
+      <li><a href="#getting-help">Getting Help</a></li>
+      <li><a href="#version-history">Version History</a></li>
+    </ul>
+  </nav>
+
+  <div class="doc-content" markdown="1">
 # Download
 
 Get the latest version of Local-MIP and access previous releases.
@@ -182,3 +204,6 @@ Local-MIP is released under the **MIT License**.
 ---
 
 [← Back to Home](/) | [Documentations →](/documentation)
+
+  </div>
+</div>

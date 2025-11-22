@@ -5,6 +5,39 @@ description: Code examples demonstrating Local-MIP's callback system to customiz
 keywords: Local-MIP examples, callback system, custom operators, lift scoring, neighbor scoring, MIP customization, C++ API
 ---
 
+<div class="doc-layout">
+  <nav class="doc-sidebar" aria-label="Examples navigation">
+    <div class="doc-sidebar-title">On this page</div>
+    <ul class="doc-sidebar-list">
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#table-of-contents">Table of Contents</a></li>
+      <li><a href="#basic-example">Basic Example</a>
+        <ul class="doc-sidebar-sublist">
+          <li><a href="#simple-api">Simple API</a></li>
+        </ul>
+      </li>
+      <li><a href="#callback-examples">Callback Examples</a>
+        <ul class="doc-sidebar-sublist">
+          <li><a href="#start-callback">Start Callback</a></li>
+          <li><a href="#restart-callback">Restart Callback</a></li>
+          <li><a href="#weight-callback">Weight Callback</a></li>
+        </ul>
+      </li>
+      <li><a href="#advanced-customization">Advanced Customization</a>
+        <ul class="doc-sidebar-sublist">
+          <li><a href="#neighbor-config">Neighbor Config</a></li>
+          <li><a href="#neighbor-userdata">Neighbor Userdata</a></li>
+          <li><a href="#neighbor-scoring">Neighbor Scoring</a></li>
+          <li><a href="#lift-scoring">Lift Scoring</a></li>
+        </ul>
+      </li>
+      <li><a href="#building-all-examples">Building All Examples</a></li>
+      <li><a href="#running-examples">Running Examples</a></li>
+      <li><a href="#next-steps">Next Steps</a></li>
+    </ul>
+  </nav>
+
+  <div class="doc-content" markdown="1">
 # Examples
 
 Code examples and demonstrations for using Local-MIP's C++ API and callback system to customize search behavior.
@@ -517,3 +550,6 @@ cd example
 ---
 
 [← Back to Home](/) | [Documentation](/documentation) | [Papers →](/papers)
+
+  </div>
+</div>

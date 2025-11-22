@@ -5,6 +5,31 @@ description: Get up and running with Local-MIP in minutes. Learn how to build an
 keywords: Local-MIP installation, MIP solver tutorial, local search, lift move operator, breakthrough move, mixed tight move, C++ compiler, CMake build
 ---
 
+<div class="doc-layout">
+  <nav class="doc-sidebar" aria-label="Quick start navigation">
+    <div class="doc-sidebar-title">On this page</div>
+    <ul class="doc-sidebar-list">
+      <li><a href="#requirements">Requirements</a></li>
+      <li><a href="#get-started-in-3-steps">Get Started in 3 Steps</a>
+        <ul class="doc-sidebar-sublist">
+          <li><a href="#step-1-download-and-extract">Step 1</a></li>
+          <li><a href="#step-2-build">Step 2</a></li>
+          <li><a href="#step-3-run">Step 3</a></li>
+        </ul>
+      </li>
+      <li><a href="#basic-usage">Basic Usage</a>
+        <ul class="doc-sidebar-sublist">
+          <li><a href="#command-line-parameters">Command-Line Parameters</a></li>
+          <li><a href="#using-a-parameter-configuration-file">Parameter File</a></li>
+        </ul>
+      </li>
+      <li><a href="#next-steps">Next Steps</a></li>
+      <li><a href="#troubleshooting">Troubleshooting</a></li>
+      <li><a href="#getting-help">Getting Help</a></li>
+    </ul>
+  </nav>
+
+  <div class="doc-content" markdown="1">
 # Quick Start
 
 Get up and running with Local-MIP in just a few minutes.
@@ -196,3 +221,6 @@ If you encounter problems:
 ---
 
 [← Back to Home](/) | [DownLoad →](/download)
+
+  </div>
+</div>

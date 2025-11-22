@@ -3,6 +3,22 @@ layout: default
 title: Papers
 ---
 
+<div class="doc-layout">
+  <nav class="doc-sidebar" aria-label="Papers navigation">
+    <div class="doc-sidebar-title">On this page</div>
+    <ul class="doc-sidebar-list">
+      <li><a href="#citation-notice">Citation Notice</a></li>
+      <li><a href="#publications">Publications</a>
+        <ul class="doc-sidebar-sublist">
+          <li><a href="#1-journal-version-artificial-intelligence-2025">Journal Version</a></li>
+          <li><a href="#2-conference-version-cp-2024--best-paper-award">Conference Version</a></li>
+        </ul>
+      </li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="doc-content" markdown="1">
 # Papers & Publications
 
 Academic publications related to Local-MIP.
@@ -99,3 +115,6 @@ For questions about the papers or research collaboration:
 ---
 
 [← Back to Home](/) | [MIPLIB Records →](/miplib-records)
+
+  </div>
+</div>

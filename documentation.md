@@ -3,22 +3,32 @@ layout: default
 title: Documentation
 ---
 
+<div class="doc-layout">
+  <nav class="doc-sidebar" aria-label="Documentation navigation">
+    <div class="doc-sidebar-title">On this page</div>
+    <ul class="doc-sidebar-list">
+      <li><a href="#user-guide">User Guide</a>
+        <ul class="doc-sidebar-sublist">
+          <li><a href="#installation--build">Installation &amp; Build</a></li>
+          <li><a href="#command-line-usage">Command-Line Usage</a></li>
+          <li><a href="#use-as-a-library">Use as a Library</a></li>
+        </ul>
+      </li>
+      <li><a href="#technical-documentation">Technical Documentation</a>
+        <ul class="doc-sidebar-sublist">
+          <li><a href="#terminology--concepts">Terminology &amp; Concepts</a></li>
+          <li><a href="#parameters-reference">Parameters Reference</a></li>
+          <li><a href="#callback-system">Callback System</a></li>
+        </ul>
+      </li>
+      <li><a href="#additional-resources">Additional Resources</a></li>
+    </ul>
+  </nav>
+
+  <div class="doc-content" markdown="1">
 # Documentation
 
 Complete documentation for Local-MIP, including user guides, technical references, and API documentation.
-
----
-
-## Table of Contents
-
-- [User Guide](#user-guide)
-  - [Installation & Build](#installation--build)
-  - [Command-Line Usage](#command-line-usage)
-  - [Use as a Library](#use-as-a-library)
-- [Technical Documentation](#technical-documentation)
-  - [Terminology & Concepts](#terminology--concepts)
-  - [Parameters Reference](#parameters-reference)
-  - [Callback System](#callback-system)
 
 ---
 
@@ -41,6 +51,7 @@ Complete documentation for Local-MIP, including user guides, technical reference
 ```
 
 This creates:
+
 - `build/Local-MIP` - Optimized CLI binary
 - `build/libLocalMIP.a` - Static library for integration
 
@@ -103,6 +114,7 @@ Use a `.set` file to configure parameters:
 ```
 
 **Format Rules:**
+
 - One parameter per line: `parameter_name = value`
 - Lines starting with `#` or `;` are comments
 - Command-line arguments override configuration file values
@@ -210,6 +222,7 @@ $$
 $$
 
 where:
+
 - $x \in \mathbb{R}^n$ is the variable vector ($n$ variables)
 - $c \in \mathbb{R}^n$ is the objective coefficient vector
 - $A \in \mathbb{R}^{m \times n}$ is the constraint matrix ($m$ constraints)
@@ -299,6 +312,7 @@ Local-MIP employs a **two-mode architecture** that adapts based on the current s
 **2. Infeasible Mode** (when $s^{cur}$ violates one or more constraints)
 
 *Two scenarios:*
+
 - **Initial search:** Find the first feasible solution
 - **Optimization search:** Find feasible solutions better than $s^*$
 
@@ -419,6 +433,7 @@ Local-MIP exposes multiple callback hooks to customize solver behavior.
 All callbacks share a common read-only context that provides access to the current search state.
 
 **Available Callbacks:**
+
 1. Start Callback - Initialize variable values
 2. Restart Callback - Control restart behavior
 3. Weight Callback - Customize weight updates
@@ -431,33 +446,39 @@ All callbacks share a common read-only context that provides access to the curre
 Available in every callback via `ctx.m_shared`:
 
 **Model Data:**
+
 - `m_model_manager` - Model metadata (variables, constraints, bounds, coefficients)
 - `m_obj_var_num` - Objective dimension
 - `m_var_obj_cost` - Objective coefficients
 
 **Current State:**
+
 - `m_var_current_value` - Current variable values
 - `m_var_best_value` - Best solution found so far
 - `m_con_activity` / `m_con_constant` / `m_con_is_equality` - Constraint activities, RHS, equality flags
 - `m_con_weight` - Constraint weights (index 0 is objective)
 
 **Constraint Sets:**
+
 - `m_con_unsat_idxs` - Unsatisfied constraint indices
 - `m_con_pos_in_unsat_idxs` - Positions in unsatisfied list
 - `m_con_sat_idxs` - Satisfied constraint indices
 
 **Search State:**
+
 - `m_var_last_*` - Last improve/decrease steps for variables
 - `m_var_allow_*` - Allowed steps for variables
 - `m_cur_step` - Current search step
 - `m_last_improve_step` - Last improvement step
 
 **Solution Status:**
+
 - `m_is_found_feasible` - Whether feasible solution found
 - `m_best_obj` - Best objective value
 - `m_current_obj_breakthrough` - Current objective breakthrough
 
 **Variable Sets:**
+
 - `m_binary_idx_list` - Binary variable indices
 - `m_non_fixed_var_idx_list` - Non-fixed variable indices
 
@@ -466,11 +487,13 @@ Available in every callback via `ctx.m_shared`:
 **Purpose:** Initialize variable values before search begins.
 
 **Signature:**
+
 ```cpp
 void callback(Start::Start_Ctx& ctx, void* user_data)
 ```
 
 **Key Writable Fields:**
+
 - `ctx.m_var_current_value` - Set starting assignment
 - `ctx.m_rng` - Random number generator for reproducible initialization
 
@@ -481,11 +504,13 @@ void callback(Start::Start_Ctx& ctx, void* user_data)
 **Purpose:** Control actions at restart (e.g., perturb solutions, reset weights).
 
 **Signature:**
+
 ```cpp
 void callback(Restart::Restart_Ctx& ctx, void* user_data)
 ```
 
 **Key Writable Fields:**
+
 - `ctx.m_var_current_value` - Current assignment (can perturb)
 - `ctx.m_con_weight` - Constraint weights (index 0 = objective)
 - `ctx.m_rng` - Random number generator
@@ -497,11 +522,13 @@ void callback(Restart::Restart_Ctx& ctx, void* user_data)
 **Purpose:** Customize constraint weight updates.
 
 **Signature:**
+
 ```cpp
 void callback(Weight::Weight_Ctx& ctx, void* user_data)
 ```
 
 **Key Writable Fields:**
+
 - `ctx.m_con_weight` - Adjust weights (index 0 = objective)
 - `ctx.m_rng` - Random number generator
 
@@ -512,11 +539,13 @@ void callback(Weight::Weight_Ctx& ctx, void* user_data)
 **Purpose:** Generate custom neighbor moves.
 
 **Signature:**
+
 ```cpp
 void callback(Neighbor::Neighbor_Ctx& ctx, void* user_data)
 ```
 
 **Key Writable Fields:**
+
 - `ctx.m_op_size` - Number of variables in move
 - `ctx.m_op_var_idxs[]` - Variable indices
 - `ctx.m_op_var_deltas[]` - Change amounts
@@ -529,11 +558,13 @@ void callback(Neighbor::Neighbor_Ctx& ctx, void* user_data)
 **Purpose:** Rank neighbor candidates while seeking feasibility.
 
 **Signature:**
+
 ```cpp
 void callback(Scoring::Neighbor_Ctx& ctx, size_t var_idx, double delta, void* user_data)
 ```
 
 **Key Writable Fields:**
+
 - `ctx.m_best_var_idx` - Best candidate variable index
 - `ctx.m_best_delta` - Best candidate delta
 - `ctx.m_best_neighbor_score` - Best neighbor score
@@ -546,11 +577,13 @@ void callback(Scoring::Neighbor_Ctx& ctx, size_t var_idx, double delta, void* us
 **Purpose:** Score candidate moves in feasible optimization phase.
 
 **Signature:**
+
 ```cpp
 void callback(Scoring::Lift_Ctx& ctx, size_t var_idx, double delta, void* user_data)
 ```
 
 **Key Writable Fields:**
+
 - `ctx.m_best_var_idx` - Best candidate variable index
 - `ctx.m_best_delta` - Best candidate delta
 - `ctx.m_best_lift_score` - Best lift score
@@ -561,6 +594,7 @@ void callback(Scoring::Lift_Ctx& ctx, size_t var_idx, double delta, void* user_d
 #### How to Register Callbacks
 
 **C++ API:**
+
 - `set_start_cbk(callback, user_data)`
 - `set_restart_cbk(callback, user_data)`
 - `set_weight_cbk(callback, user_data)`
@@ -569,6 +603,7 @@ void callback(Scoring::Lift_Ctx& ctx, size_t var_idx, double delta, void* user_d
 - `set_lift_scoring_cbk(callback, user_data)`
 
 **Python Bindings:**
+
 - Analogous registration functions with opaque context capsules
 - Extend binding for field-level access
 
@@ -589,3 +624,6 @@ void callback(Scoring::Lift_Ctx& ctx, size_t var_idx, double delta, void* user_d
 ---
 
 [← Back to Home](/) | [Examples →](/examples)
+
+  </div>
+</div>
