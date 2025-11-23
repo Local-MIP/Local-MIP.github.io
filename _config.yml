@@ -18,6 +18,9 @@ exclude:
   - submodules/
   - update-solver.sh
   - 布局错误.jpg
+  - Local-MIP-2.0/build/
+  - Local-MIP-2.0/example/build/
+  - Local-MIP-2.0/python-bindings/build/
 
 # Plugins
 plugins:

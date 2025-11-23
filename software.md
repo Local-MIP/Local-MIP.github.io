@@ -79,9 +79,9 @@ Local-MIP 1.0 has been archived and is available in the `archive/Local-MIP-1.0/`
 Download the ZIP file and extract:
 
 ```bash
-wget https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.0.zip
-unzip v2.0.zip
-cd Local-MIP
+wget https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.0.zip -O Local-MIP-2.0.zip
+unzip Local-MIP-2.0.zip
+cd Local-MIP-2.0
 ```
 
 ### Method 2: Git Clone

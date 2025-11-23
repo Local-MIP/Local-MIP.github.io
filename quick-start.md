@@ -23,7 +23,13 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, lift move o
           <li><a href="#using-a-parameter-configuration-file">Parameter File</a></li>
         </ul>
       </li>
-      <li><a href="#next-steps">Next Steps</a></li>
+      <li><a href="#next-steps">Next Steps</a>
+        <ul class="doc-sidebar-sublist">
+          <li><a href="#explore-more">Explore More</a></li>
+          <li><a href="#use-as-a-library">Use as a Library</a></li>
+          <li><a href="#run-tests">Run Tests</a></li>
+        </ul>
+      </li>
       <li><a href="#troubleshooting">Troubleshooting</a></li>
       <li><a href="#getting-help">Getting Help</a></li>
     </ul>
@@ -41,7 +47,7 @@ Get up and running with Local-MIP in just a few minutes.
 Before you begin, ensure your system meets these requirements:
 
 - **CMake** ≥ 3.15
-- **C++20 compiler** (GCC or Clang) and pthreads
+- **C++20 compiler** (GCC or Clang)
 - **bash**, make, and standard POSIX utilities
 
 ---
@@ -50,9 +56,7 @@ Before you begin, ensure your system meets these requirements:
 
 ### Step 1: Download and Extract
 
-Download the latest release (v2.0):
-
-**[Download Local-MIP v2.0](https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.0.zip)**
+Download the latest release (v2.0): **[Local-MIP v2.0](https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.0.zip)**
 
 Extract the archive:
 
@@ -127,7 +131,7 @@ The basic syntax is:
 
 ```bash
 # Solve with 5-minute timeout and save solution
-./Local-MIP -i problem.mps -t 300 -s solution.sol -b 2 -l 1
+./Local-MIP -i problem.mps -t 300 -s solution.sol -l 1
 ```
 
 ### Using a Parameter Configuration File
@@ -162,6 +166,14 @@ The repository includes `default.set` as a template with all available parameter
 
 See the [Examples page](/examples) for detailed code examples.
 
+**Python bindings quick build:**
+
+```bash
+python-bindings/build.sh   # builds core if needed and compiles the pybind11 module
+export PYTHONPATH=$PWD/python-bindings/build:$PYTHONPATH
+python3 python-bindings/sample.py
+```
+
 ### Run Tests
 
 Verify your installation by running the test suite:
@@ -169,13 +181,13 @@ Verify your installation by running the test suite:
 ```bash
 cd build
 
-# Run unit tests
-ctest --output-on-failure -R "^(api|callbacks|constraint_recognition)$"
+# Run unit test subsets
+ctest --output-on-failure -R "^(api|callbacks|constraint_recognition|scoring|model_manager|reader|move_operations|neighbor_config)$"
 
 # Run integration tests
 ctest --output-on-failure -R "^integration$"
 
-# Run all tests
+# Run all tests (including instance sweeps)
 ctest --output-on-failure
 ```
 

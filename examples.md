@@ -39,9 +39,10 @@ The `example/` directory contains standalone demonstration projects that showcas
 **Setup:**
 
 ```bash
+./build.sh release   # Builds solver and libLocalMIP.a (required by examples)
 cd example
-./prepare.sh   # Copies libLocalMIP.a, headers, and test instances
-./build.sh     # Builds all examples
+./prepare.sh         # Copies libLocalMIP.a, headers, and test instances
+./build.sh           # Builds all examples
 ```
 
 All examples should be run from the `example/` directory where `test-set/` resides.
@@ -154,26 +155,27 @@ Initialize variable values using custom logic instead of the default start metho
 ### Code Snippet
 
 ```cpp
-void my_start_callback(Start::Start_Ctx& ctx, void* user_data)
+int call_count = 0;
+
+Local_Search::Start_Cbk cbk = [](Start::Start_Ctx& ctx, void* user_data)
 {
-  // Access read-only context
-  auto& shared = ctx.m_shared;
+  auto& values = ctx.m_var_current_value;
+  auto& rng = ctx.m_rng;
+  const auto& binary_vars = ctx.m_shared.m_binary_idx_list;
 
-  // Initialize binary variables randomly
-  for (size_t idx : shared.m_binary_idx_list)
+  if (user_data)
   {
-    ctx.m_var_current_value[idx] = ctx.m_rng() % 2;
+    int* counter = static_cast<int*>(user_data);
+    (*counter)++;
+    printf("Callback called %d time(s)\n", *counter);
   }
 
-  // Initialize other variables to zero
-  for (size_t i = 0; i < shared.m_model_manager.get_num_vars(); ++i)
+  std::uniform_int_distribution<int> dist(0, 1);
+  for (size_t var_idx : binary_vars)
   {
-    if (/* not binary */)
-    {
-      ctx.m_var_current_value[i] = 0.0;
-    }
+    values[var_idx] = dist(rng);
   }
-}
+};
 ```
 
 ### Use Cases
@@ -251,24 +253,33 @@ Customize how constraint weights are updated during search to guide the solver.
 ### Code Snippet
 
 ```cpp
-void my_weight_callback(Weight::Weight_Ctx& ctx, void* user_data)
-{
-  auto& shared = ctx.m_shared;
+struct WeightStats { int total_calls = 0; int triggered_updates = 0; };
 
-  if (shared.m_is_found_feasible)
+Local_Search::Weight_Cbk weight_cbk = [](Weight::Weight_Ctx& ctx, void* user_data)
+{
+  auto& weights = ctx.m_con_weight;
+  auto& rng = ctx.m_rng;
+  const auto& unsat_idxs = ctx.m_shared.m_con_unsat_idxs;
+
+  WeightStats* stats = static_cast<WeightStats*>(user_data);
+  if (stats) stats->total_calls++;
+
+  std::uniform_real_distribution<double> prob_dist(0.0, 1.0);
+  if (prob_dist(rng) < 0.5)  // 50% chance to update
   {
-    // Increase objective weight when feasible
-    ctx.m_con_weight[0] += 1.0;
-  }
-  else
-  {
-    // Increase weights on unsatisfied constraints
-    for (size_t con_idx : shared.m_con_unsat_idxs)
+    if (stats) stats->triggered_updates++;
+
+    for (size_t con_idx : unsat_idxs)
     {
-      ctx.m_con_weight[con_idx + 1] += 1.0;
+      weights[con_idx]++;          // Unsatisfied constraints
+    }
+
+    if (ctx.m_shared.m_is_found_feasible && unsat_idxs.empty())
+    {
+      weights[0]++;                // Objective weight (index 0)
     }
   }
-}
+};
 ```
 
 ### Use Cases
@@ -283,45 +294,69 @@ void my_weight_callback(Weight::Weight_Ctx& ctx, void* user_data)
 
 **Location:** `example/neighbor-config/`
 
-Demonstrates custom neighborhood operation configuration.
+Demonstrates how to configure the neighbor list: enable/disable built-ins, reorder them, and mix in custom neighbors with explicit BMS sizes.
 
 ### Purpose
 
-Mix built-in neighborhood operators with custom ones to define the search neighborhood.
+Shape the search neighborhood by selecting which operators run, their order, and how many operations each produces.
 
 ### Key Features
 
-- Configure which built-in operators to use
-- Add custom neighbor generation logic
-- Control operator probabilities
+- Default list (in order): `unsat_mtm_bm`, `sat_mtm`, `flip`, `easy`, `unsat_mtm_bm_random`
+- `clear_neighbor_list()` to remove all operators, `reset_default_neighbor_list()` to restore
+- `add_neighbor(name, bms_con, bms_op)` to add built-ins with BMS constraint/op counts
+- `add_custom_neighbor(name, func, user_data)` to prepend/append user-defined operators
+- Order matters: operators are invoked in the order added
 
 ### Code Snippet
 
 ```cpp
-void my_neighbor_callback(Neighbor::Neighbor_Ctx& ctx, void* user_data)
+// Custom neighbors
+void my_random_flip(Neighbor::Neighbor_Ctx& ctx, void*) { /* ... */ }
+void my_gradient_descent(Neighbor::Neighbor_Ctx& ctx, void*) { /* ... */ }
+
+int main(int argc, char** argv)
 {
-  auto& shared = ctx.m_shared;
+  const char* instance = (argc > 1) ? argv[1] : "test-set/2club200v15p5scn.mps";
 
-  // Define a custom 2-variable flip operation
-  if (shared.m_binary_idx_list.size() >= 2)
+  // Example 2: custom order with built-ins only
   {
-    size_t idx1 = shared.m_binary_idx_list[ctx.m_rng() % shared.m_binary_idx_list.size()];
-    size_t idx2 = shared.m_binary_idx_list[ctx.m_rng() % shared.m_binary_idx_list.size()];
+    Local_MIP solver;
+    solver.clear_neighbor_list();
+    solver.add_neighbor("flip", /*bms_con=*/0, /*bms_op=*/12);
+    solver.add_neighbor("easy", 0, 8);
+    solver.set_model_file(instance);
+    solver.run();
+  }
 
-    ctx.m_op_size = 2;
-    ctx.m_op_var_idxs[0] = idx1;
-    ctx.m_op_var_idxs[1] = idx2;
-    ctx.m_op_var_deltas[0] = 1.0 - 2.0 * ctx.m_var_current_value[idx1];
-    ctx.m_op_var_deltas[1] = 1.0 - 2.0 * ctx.m_var_current_value[idx2];
+  // Example 3: default list + custom neighbors appended
+  {
+    Local_MIP solver;
+    solver.add_custom_neighbor("my_random_flip", my_random_flip);
+    solver.add_custom_neighbor("my_gradient_descent", my_gradient_descent);
+    solver.set_model_file(instance);
+    solver.run();
+  }
+
+  // Example 5: mixed order (custom first, then built-ins, then custom)
+  {
+    Local_MIP solver;
+    solver.clear_neighbor_list();
+    solver.add_custom_neighbor("my_random_flip", my_random_flip);
+    solver.add_neighbor("unsat_mtm_bm", 12, 8);
+    solver.add_neighbor("flip", 0, 12);
+    solver.add_custom_neighbor("my_gradient_descent", my_gradient_descent);
+    solver.set_model_file(instance);
+    solver.run();
   }
 }
 ```
 
 ### Use Cases
 
-- Problem-specific neighborhood structures
-- Large neighborhood search
-- Hybrid operator strategies
+- Reorder or prune default operators for faster iteration
+- Tune BMS sampling (`bms_con`, `bms_op`) to balance breadth vs. depth
+- Mix problem-specific operations with built-ins without recompiling core code
 
 ---
 
@@ -344,29 +379,36 @@ Show how to maintain custom statistics or state across callback invocations.
 ### Code Snippet
 
 ```cpp
-struct MyData {
-  int call_count;
-  std::vector<double> stats;
-};
+struct NeighborStats { size_t total_calls = 0; size_t binary_flips = 0; };
 
-void my_callback(Neighbor::Neighbor_Ctx& ctx, void* user_data)
+void smart_flip_neighbor(Neighbor::Neighbor_Ctx& ctx, void* user_data)
 {
-  MyData* data = static_cast<MyData*>(user_data);
-  data->call_count++;
+  auto* stats = static_cast<NeighborStats*>(user_data);
+  if (stats) stats->total_calls++;
 
-  // Use custom data for decisions
-  // ...
+  const auto& binary_list = ctx.m_shared.m_binary_idx_list;
+  if (binary_list.empty()) { ctx.m_op_size = 0; return; }
+
+  size_t var_idx = binary_list[ctx.m_rng() % binary_list.size()];
+  ctx.m_op_size = 1;
+  ctx.m_op_var_idxs[0] = var_idx;
+  ctx.m_op_var_deltas[0] = (ctx.m_shared.m_var_current_value[var_idx] < 0.5) ? 1.0 : -1.0;
+
+  if (stats) stats->binary_flips++;
 }
 
 int main()
 {
   Local_MIP solver;
-  MyData my_data = {0, {}};
+  NeighborStats stats{};
 
-  solver.set_neighbor_cbk(my_callback, &my_data);
+  solver.clear_neighbor_list();
+  solver.add_custom_neighbor("smart_flip", smart_flip_neighbor, &stats);
+  solver.set_model_file("test-set/2club200v15p5scn.mps");
+  solver.set_time_limit(30.0);
   solver.run();
 
-  printf("Callback called %d times\n", my_data.call_count);
+  printf("Total calls: %zu, binary flips: %zu\n", stats.total_calls, stats.binary_flips);
 }
 ```
 
@@ -386,24 +428,41 @@ Demonstrates custom scoring functions for the infeasible phase (seeking feasibil
 
 ### Purpose
 
-Customize how candidate moves are ranked when the current solution is infeasible.
+Customize how candidate operations are ranked when the current solution is infeasible.
 
 ### Key Features
 
-- Multi-level tie-breaking
-- Bonus scores for breakthrough moves
-- Custom scoring criteria
+- Multi-level tie-breaking with random third-level
+- Binary duplicate filtering via stamp tokens
+- Bonus scores for breakthrough operations
+- Tracks variable age for reporting
 
 ### Code Snippet
 
 ```cpp
+struct NeighborStats
+{
+  std::mt19937 rng{std::random_device{}()};
+};
+
 void my_neighbor_scoring(Scoring::Neighbor_Ctx& ctx, size_t var_idx, double delta, void* user_data)
 {
   auto& shared = ctx.m_shared;
 
+  // Skip duplicate binary evaluations using stamp mechanism
+  const auto& var = shared.m_model_manager.var(var_idx);
+  if (var.is_binary())
+  {
+    if (ctx.m_binary_op_stamp[var_idx] == ctx.m_binary_op_stamp_token)
+      return;
+    ctx.m_binary_op_stamp[var_idx] = ctx.m_binary_op_stamp_token;
+  }
+
   // Calculate custom score based on constraint violation reduction
   double score = /* compute score */;
   double subscore = /* compute subscore for tie-breaking */;
+  size_t age = std::max(shared.m_var_last_dec_step[var_idx],
+                        shared.m_var_last_inc_step[var_idx]);
 
   // Update best candidate if this is better
   if (score > ctx.m_best_neighbor_score ||
@@ -413,14 +472,41 @@ void my_neighbor_scoring(Scoring::Neighbor_Ctx& ctx, size_t var_idx, double delt
     ctx.m_best_delta = delta;
     ctx.m_best_neighbor_score = score;
     ctx.m_best_neighbor_subscore = subscore;
+    ctx.m_best_age = age;
+  }
+  // Random tie-break when both scores equal
+  else if (score == ctx.m_best_neighbor_score &&
+           subscore == ctx.m_best_neighbor_subscore)
+  {
+    auto* stats = static_cast<NeighborStats*>(user_data);
+    auto& rng = stats ? stats->rng
+                      : []() -> std::mt19937&
+    {
+      static thread_local std::mt19937 fallback(std::random_device{}());
+      return fallback;
+    }();
+    if ((rng() & 1U) != 0)
+    {
+      ctx.m_best_var_idx = var_idx;
+      ctx.m_best_delta = delta;
+      ctx.m_best_neighbor_score = score;
+      ctx.m_best_neighbor_subscore = subscore;
+      ctx.m_best_age = age;
+    }
   }
 }
 ```
 
+**Key Writable Fields:**
+
+- `ctx.m_best_var_idx`, `ctx.m_best_delta`, `ctx.m_best_neighbor_score`,
+  `ctx.m_best_neighbor_subscore`, `ctx.m_best_age`
+- `ctx.m_binary_op_stamp` / `ctx.m_binary_op_stamp_token` for binary dedup
+
 ### Use Cases
 
 - Progress bonus strategies
-- Age-based tie-breaking
+- Randomized tie-breaking for diversification
 - Problem-specific scoring
 
 ---
@@ -433,7 +519,7 @@ Demonstrates custom scoring functions for the feasible phase (optimizing objecti
 
 ### Purpose
 
-Customize how candidate moves are ranked when the current solution is feasible and we're optimizing.
+Customize how candidate operations are ranked when the current solution is feasible and we're optimizing.
 
 ### Key Features
 
@@ -444,26 +530,54 @@ Customize how candidate moves are ranked when the current solution is feasible a
 ### Code Snippet
 
 ```cpp
-void my_lift_scoring(Scoring::Lift_Ctx& ctx, size_t var_idx, double delta, void* user_data)
+struct LiftStats { int total_lift_calls = 0; int degree_tie_breaks = 0; int score_improvements = 0; };
+
+Local_Search::Lift_Scoring_Cbk lift_cbk = [](Scoring::Lift_Ctx& ctx, size_t var_idx, double delta, void* user_data)
 {
-  auto& shared = ctx.m_shared;
+  double lift_score = -ctx.m_shared.m_var_obj_cost[var_idx] * delta;
+  size_t age = std::max(ctx.m_shared.m_var_last_dec_step[var_idx],
+                        ctx.m_shared.m_var_last_inc_step[var_idx]);
+  size_t degree = ctx.m_shared.m_model_manager.var(var_idx).term_num();
 
-  // Calculate objective improvement
-  double obj_improvement = /* compute improvement */;
+  auto* stats = static_cast<LiftStats*>(user_data);
+  if (stats) stats->total_lift_calls++;
 
-  // Use variable degree as tie-breaker
-  int degree = /* get variable degree */;
+  bool should_update = false;
 
-  // Update best candidate
-  if (obj_improvement > ctx.m_best_lift_score ||
-      (obj_improvement == ctx.m_best_lift_score && degree < ctx.m_best_age))
+  if (ctx.m_best_lift_score + k_opt_tolerance < lift_score)
+  {
+    should_update = true;
+    if (stats) stats->score_improvements++;
+  }
+  else if (ctx.m_best_lift_score <= lift_score)
+  {
+    if (ctx.m_best_var_idx == SIZE_MAX)
+    {
+      should_update = true;
+    }
+    else
+    {
+      size_t best_degree = ctx.m_shared.m_model_manager.var(ctx.m_best_var_idx).term_num();
+      if (degree < best_degree)
+      {
+        should_update = true;
+        if (stats) stats->degree_tie_breaks++;
+      }
+      else if (degree == best_degree && age < ctx.m_best_age)
+      {
+        should_update = true;
+      }
+    }
+  }
+
+  if (should_update)
   {
     ctx.m_best_var_idx = var_idx;
     ctx.m_best_delta = delta;
-    ctx.m_best_lift_score = obj_improvement;
-    ctx.m_best_age = degree;
+    ctx.m_best_lift_score = lift_score;
+    ctx.m_best_age = age;
   }
-}
+};
 ```
 
 ### Use Cases
@@ -476,14 +590,13 @@ void my_lift_scoring(Scoring::Lift_Ctx& ctx, size_t var_idx, double delta, void*
 
 ## Building All Examples
 
-From the repository root:
+From the site repository root:
 
 ```bash
-# Prepare example environment
+cd Local-MIP-2.0
+./build.sh release   # or ./build.sh all
 cd example
 ./prepare.sh
-
-# Build all examples
 ./build.sh
 ```
 

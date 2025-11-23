@@ -34,6 +34,7 @@ title: Tutorials
           <li><a href="#restart-callback">Restart</a></li>
           <li><a href="#weight-callback">Weight</a></li>
           <li><a href="#neighbor-callback">Neighbor</a></li>
+          <li><a href="#neighbor-configuration">Neighbor Configuration</a></li>
           <li><a href="#neighbor-scoring-callback-infeasible-phase">Neighbor Scoring</a></li>
           <li><a href="#lift-scoring-callback-feasible-phase">Lift Scoring</a></li>
           <li><a href="#how-to-register-callbacks">Register</a></li>
@@ -67,7 +68,7 @@ Run the solver from `build/` after downloading or building:
 
 ```bash
 cd build
-./Local-MIP -i ../test-set/2club200v15p5scn.mps -t 300 -b 1 -l 1
+./Local-MIP -i ../test-set/2club200v15p5scn.mps -t 300
 ```
 
 **Command Syntax:**
@@ -155,16 +156,15 @@ See the [Examples page](/examples) for more detailed code examples.
 
 ### Python Bindings
 
-Located in `python-bindings/` directory.
+Located in root directory.
 
-**Build:**
+**Build (requires pybind11 and a C++20 toolchain):**
 
 ```bash
-cd python-bindings
-./build.sh
+bash python-bindings/build.sh
 ```
 
-**Use:**
+**Use (from repo root):**
 
 ```bash
 export PYTHONPATH=$PWD/python-bindings/build:$PYTHONPATH
@@ -179,7 +179,7 @@ The Python module links against the core static library. See `python-bindings/sa
 
 ### Mixed Integer Programming (MIP)
 
-**Problem Definition (following AIJ 2025 paper):**
+**Problem Definition:**
 
 A Mixed Integer Programming (MIP) problem optimizes a linear objective function subject to linear constraints, with some variables restricted to integer values. Local-MIP solves problems in the canonical minimization form:
 
@@ -240,7 +240,7 @@ where:
 - **Operator:** Defines how to modify variables to generate candidate solutions
 - **Operation:** An instantiation of an operator on a specified variable
 - **Scoring function:** Evaluates different candidate operations to select the most promising one for execution
-- **Neighborhood:** The set of candidate moves considered from the current state
+- **Neighborhood:** The set of candidate operations considered from the current state
 
 **Local Search Framework:**
 
@@ -276,7 +276,7 @@ Local-MIP employs a **two-mode architecture** that adapts based on the current s
 
   $$lm(x_j, s) = \arg\min_{v \in lfd(x_j, s)} c_j \cdot v$$
 
-- **Lift process:** Iteratively applies lift moves until no further objective improvement is possible (local optimum reached).
+- **Lift process:** Iteratively applies lift operations until no further objective improvement is possible (local optimum reached).
 
 - **Lift scoring:** $score_{lift}(op)$ measures the objective improvement of operation $op$.
 
@@ -319,9 +319,9 @@ Local-MIP employs a **two-mode architecture** that adapts based on the current s
 **Additional Components:**
 
 - **Best-from-Multiple-Selection (BMS):** Samples a small set of operations and selects the best to balance exploration and exploitation
-- **Tabu strategy:** Prohibits reversing recent moves for a tenure period to prevent cycling
+- **Tabu strategy:** Prohibits reversing recent operations for a tenure period to prevent cycling
 - **Restart mechanism:** Periodic perturbation to escape stagnation (triggered after specified no-improvement steps)
-- **Weight update:** Increases weights of frequently violated constraints; occasional smoothing prevents excessive accumulation
+- **Weight update:** Increases weights of frequently violated constraints when trapped in local optimums; occasional smoothing prevents excessive accumulation
 
 ---
 
@@ -355,6 +355,9 @@ Complete list of all command-line parameters and configuration options.
 | `log_obj` | Log objective values during search | `-l` | boolean | - | `true` |
 | `restart_step` | No-improvement steps before restart (0 disables) | `-r` | int | [0, 100000000] | `1000000` |
 | `smooth_prob` | Weight smoothing probability (in 1/10000) | `-0` | int | [0, 10000] | `1` |
+| `activity_period` | Constraint activity recompute period | `-h` | int | [1, 100000000] | `100000` |
+| `break_eq_feas` | Break feasibility on equality constraints in lift process | `-z` | boolean | - | `false` |
+| `split_eq` | Split equality constraints into two inequalities | `-j` | boolean | - | `true` |
 
 ### BMS Parameters
 
@@ -374,14 +377,6 @@ Complete list of all command-line parameters and configuration options.
 |-----------|-------------|------|------|-------|---------|
 | `tabu_base` | Base tabu tenure | `-a` | int | [0, 100000000] | `4` |
 | `tabu_var` | Tabu tenure variation (minimum 1) | `-e` | int | [1, 100000000] | `7` |
-
-### Other Parameters
-
-| Parameter | Description | Flag | Type | Range | Default |
-|-----------|-------------|------|------|-------|---------|
-| `activity_period` | Constraint activity recompute period | `-h` | int | [1, 100000000] | `100000` |
-| `break_eq_feas` | Break feasibility on equality constraints | `-z` | boolean | - | `false` |
-| `split_eq` | Split equality constraints into two inequalities | `-j` | boolean | - | `true` |
 
 ### Strategy Parameters
 
@@ -408,9 +403,9 @@ All callbacks share a common read-only context that provides access to the curre
 1. Start Callback - Initialize variable values
 2. Restart Callback - Control restart behavior
 3. Weight Callback - Customize weight updates
-4. Neighbor Callback - Generate custom neighbor moves
-5. Neighbor Scoring Callback - Score moves in infeasible search
-6. Lift Scoring Callback - Score moves in feasible search
+4. Neighbor Callback - Generate custom neighbor operations
+5. Neighbor Scoring Callback - Score operations in infeasible search
+6. Lift Scoring Callback - Score operations in feasible search
 
 ### Common Read-only Context
 
@@ -432,21 +427,21 @@ Available in every callback via `ctx.m_shared`:
 **Constraint Sets:**
 
 - `m_con_unsat_idxs` - Unsatisfied constraint indices
-- `m_con_pos_in_unsat_idxs` - Positions in unsatisfied list
+- `m_con_pos_in_unsat_idxs` - Unsatisfied constraint indices positions in m_con_unsat_idxs list
 - `m_con_sat_idxs` - Satisfied constraint indices
 
 **Search State:**
 
-- `m_var_last_*` - Last improve/decrease steps for variables
-- `m_var_allow_*` - Allowed steps for variables
+- `m_var_last_*` - Last increase/decrease steps for variables
+- `m_var_allow_*` - Allowed increase/decrease steps for variables
 - `m_cur_step` - Current search step
-- `m_last_improve_step` - Last improvement step
+- `m_last_improve_step` - Last solution improvement step
 
 **Solution Status:**
 
 - `m_is_found_feasible` - Whether feasible solution found
 - `m_best_obj` - Best objective value
-- `m_current_obj_breakthrough` - Current objective breakthrough
+- `m_current_obj_breakthrough` - Whether the current objective breakthrough the best objective value
 
 **Variable Sets:**
 
@@ -507,7 +502,7 @@ void callback(Weight::Weight_Ctx& ctx, void* user_data)
 
 ### Neighbor Callback
 
-**Purpose:** Generate custom neighbor moves.
+**Purpose:** Generate custom neighbor operations.
 
 **Signature:**
 
@@ -517,12 +512,39 @@ void callback(Neighbor::Neighbor_Ctx& ctx, void* user_data)
 
 **Key Writable Fields:**
 
-- `ctx.m_op_size` - Number of variables in move
-- `ctx.m_op_var_idxs[]` - Variable indices
-- `ctx.m_op_var_deltas[]` - Change amounts
+- `ctx.m_op_size` - Number of operations to generate
+- `ctx.m_op_var_idxs[]` - Variable indices in operations
+- `ctx.m_op_var_deltas[]` - Variable moves in operations
 - `ctx.m_rng` - Random number generator
 
 **Example Use Case:** Mix built-in neighbors with custom operators
+
+### Neighbor Configuration
+
+**Purpose:** Control which neighbor operators are active, their order, and how many Best-Move-Search (BMS) candidates/operations each generates.
+
+**Default Order:** `unsat_mtm_bm`, `sat_mtm`, `flip`, `easy`, `unsat_mtm_bm_random`
+
+**Key APIs:**
+
+- `clear_neighbor_list()` - Remove all neighbors
+- `add_neighbor(name, bms_con, bms_op)` - Add built-in neighbor with BMS sizes
+- `add_custom_neighbor(name, callback, user_data)` - Add user-defined neighbor
+- `reset_default_neighbor_list()` - Restore defaults
+
+**Example:**
+
+```cpp
+Local_MIP solver;
+solver.clear_neighbor_list();
+solver.add_custom_neighbor("my_random_flip", my_neighbor_cbk);
+solver.add_neighbor("unsat_mtm_bm", /*bms_con=*/12, /*bms_op=*/8);
+solver.add_neighbor("flip", 0, 12);
+solver.set_model_file("test-set/2club200v15p5scn.mps");
+solver.run();
+```
+
+See `example/neighbor-config/` for a full, runnable demo.
 
 ### Neighbor Scoring Callback (Infeasible Phase)
 
@@ -536,16 +558,19 @@ void callback(Scoring::Neighbor_Ctx& ctx, size_t var_idx, double delta, void* us
 
 **Key Writable Fields:**
 
-- `ctx.m_best_var_idx` - Best candidate variable index
-- `ctx.m_best_delta` - Best candidate delta
-- `ctx.m_best_neighbor_score` - Best neighbor score
-- `ctx.m_best_neighbor_subscore` - Best neighbor subscore
+- `ctx.m_best_var_idx` - The variable index of the best candidate operation
+- `ctx.m_best_delta` - The variable moves of the best candidate operation
+- `ctx.m_best_neighbor_score` - The score of the best candidate operation
+- `ctx.m_best_neighbor_subscore` - The subscore of best candidate operation
+- `ctx.m_best_age` - The age (since last change) of the best candidate
+- `ctx.m_binary_op_stamp` / `ctx.m_binary_op_stamp_token` - Track whether a
+  binary variable has already been scored in this iteration
 
 **Example Use Case:** Multi-level tie-breaker with bonus scores
 
 ### Lift Scoring Callback (Feasible Phase)
 
-**Purpose:** Score candidate moves in feasible optimization.
+**Purpose:** Score candidate operations in feasible optimization.
 
 **Signature:**
 
@@ -555,10 +580,11 @@ void callback(Scoring::Lift_Ctx& ctx, size_t var_idx, double delta, void* user_d
 
 **Key Writable Fields:**
 
-- `ctx.m_best_var_idx` - Best candidate variable index
-- `ctx.m_best_delta` - Best candidate delta
-- `ctx.m_best_lift_score` - Best lift score
-- `ctx.m_best_age` - Best age
+- `ctx.m_rng` - Random number generator for randomized tie-breaking
+- `ctx.m_best_var_idx` - The variable index of the best lift operation
+- `ctx.m_best_delta` - The variable moves of the best lift operation
+- `ctx.m_best_lift_score` - The lift score of the best lift operation
+- `ctx.m_best_age` - The Best age of the best lift operation
 
 **Example Use Case:** Use variable degree as tie-breaker
 

@@ -15,8 +15,6 @@
       url: /tutorials#parameters-reference
     - title: Callback System
       url: /tutorials#callback-system
-    - title: Additional Resources
-      url: /tutorials#additional-resources
 - title: Examples
   url: /examples
   children:

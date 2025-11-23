@@ -8,7 +8,7 @@ keywords: MIP solver, mixed integer programming, local search, lift move operato
 # Local-MIP
 
 <div class="hero">
-  <p class="hero-tagline">An efficient local search solver for mixed integer programming</p>
+  <p class="hero-tagline">Local Search Solver for Mixed Integer Programming</p>
 
   <div class="hero-actions">
     <a class="btn btn-primary" href="/quick-start">Quick Start</a>

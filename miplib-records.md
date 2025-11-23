@@ -34,6 +34,8 @@ Local-MIP establishes **10 new records** on challenging MIPLIB open instances, d
 
 The following table presents the 10 MIPLIB open instances where Local-MIP has established new best-known solutions, as reported in our AIJ 2025 paper.
 
+All instances come from the **MIPLIB 2017 open set**, and all objectives are **minimization** problems (larger negative values indicate better solutions).
+
 | Instance Name | Variables | Constraints | Constraint Types | Previous Best | **Local-MIP** |
 |---------------|-----------|-------------|------------------|---------------|---------------|
 | [sorrell7](https://miplib.zib.de/instance_details_sorrell7.html) | 2,048 | 78,848 | variable bound | -196 | **-197** |
