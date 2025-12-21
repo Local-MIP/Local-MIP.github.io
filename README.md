@@ -45,7 +45,10 @@ git push origin main
 如果你想在本地预览网站：
 
 ```bash
-# 安装依赖
+# （推荐）把 gems 安装到项目目录，避免无 sudo 环境/WSL 下写系统目录导致 PermissionError
+bundle config set --local path "vendor/bundle"
+
+# 安装依赖（包含 github-pages）
 bundle install
 
 # 启动本地服务器

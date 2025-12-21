@@ -1,16 +1,31 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 # 更新 Local-MIP 求解器子模块脚本
 
-echo "正在更新 Local-MIP 求解器..."
+SUBMODULE_PATH="submodules/solver"
 
-# 初始化子模块（如果是首次克隆）
-git submodule init
+echo "正在更新 Local-MIP 求解器（子模块：${SUBMODULE_PATH}）..."
 
-# 更新子模块到最新版本
-git submodule update --remote --merge submodules/solver
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "错误：当前目录不是 Git 仓库，无法更新子模块。"
+  exit 1
+fi
+
+if [[ ! -f ".gitmodules" ]]; then
+  echo "错误：未找到 .gitmodules，当前仓库未配置子模块。"
+  exit 1
+fi
+
+if ! git config -f .gitmodules --get "submodule.${SUBMODULE_PATH}.url" >/dev/null 2>&1; then
+  echo "错误：.gitmodules 中未配置 ${SUBMODULE_PATH}。"
+  exit 1
+fi
+
+# 同步子模块配置（避免 URL/分支变更导致更新失败）
+git submodule sync --recursive
+
+# 初始化并更新子模块到最新版本（首次克隆也可用）
+git submodule update --init --remote --merge "${SUBMODULE_PATH}"
 
 echo "✓ Local-MIP 求解器已更新到最新版本！"
-
- # Local-MIP-2.0是最新版本的代码仓库， AIJ-Local-MIP.pdf 是1.0版本的论文（主要提供术语参考），你需要结合代码仓库、论文、相关页面内容，仔细检查 index.md 页面，确保所有内容准确无误，高度一致性。给出质量提升的意见，若没有任何提升空间，则回答我完美无缺。
- 

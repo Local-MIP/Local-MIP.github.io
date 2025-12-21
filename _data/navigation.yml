@@ -20,6 +20,8 @@
   children:
     - title: Simple API
       url: /examples#simple-api
+    - title: Model API
+      url: /examples#modeling-api
     - title: Start Callback
       url: /examples#start-callback
     - title: Restart Callback

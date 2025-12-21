@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Tutorials
+mathjax: true
 ---
 
 <div class="doc-layout">
@@ -17,6 +18,7 @@ title: Tutorials
         <ul class="doc-sidebar-sublist">
           <li><a href="#c-static-library">C++</a></li>
           <li><a href="#python-bindings">Python</a></li>
+          <li><a href="#modeling-api">Modeling API</a></li>
         </ul>
       </li>
       <li><a href="#terminology">Terminology</a>
@@ -172,6 +174,75 @@ python3 python-bindings/sample.py
 ```
 
 The Python module links against the core static library. See `python-bindings/sample.py` for usage examples.
+
+---
+
+### Modeling API
+
+The solver now supports **modeling via C++/Python API** (build models programmatically instead of loading `.mps/.lp` files).
+
+**Where the new code lives (from the solver repo root):**
+
+- `src/model_api`
+- `example/model-api`
+- `python-bindings/model_api_demo.py`
+
+**How to start (recommended):**
+
+- C++: build and run the runnable demo in `example/model-api`.
+- Python: run `python-bindings/model_api_demo.py` after building the Python bindings.
+
+See the [Examples page](/examples) for a quick “what to run” checklist and the demo locations.
+
+---
+
+#### C++ Modeling API Reference (`src/local_mip/Local_MIP.h`)
+
+The following APIs are available after enabling the modeling mode. They let you build a model in-memory (variables, objective, constraints, integrality) and then solve it with the same `run()` workflow.
+
+| API | Purpose | Notes |
+|-----|---------|-------|
+| `enable_model_api()` | Enable programmatic modeling mode | Call once before adding variables/constraints. |
+| `set_sense(Model_API::Sense sense)` | Set optimization sense (min/max) | Use the `Model_API::Sense` enum provided by the modeling API. |
+| `set_obj_offset(double offset)` | Set objective constant offset | Returns `bool` for success. |
+| `add_var(name, lb, ub, cost=0.0, type=Var_Type::real)` | Add a variable and (optionally) its objective coefficient | Returns the column index of the new variable. `type` controls integrality/continuous type. |
+| `set_cost(col, cost)` / `set_cost(name, cost)` | Update objective coefficient for an existing variable | Returns `bool` for success; you can address variables by index or by name. |
+| `add_con(lb, ub, cols, coefs)` | Add a linear constraint using variable indices | `cols.size()` must match `coefs.size()`. Returns the row index. |
+| `add_con(lb, ub, names, coefs)` | Add a linear constraint using variable names | Same as above, but variable references are by name. Returns the row index. |
+| `add_var_to_con(row, col, coef)` / `add_var_to_con(row, name, coef)` | Add one term to an existing constraint | Useful for incremental construction; returns `bool`. |
+| `set_integrality(col, type)` / `set_integrality(name, type)` | Change a variable type (e.g., binary/integer/real) | Returns `bool` for success. |
+
+**Modeling semantics (bounds-based):**
+
+- Variables use bounds: `lb <= x <= ub`
+- Constraints use bounds: `lb <= sum_j a_j x_j <= ub`
+  - Use a very small/large bound (or API conventions in the demo) to represent one-sided constraints.
+
+**Minimal sketch (C++):**
+
+```cpp
+#include "local_mip/Local_MIP.h"
+
+int main() {
+  Local_MIP solver;
+  solver.enable_model_api();
+
+  // solver.set_sense(Model_API::Sense::minimize);
+
+  int x = solver.add_var("x", 0.0, 1.0, /*cost=*/1.0, Var_Type::binary);
+  int y = solver.add_var("y", 0.0, 10.0, /*cost=*/0.2, Var_Type::integer);
+
+  // 0 <= x + 2y <= 5
+  solver.add_con(/*lb=*/0.0, /*ub=*/5.0,
+                 std::vector<int>{x, y},
+                 std::vector<double>{1.0, 2.0});
+
+  solver.run();
+  return 0;
+}
+```
+
+For a complete runnable implementation, see `example/model-api`.
 
 ---
 

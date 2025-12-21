@@ -7,7 +7,7 @@ title: Software
   <nav class="doc-sidebar" aria-label="Software navigation">
     <div class="doc-sidebar-title">On this page</div>
     <ul class="doc-sidebar-list">
-      <li><a href="#latest-release-v20">Latest Release</a></li>
+      <li><a href="#latest-release-v21">Latest Release</a></li>
       <li><a href="#previous-versions">Previous Versions</a></li>
       <li><a href="#installation-methods">Installation Methods</a>
         <ul class="doc-sidebar-sublist">
@@ -31,7 +31,7 @@ Get the latest version of Local-MIP and access previous releases.
 
 ---
 
-## Latest Release: v2.0
+## Latest Release: v2.1
 
 The current stable version of Local-MIP with full features and improvements.
 
@@ -39,11 +39,11 @@ The current stable version of Local-MIP with full features and improvements.
 
 **Primary Download:**
 
-- **[Download v2.0 (.zip)](https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.0.zip)** - Recommended
+- **[Download v2.1 (.zip)](https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.1.zip)** - Recommended
 
 **Alternative:**
 
-- **[GitHub Release Page](https://github.com/shaowei-cai-group/Local-MIP/releases/tag/v2.0)** - View full release notes
+- **[GitHub Release Page](https://github.com/shaowei-cai-group/Local-MIP/releases/tag/v2.1)** - View full release notes
 - **[Source Code (GitHub)](https://github.com/shaowei-cai-group/Local-MIP)** - Clone or download from repository
 
 ### What's Included
@@ -79,9 +79,9 @@ Local-MIP 1.0 has been archived and is available in the `archive/Local-MIP-1.0/`
 Download the ZIP file and extract:
 
 ```bash
-wget https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.0.zip -O Local-MIP-2.0.zip
-unzip Local-MIP-2.0.zip
-cd Local-MIP-2.0
+wget https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.1.zip -O Local-MIP-2.1.zip
+unzip Local-MIP-2.1.zip
+cd Local-MIP-2.1
 ```
 
 ### Method 2: Git Clone
@@ -121,6 +121,14 @@ Produces:
 
 - `build/Local-MIP` - Optimized CLI binary
 - `build/libLocalMIP.a` - Static library
+
+### Build All Targets
+
+Build everything (solver, library, and shipped components/examples as configured by the build script):
+
+```bash
+./build.sh all
+```
 
 ### Debug Build
 
@@ -198,7 +206,7 @@ Local-MIP is released under the **MIT License**.
 
 | Version | Release Date | Highlights |
 |---------|--------------|------------|
-| v2.0 | 2025 | Current stable release with enhanced features |
+| v2.1 | 2025 | Current stable release with enhanced features |
 | v1.0 | 2024 | Initial release (archived, used in papers) |
 
 ---

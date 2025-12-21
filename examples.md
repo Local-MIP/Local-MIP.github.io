@@ -11,6 +11,7 @@ keywords: Local-MIP examples, callback system, custom operators, lift scoring, n
     <ul class="doc-sidebar-list">
       <li><a href="#overview">Overview</a></li>
       <li><a href="#simple-api">Simple API</a></li>
+      <li><a href="#modeling-api">Modeling API</a></li>
       <li><a href="#start-callback">Start Callback</a></li>
       <li><a href="#restart-callback">Restart Callback</a></li>
       <li><a href="#weight-callback">Weight Callback</a></li>
@@ -132,6 +133,185 @@ o best objective: -69
 Solution is feasible!
 Objective value: -69.0000000000
 Solution written to: example_simple.sol
+```
+
+---
+
+## Modeling API
+
+Local-MIP now supports **modeling via C++/Python API**.
+
+**Locations (from the solver repo root):**
+
+- Full API: `src/local_mip`
+- C++ API implementation: `src/model_api`
+- C++ demo: `example/model-api`
+- Python demo: `python-bindings/model_api_demo.py`
+
+**How to run the demos:**
+
+- C++ demo: follow the build/run instructions shipped in `example/model-api`.
+- Python demo: build Python bindings, then run:
+
+```bash
+python3 python-bindings/model_api_demo.py
+```
+
+### C++ Demo: `example/model-api/model_api_demo.cpp`
+
+This demo shows the end-to-end flow of **building a small MIP in memory** and solving it:
+
+- **Enable modeling mode**: `solver.enable_model_api()`
+- **Set objective sense**: maximize (`Model_API::Sense::maximize`)
+- **Add variables** with bounds, objective coefficients, and types (continuous vs. integer)
+- **Add linear constraints** using the *range* form `lb <= sum(a_j * x_j) <= ub`
+- **Solve and query results**: `run()`, `get_obj_value()`, `is_feasible()`, `get_solution()`
+
+**Model being built (as written in the demo comments):**
+
+- **Maximize**: `x1 + 2*x2 + 3*x3 + x4`
+- **Subject to**:
+  - `-x1 + x2 + x3 + 10*x4 <= 20`
+  - `x1 - 3*x2 + x3 <= 30`
+  - `x2 - 3.5*x4 = 0`
+- **Bounds / integrality**:
+  - `0 <= x1 <= 40`
+  - `0 <= x2`, `0 <= x3`
+  - `2 <= x4 <= 3`, and `x4` is integer
+
+**Key calls (in order):**
+
+- `solver.enable_model_api()`
+- `solver.set_sense(Model_API::Sense::maximize)`
+- `solver.add_var(...)` four times to create `x1..x4` (with bounds, objective coefficients, and `Var_Type`)
+- `solver.add_con(lb, ub, cols, coefs)` three times to add constraints (range form)
+- `solver.run()`, then query `get_obj_value() / is_feasible() / get_solution()`
+
+It also shows an alternative interface to add constraints by **variable names** (commented out in the demo).
+
+### C++ Demo Code (full): `example/model-api/model_api_demo.cpp`
+
+```cpp
+int main()
+{
+  const double inf = std::numeric_limits<double>::infinity();
+
+  // Create a Local-MIP solver instance
+  Local_MIP solver;
+
+  // Enable model API mode
+  solver.enable_model_api();
+
+  // Set optimization sense to maximize
+  solver.set_sense(Model_API::Sense::maximize);
+
+  // Set solver parameters
+  solver.set_time_limit(1.0);
+  solver.set_log_obj(true);
+
+  // Add variables
+  std::cout << "Building model...\n";
+
+  int x1 = solver.add_var("x1", 0.0, 40.0, 1.0, Var_Type::real);
+  int x2 = solver.add_var("x2", 0.0, inf, 2.0, Var_Type::real);
+  int x3 = solver.add_var("x3", 0.0, inf, 3.0, Var_Type::real);
+  int x4 = solver.add_var("x4", 2.0, 3.0, 1.0, Var_Type::general_integer);
+
+  assert(x1 == 0 && x2 == 1 && x3 == 2 && x4 == 3);
+
+  std::cout << "Added 4 variables: x1, x2, x3, x4\n";
+
+  // Add constraints
+  // Constraint 1: -x1 + x2 + x3 + 10*x4 <= 20
+  solver.add_con(-inf, 20.0, std::vector<int>{x1, x2, x3, x4},
+                 std::vector<double>{-1.0, 1.0, 1.0, 10.0});
+
+  // Constraint 2: x1 - 3*x2 + x3 <= 30
+  solver.add_con(-inf, 30.0, std::vector<int>{x1, x2, x3},
+                 std::vector<double>{1.0, -3.0, 1.0});
+
+  // Constraint 3: x2 - 3.5*x4 = 0
+  solver.add_con(0.0, 0.0, std::vector<int>{x2, x4},
+                 std::vector<double>{1.0, -3.5});
+  // Run the solver
+  solver.run();
+  // Get results
+  std::cout << "\nResults:\n";
+  std::cout << "  Objective value: " << solver.get_obj_value() << "\n";
+  std::cout << "  Feasible: " << (solver.is_feasible() ? "Yes" : "No") << "\n";
+  if (solver.is_feasible())
+  {
+    const auto& solution = solver.get_solution();
+    std::cout << "  Solution:\n";
+    std::cout << "    x1 = " << solution[0] << "\n";
+    std::cout << "    x2 = " << solution[1] << "\n";
+    std::cout << "    x3 = " << solution[2] << "\n";
+    std::cout << "    x4 = " << solution[3] << "\n";
+  }
+  return 0;
+}
+```
+
+### Python Demo: `python-bindings/model_api_demo.py`
+
+This script mirrors the C++ demo and is a good reference for the **Python binding names**:
+
+- `lm.LocalMIP()` ↔ `Local_MIP`
+- `solver.enable_model_api()`
+- `solver.set_sense(lm.Sense.maximize)`
+- `solver.add_var(..., lm.VarType.real/general_integer)`
+- `solver.add_con(lb, ub, cols, coefs)`
+- `solver.run()`, then `get_obj_value()`, `is_feasible()`, `get_solution()`
+
+**Key calls (in order):**
+
+- `solver = lm.LocalMIP()`
+- `solver.enable_model_api()`
+- `solver.set_sense(lm.Sense.maximize)`
+- `solver.add_var(..., lm.VarType.real/general_integer)` to add variables
+- `solver.add_con(lb, ub, cols, coefs)` to add constraints
+- `solver.run()`, then `get_obj_value() / is_feasible() / get_solution()`
+
+### Python Demo Code: `python-bindings/model_api_demo.py`
+
+```python
+
+def main():
+    inf = math.inf
+
+    solver = lm.LocalMIP()
+    solver.enable_model_api()
+    solver.set_sense(lm.Sense.maximize)
+
+    solver.set_time_limit(1.0)
+    solver.set_log_obj(True)
+
+    print("Building model...")
+
+    x1 = solver.add_var("x1", 0.0, 40.0, 1.0, lm.VarType.real)
+    x2 = solver.add_var("x2", 0.0, inf, 2.0, lm.VarType.real)
+    x3 = solver.add_var("x3", 0.0, inf, 3.0, lm.VarType.real)
+    x4 = solver.add_var("x4", 2.0, 3.0, 1.0, lm.VarType.general_integer)
+
+    print("Added 4 variables: x1, x2, x3, x4")
+
+    solver.add_con(-inf, 20.0, [x1, x2, x3, x4], [-1.0, 1.0, 1.0, 10.0])
+    solver.add_con(-inf, 30.0, [x1, x2, x3], [1.0, -3.0, 1.0])
+    solver.add_con(0.0, 0.0, [x2, x4], [1.0, -3.5])
+
+    solver.run()
+
+    print("\nResults:")
+    print("  Objective value:", solver.get_obj_value())
+    print("  Feasible:", "Yes" if solver.is_feasible() else "No")
+
+    if solver.is_feasible():
+        sol = solver.get_solution()
+        print("  Solution:")
+        print("    x1 =", sol[0])
+        print("    x2 =", sol[1])
+        print("    x3 =", sol[2])
+        print("    x4 =", sol[3])
 ```
 
 ---

@@ -84,6 +84,8 @@ Start from the project root directory (after extracting or cloning the repositor
 
     ```bash
     ./build.sh release
+    # or build everything
+    ./build.sh all
     ```
 
 3. **Run:** Solve your first instance:
@@ -122,6 +124,7 @@ Local-MIP is integrated into several state-of-the-art optimization tools:
 ### Technical Documentation
 - [Tutorials](/tutorials) — Comprehensive guides and technical references.
   - [Command-Line Usage](/tutorials#command-line-usage) — Installation, CLI usage, and library integration.
+  - [Modeling API](/tutorials#modeling-api) — Build MIP models via C++/Python API (no `.mps/.lp` required).
   - [Parameters Reference](/tutorials#parameters-reference) — A complete list of command-line flags and options.
   - [Callback System](/tutorials#callback-system) — Detailed guide on customizing solver behavior.
 - [Examples](/examples) — Practical code examples and callback implementation walkthroughs.
@@ -132,4 +135,4 @@ Local-MIP is integrated into several state-of-the-art optimization tools:
 
 ---
 
-**Latest Release:** v2.0 | **License:** [MIT License](https://github.com/shaowei-cai-group/Local-MIP/blob/main/LICENSE)
+**Latest Release:** v2.1 | **License:** [MIT License](https://github.com/shaowei-cai-group/Local-MIP/blob/main/LICENSE)

@@ -45,7 +45,8 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 
-    <!-- MathJax for mathematical formulas -->
+    <!-- MathJax (loaded only on pages that need formulas) -->
+    {%- if page.mathjax -%}
     <script>
       MathJax = {
         tex: {
@@ -60,6 +61,7 @@
       };
     </script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+    {%- endif -%}
 
     <!-- Feed -->
     {% feed_meta %}
