@@ -31,7 +31,7 @@
     <meta name="twitter:image" content="{{ '/assets/images/localmip.png' | absolute_url }}">
 
     <!-- Additional SEO Tags -->
-    <meta name="theme-color" content="#2563eb">
+    <meta name="theme-color" content="#6366f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
@@ -44,6 +44,16 @@
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+    
+    <!-- Theme initialization (prevent flash) -->
+    <script>
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
 
     <!-- MathJax (loaded only on pages that need formulas) -->
     {%- if page.mathjax -%}
@@ -158,8 +168,26 @@
       </div>
     </footer>
 
-    <!-- JavaScript for mobile navigation, back to top, and code blocks -->
+    <!-- JavaScript for theme toggle, mobile navigation, back to top, and code blocks -->
     <script>
+      // Theme Toggle Button
+      const themeToggle = document.getElementById('theme-toggle');
+      
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          const currentTheme = document.documentElement.getAttribute('data-theme');
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          
+          if (newTheme === 'light') {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+          }
+        });
+      }
+      
       // Mobile navigation toggle
       const navToggle = document.getElementById('nav-toggle');
       const navList = document.querySelector('.nav-list');
@@ -252,9 +280,9 @@
           copyButton.className = 'copy-code-button';
           copyButton.textContent = 'Copy';
 
-          // Position button
+          // Position button at top right
           copyButton.style.position = 'absolute';
-          copyButton.style.top = '0.2rem';
+          copyButton.style.top = '0.5rem';
           copyButton.style.right = '0.5rem';
           copyButton.style.zIndex = '10';
 
@@ -300,6 +328,21 @@
           });
 
           pre.appendChild(copyButton);
+        });
+        
+        // Wrap tables with scrollable container for better mobile experience
+        const tables = document.querySelectorAll('table');
+        tables.forEach(function(table) {
+          // Skip if already wrapped or inside highlight (code block tables)
+          if (table.parentElement.classList.contains('table-wrapper') || 
+              table.closest('.highlight')) {
+            return;
+          }
+          
+          const wrapper = document.createElement('div');
+          wrapper.className = 'table-wrapper';
+          table.parentNode.insertBefore(wrapper, table);
+          wrapper.appendChild(table);
         });
       });
     </script>
