@@ -197,7 +197,6 @@ Local-MIP is released under the **MIT License**.
 ### Support
 
 - **GitHub Issues:** [Report bugs or request features](https://github.com/shaowei-cai-group/Local-MIP/issues)
-- **GitHub Discussions:** [Ask questions and discuss](https://github.com/shaowei-cai-group/Local-MIP/discussions)
 - **Source Code:** [Browse on GitHub](https://github.com/shaowei-cai-group/Local-MIP)
 
 ---

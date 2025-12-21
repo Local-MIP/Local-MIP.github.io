@@ -770,10 +770,10 @@ Local_Search::Lift_Scoring_Cbk lift_cbk = [](Scoring::Lift_Ctx& ctx, size_t var_
 
 ## Building All Examples
 
-From the site repository root:
+From the solver directory (after download or clone):
 
 ```bash
-cd Local-MIP-2.0
+cd Local-MIP-2.1   # or Local-MIP if cloned from git
 ./build.sh release   # or ./build.sh all
 cd example
 ./prepare.sh

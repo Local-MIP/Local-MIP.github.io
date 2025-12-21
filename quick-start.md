@@ -127,7 +127,7 @@ The basic syntax is:
 | `-i` | `model_file` | Path to input model file (.mps/.lp) | Required |
 | `-t` | `time_limit` | Time limit in seconds | 10 |
 | `-s` | `sol_path` | Path to output solution file (.sol) | "" |
-| `-l` | `log_obj` | Log objective values during search | true |
+| `-l` | `log_obj` | Log objective values during search | 1 |
 | `-S` | `random_seed` | Random seed (0 uses default) | 0 |
 
 **Example:**

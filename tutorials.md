@@ -110,7 +110,7 @@ sol_path = solution.sol
 bound_strengthen = 2
 
 # Enable objective logging
-log_obj = true
+log_obj = 1
 ```
 
 ---
@@ -423,7 +423,7 @@ Complete list of all command-line parameters and configuration options.
 | Parameter | Description | Flag | Type | Range | Default |
 |-----------|-------------|------|------|-------|---------|
 | `bound_strengthen` | Bound strengthen level (0-off, 1-ip, 2-mip) | `-b` | int | [0, 2] | `1` |
-| `log_obj` | Log objective values during search | `-l` | boolean | - | `true` |
+| `log_obj` | Log objective values during search | `-l` | int | [0, 1] | `1` |
 | `restart_step` | No-improvement steps before restart (0 disables) | `-r` | int | [0, 100000000] | `1000000` |
 | `smooth_prob` | Weight smoothing probability (in 1/10000) | `-0` | int | [0, 10000] | `1` |
 | `activity_period` | Constraint activity recompute period | `-h` | int | [1, 100000000] | `100000` |
