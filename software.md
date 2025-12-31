@@ -33,7 +33,7 @@ Get the latest version of Local-MIP and access previous releases.
 
 ## Latest Release: v2.1
 
-The current stable version of Local-MIP with full features and improvements.
+Latest tagged release on GitHub.
 
 ### Download Links
 
@@ -100,9 +100,7 @@ cd Local-MIP
 ### Minimum Requirements
 
 - **CMake:** Version 3.15 or later
-- **Compiler:** C++20 compatible compiler
-  - GCC 10+ or
-  - Clang 12+
+- **Compiler:** C++20 compatible compiler (GCC or Clang)
 - **Tools:** bash, make, standard POSIX utilities
 
 ---

@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Quick Start
-description: Get up and running with Local-MIP in minutes. Learn how to build and run the local search solver for mixed integer programming with novel operators and two-mode architecture.
-keywords: Local-MIP installation, MIP solver tutorial, local search, lift move operator, breakthrough move, mixed tight move, C++ compiler, CMake build
+description: Build and run Local-MIP, a local-search solver for mixed integer programming with CLI and C++/Python APIs.
+keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20, CMake, MPS, LP, callbacks, API
 ---
 
 <div class="doc-layout">
@@ -38,7 +38,7 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, lift move o
   <div class="doc-content" markdown="1">
 # Quick Start
 
-Get up and running with Local-MIP in just a few minutes.
+Get started with Local-MIP.
 
 ---
 
@@ -120,6 +120,8 @@ The basic syntax is:
 ./Local-MIP -i <model_file> [options]
 ```
 
+CLI flags support both short and long forms (for example `-i` or `--model_file`).
+
 **Common Options:**
 
 | Flag | Parameter | Description | Default |
@@ -169,7 +171,7 @@ The repository includes `default.set` as a template with all available parameter
 
 See the [Examples page](/examples) for detailed code examples.
 
-**Python bindings quick build:**
+**Python bindings quick build (requires pybind11):**
 
 ```bash
 python-bindings/build.sh   # builds core if needed and compiles the pybind11 module
@@ -207,7 +209,7 @@ Solution: Install CMake 3.15 or later
 
 **Problem:** C++20 compiler not found
 ```
-Solution: Install GCC 10+ or Clang 12+
+Solution: Install a C++20-capable compiler (GCC or Clang) and ensure it is on your PATH
 ```
 
 ### Runtime Issues

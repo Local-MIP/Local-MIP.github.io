@@ -67,7 +67,7 @@ keywords: MIP solver, mixed integer programming, local search, lift move operato
   </div>
   <div class="card">
     <h3>Highly Customizable</h3>
-    <p>Featuring a comprehensive API and flexible callback system, Local-MIP empowers users to design and tailor algorithm modules for specific scenarios.</p>
+    <p>Lightweight CLI plus C++/Python APIs and callback hooks let you customize starts, restarts, weights, scoring, and neighborhood behavior.</p>
   </div>
   <div class="card">
     <h3>Seamless Integration</h3>

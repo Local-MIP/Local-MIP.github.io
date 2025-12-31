@@ -79,6 +79,8 @@ cd build
 ./Local-MIP -i <model_file> [options]
 ```
 
+CLI flags support both short and long forms (for example `-i` or `--model_file`).
+
 ### Parameter Configuration File
 
 Use a `.set` file to load parameters:
@@ -94,12 +96,11 @@ Use a `.set` file to load parameters:
 - Command-line arguments override configuration file values
 - See `default.set` for a template and descriptions
 
+**Note:** `model_file` should be provided on the command line (see `default.set`).
+
 **Example Configuration File:**
 
 ```
-# Model file
-model_file = test-set/problem.mps
-
 # Time limit (seconds)
 time_limit = 600
 
@@ -158,7 +159,7 @@ See the [Examples page](/examples) for more detailed code examples.
 
 ### Python Bindings
 
-Located in root directory.
+Located in `python-bindings/`.
 
 **Build (requires pybind11 and a C++20 toolchain):**
 
@@ -173,13 +174,13 @@ export PYTHONPATH=$PWD/python-bindings/build:$PYTHONPATH
 python3 python-bindings/sample.py
 ```
 
-The Python module links against the core static library. See `python-bindings/sample.py` for usage examples.
+The script builds the core static library if needed, then compiles the Python module. See `python-bindings/sample.py` for usage examples.
 
 ---
 
 ### Modeling API
 
-The solver now supports **modeling via C++/Python API** (build models programmatically instead of loading `.mps/.lp` files).
+The solver supports **modeling via C++/Python API** (build models programmatically instead of loading `.mps/.lp` files).
 
 **Where the new code lives (from the solver repo root):**
 
@@ -191,6 +192,8 @@ The solver now supports **modeling via C++/Python API** (build models programmat
 
 - C++: build and run the runnable demo in `example/model-api`.
 - Python: run `python-bindings/model_api_demo.py` after building the Python bindings.
+
+**Important:** Model API usage is single-run. Build the model once, call `run()` once, and create a new model instance to solve again.
 
 See the [Examples page](/examples) for a quick “what to run” checklist and the demo locations.
 
@@ -427,8 +430,8 @@ Complete list of all command-line parameters and configuration options.
 | `restart_step` | No-improvement steps before restart (0 disables) | `-r` | int | [0, 100000000] | `1000000` |
 | `smooth_prob` | Weight smoothing probability (in 1/10000) | `-0` | int | [0, 10000] | `1` |
 | `activity_period` | Constraint activity recompute period | `-h` | int | [1, 100000000] | `100000` |
-| `break_eq_feas` | Break feasibility on equality constraints in lift process | `-z` | boolean | - | `false` |
-| `split_eq` | Split equality constraints into two inequalities | `-j` | boolean | - | `true` |
+| `break_eq_feas` | Break feasibility on equality constraints or not in lift process | `-z` | int | [0, 1] | `0` |
+| `split_eq` | Split equalities into two inequalities | `-j` | int | [0, 1] | `1` |
 
 ### BMS Parameters
 
@@ -575,6 +578,8 @@ void callback(Weight::Weight_Ctx& ctx, void* user_data)
 
 **Purpose:** Generate custom neighbor operations.
 
+Register with `add_custom_neighbor(name, callback, user_data)`.
+
 **Signature:**
 
 ```cpp
@@ -666,7 +671,7 @@ void callback(Scoring::Lift_Ctx& ctx, size_t var_idx, double delta, void* user_d
 - `set_start_cbk(callback, user_data)`
 - `set_restart_cbk(callback, user_data)`
 - `set_weight_cbk(callback, user_data)`
-- `set_neighbor_cbk(callback, user_data)`
+- `add_custom_neighbor(name, callback, user_data)`
 - `set_neighbor_scoring_cbk(callback, user_data)`
 - `set_lift_scoring_cbk(callback, user_data)`
 

@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Examples
-description: Code examples demonstrating Local-MIP's callback system to customize operators, scoring functions, and search strategies for mixed integer programming.
-keywords: Local-MIP examples, callback system, custom operators, lift scoring, neighbor scoring, MIP customization, C++ API
+description: Code examples for the Local-MIP C++ API, Python bindings, and callback interfaces.
+keywords: Local-MIP examples, C++ API, Python bindings, callbacks, MIP
 ---
 
 <div class="doc-layout">
@@ -29,13 +29,13 @@ keywords: Local-MIP examples, callback system, custom operators, lift scoring, n
 
 # Examples
 
-Code examples and demonstrations for using Local-MIP's C++ API and callback system to customize search behavior.
+Code examples for using Local-MIP's C++ API and callbacks.
 
 ---
 
 ## Overview
 
-The `example/` directory contains standalone demonstration projects that showcase Local-MIP's features and callback system. Each example is buildable independently and includes complete source code.
+The `example/` directory contains standalone demos for the API and callbacks. Each example is buildable independently and includes complete source code.
 
 **Setup:**
 
@@ -54,7 +54,7 @@ All examples should be run from the `example/` directory where `test-set/` resid
 
 **Location:** `example/simple-api/`
 
-A minimal example demonstrating basic solver usage.
+A minimal example demonstrating basic solver usage. See `example/simple-api/simple_api.cpp`.
 
 ### What It Does
 
@@ -139,13 +139,13 @@ Solution written to: example_simple.sol
 
 ## Modeling API
 
-Local-MIP now supports **modeling via C++/Python API**.
+Local-MIP supports modeling via the C++/Python API.
 
 **Locations (from the solver repo root):**
 
-- Full API: `src/local_mip`
-- C++ API implementation: `src/model_api`
-- C++ demo: `example/model-api`
+- C++ API header: `src/local_mip/Local_MIP.h`
+- Modeling API header: `src/model_api/Model_API.h`
+- C++ demo: `example/model-api/model_api_demo.cpp`
 - Python demo: `python-bindings/model_api_demo.py`
 
 **How to run the demos:**
@@ -795,7 +795,12 @@ cd example
 ./simple-api/simple_api_demo
 ./start-callback/start_callback_demo
 ./restart-callback/restart_callback_demo
-# ... etc
+./weight-callback/weight_callback_demo
+./scoring-lift/lift_degree_demo
+./scoring-neighbor/neighbor_random_demo
+./neighbor-config/neighbor_config_demo
+./neighbor-userdata/neighbor_userdata_demo
+./model-api/model_api_demo
 ```
 
 ---
