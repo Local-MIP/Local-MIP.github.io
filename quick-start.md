@@ -56,13 +56,13 @@ Before you begin, ensure your system meets these requirements:
 
 ### Step 1: Download and Extract
 
-Download the latest release (v2.1): **[Local-MIP v2.1](https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.1.zip)**
+Download the latest release (v2.0): **[Local-MIP v2.0](https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.0.zip)**
 
 Extract the archive:
 
 ```bash
-unzip Local-MIP-2.1.zip
-cd Local-MIP-2.1
+unzip Local-MIP-2.0.zip
+cd Local-MIP-2.0
 ```
 
 Or clone from GitHub:

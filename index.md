@@ -135,4 +135,4 @@ Local-MIP is integrated into several state-of-the-art optimization tools:
 
 ---
 
-**Latest Release:** v2.1 | **License:** [MIT License](https://github.com/shaowei-cai-group/Local-MIP/blob/main/LICENSE)
+**Latest Release:** v2.0 | **License:** [MIT License](https://github.com/shaowei-cai-group/Local-MIP/blob/main/LICENSE)
