@@ -83,7 +83,7 @@ Build the solver using the provided script:
 # Debug build with assertions/logging
 ./build.sh debug
 
-# Build all targets
+# Build core + examples + python bindings
 ./build.sh all
 ```
 
@@ -117,7 +117,7 @@ o best objective: -69
 The basic syntax is:
 
 ```bash
-./Local-MIP -i <model_file> [options]
+./Local-MIP --model_file <model_file> [options]
 ```
 
 CLI flags support both short and long forms (for example `-i` or `--model_file`).
@@ -136,7 +136,7 @@ CLI flags support both short and long forms (for example `-i` or `--model_file`)
 
 ```bash
 # Solve with 5-minute timeout and save solution
-./Local-MIP -i problem.mps -t 300 -s solution.sol -l 1
+./Local-MIP --model_file problem.mps --time_limit 300 --sol_path solution.sol --log_obj 1
 ```
 
 ### Using a Parameter Configuration File
@@ -144,7 +144,7 @@ CLI flags support both short and long forms (for example `-i` or `--model_file`)
 Instead of passing all parameters via command line, you can use a configuration file:
 
 ```bash
-./Local-MIP --param_set_file ../default.set --model_file ../test-set/instance.mps
+./Local-MIP --param_set_file ../default.set --model_file ../test-set/2club200v15p5scn.mps
 ```
 
 The repository includes `default.set` as a template with all available parameters and their default values.
@@ -203,26 +203,18 @@ ctest --output-on-failure
 ### Build Issues
 
 **Problem:** CMake version too old
-```
-Solution: Install CMake 3.15 or later
-```
+Solution: Install CMake 3.15 or later.
 
 **Problem:** C++20 compiler not found
-```
-Solution: Install a C++20-capable compiler (GCC or Clang) and ensure it is on your PATH
-```
+Solution: Install a C++20-capable compiler (GCC or Clang) and ensure it is on your PATH.
 
 ### Runtime Issues
 
 **Problem:** Cannot find input file
-```
-Solution: Ensure you run from the build/ directory or use absolute paths
-```
+Solution: Ensure you run from the build/ directory or use absolute paths.
 
 **Problem:** Slow performance
-```
-Solution: Use release build (./build.sh release) instead of debug build
-```
+Solution: Use release build (./build.sh release) instead of debug build.
 
 ---
 

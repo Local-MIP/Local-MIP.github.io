@@ -485,7 +485,7 @@ Shape the search neighborhood by selecting which operators run, their order, and
 - Default list (in order): `unsat_mtm_bm`, `sat_mtm`, `flip`, `easy`, `unsat_mtm_bm_random`
 - `clear_neighbor_list()` to remove all operators, `reset_default_neighbor_list()` to restore
 - `add_neighbor(name, bms_con, bms_op)` to add built-ins with BMS constraint/op counts
-- `add_custom_neighbor(name, func, user_data)` to prepend/append user-defined operators
+- `add_custom_neighbor(name, func, user_data)` to append user-defined operators (clear and re-add in desired order if you want custom operators first)
 - Order matters: operators are invoked in the order added
 
 ### Code Snippet
@@ -774,10 +774,13 @@ From the solver directory (after download or clone):
 
 ```bash
 cd Local-MIP-2.0   # or Local-MIP if cloned from git
-./build.sh release   # or ./build.sh all
+./build.sh release
 cd example
 ./prepare.sh
 ./build.sh
+
+# Or use one command from solver root (builds core + examples + python bindings):
+# ./build.sh all
 ```
 
 This creates a binary for each example in its respective directory.

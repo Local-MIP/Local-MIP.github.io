@@ -86,7 +86,7 @@ CLI flags support both short and long forms (for example `-i` or `--model_file`)
 Use a `.set` file to load parameters:
 
 ```bash
-./Local-MIP --param_set_file ../default.set --model_file ../test-set/instance.mps
+./Local-MIP --param_set_file ../default.set --model_file ../test-set/2club200v15p5scn.mps
 ```
 
 **Format:**
@@ -100,7 +100,7 @@ Use a `.set` file to load parameters:
 
 **Example Configuration File:**
 
-```
+```ini
 # Time limit (seconds)
 time_limit = 600
 

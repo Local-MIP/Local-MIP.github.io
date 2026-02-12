@@ -7,7 +7,7 @@ title: Software
   <nav class="doc-sidebar" aria-label="Software navigation">
     <div class="doc-sidebar-title">On this page</div>
     <ul class="doc-sidebar-list">
-      <li><a href="#latest-release-v21">Latest Release</a></li>
+      <li><a href="#latest-release-v20">Latest Release</a></li>
       <li><a href="#previous-versions">Previous Versions</a></li>
       <li><a href="#installation-methods">Installation Methods</a>
         <ul class="doc-sidebar-sublist">
@@ -201,10 +201,10 @@ Local-MIP is released under the **MIT License**.
 
 ## Version History
 
-| Version | Release Date | Highlights |
-|---------|--------------|------------|
-| v2.0 | 2025 | Current stable release with enhanced features |
-| v1.0 | 2024 | Initial release (archived, used in papers) |
+| Version | Highlights |
+|---------|------------|
+| v2.0 | Current tagged release |
+| v1.0.1 | Earlier tag; Local-MIP 1.0 code is archived in `archive/Local-MIP-1.0/` |
 
 ---
 
