@@ -23,7 +23,7 @@ Academic publications related to Local-MIP.
 
 ## Citation Notice
 
-**Important:** The experimental results reported in the papers below were obtained using **Local-MIP 1.0**, which has been archived in `archive/Local-MIP-1.0/` of the repository.
+**Important:** The experimental results reported in the papers below were obtained using **Local-MIP 1.0**, which has been archived in [Local-MIP 1.0](https://github.com/shaowei-cai-group/Local-MIP/releases/tag/v1.0.1) of the repository.
 
 If you are reproducing experimental results from these papers, please use Local-MIP 1.0. The current version (v2.0) includes additional features and improvements.
 
