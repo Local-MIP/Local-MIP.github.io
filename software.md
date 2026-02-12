@@ -64,7 +64,7 @@ Latest tagged release on GitHub.
 
 **Important Note:** The experimental results reported in the referenced papers (CP 2024 and Artificial Intelligence 2025) were obtained using Local-MIP 1.0.
 
-Local-MIP 1.0 has been archived and is available in the [Local-MIP 1.0](https://github.com/shaowei-cai-group/Local-MIP/releases/tag/v1.0.1) directory of the repository.
+Local-MIP 1.0 has been archived and is available on the GitHub release page: [v1.0.1](https://github.com/shaowei-cai-group/Local-MIP/releases/tag/v1.0.1).
 
 **Access:**
 
