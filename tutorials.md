@@ -49,7 +49,7 @@ mathjax: true
   <div class="doc-content" markdown="1">
 # Tutorials
 
-Local-MIP references for CLI usage, library integration, core concepts, parameters, and callbacks.
+This page explains the main ways to use Local-MIP: command-line solving, library integration, in-memory modeling, and callback-based customization.
 
 ---
 
@@ -66,12 +66,9 @@ Local-MIP references for CLI usage, library integration, core concepts, paramete
 
 ### Basic Usage
 
-Run the solver from `build/` after downloading or building:
+Use the command-line interface when you want to solve `.mps` or `.lp` files directly.
 
-```bash
-cd build
-./Local-MIP -i ../test-set/2club200v15p5scn.mps -t 300
-```
+The [solver README]({{ site.data.external_links.repository.readme }}) covers the full setup flow; the syntax below shows the shape of a typical command.
 
 **Command Syntax:**
 
@@ -83,7 +80,7 @@ CLI flags support both short and long forms (for example `-i` or `--model_file`)
 
 ### Parameter Configuration File
 
-Use a `.set` file to load parameters:
+Use a `.set` file when you want to keep parameter choices in one place:
 
 ```bash
 ./Local-MIP --param_set_file ../default.set --model_file ../test-set/2club200v15p5scn.mps
@@ -118,11 +115,11 @@ log_obj = 1
 
 ## Use as a Library
 
-Library artifacts come from the download/build steps and can be linked directly from the generated outputs.
+Use the library interfaces when Local-MIP is part of a larger application, solver, or experiment.
 
 ### C++ Static Library
 
-After building, the static library `build/libLocalMIP.a` and headers in `src/` are available for integration.
+The C++ API is the most direct way to embed the solver kernel in another system.
 
 **Basic Example:**
 
@@ -149,38 +146,19 @@ int main() {
 }
 ```
 
-**Compile:**
-
-```bash
-g++ -O3 -std=c++20 my_program.cpp -I/path/to/src -L/path/to/build -lLocalMIP -lpthread -o my_program
-```
-
-See the [Examples page](/examples) for more detailed code examples.
+See the [Examples page](/examples) for runnable code, then use the [solver README]({{ site.data.external_links.repository.readme }}) for build and linking details.
 
 ### Python Bindings
 
-Located in `python-bindings/`.
+The Python interface is convenient for scripting, prototyping, and lightweight integration.
 
-**Build (requires pybind11 and a C++20 toolchain):**
-
-```bash
-bash python-bindings/build.sh
-```
-
-**Use (from repo root):**
-
-```bash
-export PYTHONPATH=$PWD/python-bindings/build:$PYTHONPATH
-python3 python-bindings/sample.py
-```
-
-The script builds the core static library if needed, then compiles the Python module. See `python-bindings/sample.py` for usage examples.
+See the [Python bindings README]({{ site.data.external_links.repository.python_readme }}) for installation, demos, and development builds.
 
 ---
 
 ### Modeling API
 
-The solver supports **modeling via C++/Python API** (build models programmatically instead of loading `.mps/.lp` files).
+Use the modeling API when you want to build a model in code instead of reading it from a file.
 
 **Where the new code lives (from the solver repo root):**
 
@@ -188,14 +166,14 @@ The solver supports **modeling via C++/Python API** (build models programmatical
 - `example/model-api`
 - `python-bindings/model_api_demo.py`
 
-**How to start (recommended):**
+**Good starting points:**
 
-- C++: build and run the runnable demo in `example/model-api`.
-- Python: run `python-bindings/model_api_demo.py` after building the Python bindings.
+- C++: `example/model-api`
+- Python: `python-bindings/model_api_demo.py`
 
 **Important:** Model API usage is single-run. Build the model once, call `run()` once, and create a new model instance to solve again.
 
-See the [Examples page](/examples) for a quick “what to run” checklist and the demo locations.
+See the [Examples page](/examples) for the overall picture, then use the [solver README]({{ site.data.external_links.repository.readme }}) and the [Model API example README]({{ site.data.external_links.repository.model_api_readme }}) for build and run details.
 
 ---
 
@@ -684,7 +662,7 @@ void callback(Scoring::Lift_Ctx& ctx, size_t var_idx, double delta, void* user_d
 
 - Use `user_data` to pass custom state across calls
 - `ctx.m_shared` is read-only; mutate only the writable fields
-- Run from `example/` after `prepare.sh` to use shipped test instances
+- Follow the repository example instructions when running callback demos with the bundled test instances
 
 ---
 
@@ -692,7 +670,7 @@ void callback(Scoring::Lift_Ctx& ctx, size_t var_idx, double delta, void* user_d
 
 - [Examples](/examples) - Code examples demonstrating all callbacks
 - [Papers](/papers) - Academic publications and citations
-- [GitHub Repository](https://github.com/shaowei-cai-group/Local-MIP) - Source code and issues
+- [GitHub Repository]({{ site.data.external_links.repository.home }}) - Source code and issues
 
 ---
 

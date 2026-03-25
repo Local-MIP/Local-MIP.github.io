@@ -7,7 +7,7 @@ title: Software
   <nav class="doc-sidebar" aria-label="Software navigation">
     <div class="doc-sidebar-title">On this page</div>
     <ul class="doc-sidebar-list">
-      <li><a href="#latest-release-v20">Latest Release</a></li>
+      <li><a href="#latest-release">Latest Release</a></li>
       <li><a href="#previous-versions">Previous Versions</a></li>
       <li><a href="#installation-methods">Installation Methods</a>
         <ul class="doc-sidebar-sublist">
@@ -27,24 +27,24 @@ title: Software
   <div class="doc-content" markdown="1">
 # Software
 
-Get the latest version of Local-MIP and access previous releases.
+Find release downloads, source links, and archived versions of Local-MIP.
 
 ---
 
-## Latest Release: v2.0
+## Latest Release
 
-Latest tagged release on GitHub.
+GitHub Releases is the main entry point for tagged versions and release notes.
 
 ### Download Links
 
 **Primary Download:**
 
-- **[Download v2.0 (.zip)](https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.0.zip)** - Recommended
+- **[GitHub Releases]({{ site.data.external_links.repository.releases }})** - Latest release packages and notes
 
 **Alternative:**
 
-- **[GitHub Release Page](https://github.com/shaowei-cai-group/Local-MIP/releases/tag/v2.0)** - View full release notes
-- **[Source Code (GitHub)](https://github.com/shaowei-cai-group/Local-MIP)** - Clone or download from repository
+- **[Source Code (GitHub)]({{ site.data.external_links.repository.home }})** - Clone or browse the repository
+- **[PyPI package]({{ site.data.external_links.repository.pypi }})** - Python bindings for supported platforms
 
 ### What's Included
 
@@ -64,11 +64,11 @@ Latest tagged release on GitHub.
 
 **Important Note:** The experimental results reported in the referenced papers (CP 2024 and Artificial Intelligence 2025) were obtained using Local-MIP 1.0.
 
-Local-MIP 1.0 has been archived and is available on the GitHub release page: [v1.0.1](https://github.com/shaowei-cai-group/Local-MIP/releases/tag/v1.0.1).
+Local-MIP 1.0 has been archived and is available on the GitHub release page: [v1.0.1]({{ site.data.external_links.repository.archive_v1_0_1 }}).
 
 **Access:**
 
-- Download [Local-MIP 1.0](https://github.com/shaowei-cai-group/Local-MIP/releases/tag/v1.0.1)
+- Download [Local-MIP 1.0]({{ site.data.external_links.repository.archive_v1_0_1 }})
 
 ---
 
@@ -76,22 +76,11 @@ Local-MIP 1.0 has been archived and is available on the GitHub release page: [v1
 
 ### Method 1: Direct Download (Recommended)
 
-Download the ZIP file and extract:
-
-```bash
-wget https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.0.zip -O Local-MIP-2.0.zip
-unzip Local-MIP-2.0.zip
-cd Local-MIP-2.0
-```
+Use [GitHub Releases]({{ site.data.external_links.repository.releases }}) when you want a tagged source archive.
 
 ### Method 2: Git Clone
 
-Clone the repository for the latest development version:
-
-```bash
-git clone https://github.com/shaowei-cai-group/Local-MIP.git
-cd Local-MIP
-```
+Use the [Local-MIP repository]({{ site.data.external_links.repository.home }}) when you want the latest development tree or the full project history.
 
 ---
 
@@ -107,44 +96,7 @@ cd Local-MIP
 
 ## Build Instructions
 
-### Release Build (Recommended)
-
-For optimal performance:
-
-```bash
-./build.sh release
-```
-
-Produces:
-
-- `build/Local-MIP` - Optimized CLI binary
-- `build/libLocalMIP.a` - Static library
-
-### Build All Targets
-
-Build everything (solver, library, and shipped components/examples as configured by the build script):
-
-```bash
-./build.sh all
-```
-
-### Debug Build
-
-For development and debugging:
-
-```bash
-./build.sh debug
-```
-
-Includes assertions, logging, and debug symbols.
-
-### Clean Build
-
-Remove all build artifacts:
-
-```bash
-./build.sh clean
-```
+This page focuses on where to get the code. For setup, build, and test steps, start with the [solver README]({{ site.data.external_links.repository.readme }}). If you plan to use Python, also read the [Python bindings README]({{ site.data.external_links.repository.python_readme }}).
 
 ---
 
@@ -152,21 +104,11 @@ Remove all build artifacts:
 
 ### Verify Installation
 
-After building, verify the installation:
-
-```bash
-cd build
-./Local-MIP --help
-```
+The [Quick Start page](/quick-start) and the [solver README]({{ site.data.external_links.repository.readme }}) walk through a first run.
 
 ### Run Tests
 
-Execute the test suite:
-
-```bash
-cd build
-ctest --output-on-failure
-```
+The [solver README]({{ site.data.external_links.repository.readme }}) lists the available test targets.
 
 ---
 
@@ -180,7 +122,7 @@ Local-MIP is released under the **MIT License**.
 - Open source
 - Permissive licensing
 
-[View Full License](https://github.com/shaowei-cai-group/Local-MIP/blob/main/LICENSE)
+[View Full License]({{ site.data.external_links.repository.license }})
 
 ---
 
@@ -194,8 +136,8 @@ Local-MIP is released under the **MIT License**.
 
 ### Support
 
-- **GitHub Issues:** [Report bugs or request features](https://github.com/shaowei-cai-group/Local-MIP/issues)
-- **Source Code:** [Browse on GitHub](https://github.com/shaowei-cai-group/Local-MIP)
+- **GitHub Issues:** [Report bugs or request features]({{ site.data.external_links.repository.issues }})
+- **Source Code:** [Browse on GitHub]({{ site.data.external_links.repository.home }})
 
 ---
 
@@ -203,8 +145,8 @@ Local-MIP is released under the **MIT License**.
 
 | Version | Highlights |
 |---------|------------|
-| v2.0 | Current tagged release |
-| v1.0.1 | Earlier tag; [Local-MIP 1.0](https://github.com/shaowei-cai-group/Local-MIP/releases/tag/v1.0.1) code is archived|
+| Latest release | See [GitHub Releases]({{ site.data.external_links.repository.releases }}) for the newest tagged release |
+| v1.0.1 | Earlier tag; [Local-MIP 1.0]({{ site.data.external_links.repository.archive_v1_0_1 }}) code is archived |
 
 ---
 

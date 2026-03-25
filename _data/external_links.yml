@@ -1,0 +1,11 @@
+repository:
+  home: https://github.com/shaowei-cai-group/Local-MIP
+  readme: https://github.com/shaowei-cai-group/Local-MIP/blob/main/README.md
+  releases: https://github.com/shaowei-cai-group/Local-MIP/releases
+  issues: https://github.com/shaowei-cai-group/Local-MIP/issues
+  license: https://github.com/shaowei-cai-group/Local-MIP/blob/main/LICENSE
+  archive_v1_0_1: https://github.com/shaowei-cai-group/Local-MIP/releases/tag/v1.0.1
+  pypi: https://pypi.org/project/localmip/
+  python_readme: https://github.com/shaowei-cai-group/Local-MIP/blob/main/python-bindings/README.md
+  model_api_readme: https://github.com/shaowei-cai-group/Local-MIP/blob/main/example/model-api/README.md
+  examples_tree: https://github.com/shaowei-cai-group/Local-MIP/tree/main/example

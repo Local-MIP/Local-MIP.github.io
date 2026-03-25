@@ -38,7 +38,7 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20,
   <div class="doc-content" markdown="1">
 # Quick Start
 
-Get started with Local-MIP.
+Get started with Local-MIP as a standalone solver, embedded library, or research prototype.
 
 ---
 
@@ -56,57 +56,37 @@ Before you begin, ensure your system meets these requirements:
 
 ### Step 1: Download and Extract
 
-Download the latest release (v2.0): **[Local-MIP v2.0](https://github.com/shaowei-cai-group/Local-MIP/archive/refs/tags/v2.0.zip)**
+Choose the source that matches your workflow:
 
-Extract the archive:
+- **Stable release:** [GitHub Releases]({{ site.data.external_links.repository.releases }})
+- **Repository checkout:** [Local-MIP repository]({{ site.data.external_links.repository.home }})
 
-```bash
-unzip Local-MIP-2.0.zip
-cd Local-MIP-2.0
-```
-
-Or clone from GitHub:
-
-```bash
-git clone https://github.com/shaowei-cai-group/Local-MIP.git
-cd Local-MIP
-```
+Use a release archive if you want a tagged snapshot, or clone the repository if you want the latest development version.
 
 ### Step 2: Build
 
-Build the solver using the provided script:
+Start with the [solver README]({{ site.data.external_links.repository.readme }}) for the full build workflow.
+
+**Common first build:**
 
 ```bash
-# Release build (recommended)
 ./build.sh release
-
-# Debug build with assertions/logging
-./build.sh debug
-
-# Build core + examples + python bindings
-./build.sh all
 ```
 
-The solver binary `Local-MIP` and static library `libLocalMIP.a` will be created in the `build/` directory.
+For examples and Python bindings, the same README covers `./build.sh all`, and the [Python bindings README]({{ site.data.external_links.repository.python_readme }}) covers the Python-specific setup path.
+
+The main outputs remain the same at a high level: a solver binary and a static library under `build/`.
 
 ### Step 3: Run
 
-Navigate to the build directory and run your first MIP instance:
+Run the solver from the generated `build/` directory against a sample `.mps` or `.lp` instance:
 
 ```bash
 cd build
 ./Local-MIP --model_file ../test-set/2club200v15p5scn.mps --time_limit 300
 ```
 
-**Expected Output:**
-```
-c model name: 2club200v15p5scn
-c reading mps file takes 0.14 seconds.
-c original problem has 200 variables and 17013 constraints
-...
-c [    300.00] local search is terminated by timeout.
-o best objective: -69
-```
+Use the [solver README]({{ site.data.external_links.repository.readme }}) for more build/run variants and `--help` for the available command-line flags.
 
 ---
 
@@ -114,7 +94,7 @@ o best objective: -69
 
 ### Command-Line Parameters
 
-The basic syntax is:
+A representative CLI invocation looks like this:
 
 ```bash
 ./Local-MIP --model_file <model_file> [options]
@@ -122,7 +102,7 @@ The basic syntax is:
 
 CLI flags support both short and long forms (for example `-i` or `--model_file`).
 
-**Common Options:**
+**Representative Options:**
 
 | Flag | Parameter | Description | Default |
 |------|-----------|-------------|---------|
@@ -169,32 +149,22 @@ The repository includes `default.set` as a template with all available parameter
 - **C++ API** - Integrate Local-MIP into your C++ projects
 - **Python Bindings** - Use from Python with pybind11
 
-See the [Examples page](/examples) for detailed code examples.
-
-**Python bindings quick build (requires pybind11):**
-
-```bash
-python-bindings/build.sh   # builds core if needed and compiles the pybind11 module
-export PYTHONPATH=$PWD/python-bindings/build:$PYTHONPATH
-python3 python-bindings/sample.py
-```
+See the [Examples page](/examples) for runnable code. For setup and integration details, use `README.md` and `python-bindings/README.md`.
 
 ### Run Tests
 
-Verify your installation by running the test suite:
+CTest-based verification is part of the main project workflow. The [solver README]({{ site.data.external_links.repository.readme }}) lists the available test targets and filters.
 
-```bash
-cd build
+## Where to Look Next
 
-# Run unit test subsets
-ctest --output-on-failure -R "^(api|callbacks|constraint_recognition|scoring|model_manager|reader|move_operations|neighbor_config)$"
+These files contain the full setup details:
 
-# Run integration tests
-ctest --output-on-failure -R "^integration$"
-
-# Run all tests (including instance sweeps)
-ctest --output-on-failure
-```
+- [solver README]({{ site.data.external_links.repository.readme }}) - CLI build, run, parameter-file usage, and tests
+- [Python bindings README]({{ site.data.external_links.repository.python_readme }}) - Python installation, demos, and development builds
+- [Model API example README]({{ site.data.external_links.repository.model_api_readme }}) - Example-specific build and run notes
+- [Example directory on GitHub]({{ site.data.external_links.repository.examples_tree }}) - Per-demo README files and source code
+- [GitHub Releases]({{ site.data.external_links.repository.releases }}) - Download a packaged source archive
+- [Repository home]({{ site.data.external_links.repository.home }}) - Browse the project online
 
 ---
 
@@ -214,7 +184,7 @@ Solution: Install a C++20-capable compiler (GCC or Clang) and ensure it is on yo
 Solution: Ensure you run from the build/ directory or use absolute paths.
 
 **Problem:** Slow performance
-Solution: Use release build (./build.sh release) instead of debug build.
+Solution: Prefer a release build when you want the best runtime performance.
 
 ---
 
@@ -224,8 +194,8 @@ If you encounter problems:
 
 1. Check the [Tutorials](/tutorials) for detailed information
 2. Review the [Examples](/examples) for code samples
-3. Visit the [GitHub repository](https://github.com/shaowei-cai-group/Local-MIP) for source code
-4. Open an [issue on GitHub](https://github.com/shaowei-cai-group/Local-MIP/issues) for bug reports
+3. Visit the [GitHub repository]({{ site.data.external_links.repository.home }}) for source code
+4. Open an [issue on GitHub]({{ site.data.external_links.repository.issues }}) for bug reports
 
 ---
 

@@ -29,24 +29,21 @@ keywords: Local-MIP examples, C++ API, Python bindings, callbacks, MIP
 
 # Examples
 
-Code examples for using Local-MIP's C++ API and callbacks.
+These examples show how to use Local-MIP for file-based solving, in-memory modeling, and callback-based customization.
 
 ---
 
 ## Overview
 
-The `example/` directory contains standalone demos for the API and callbacks. Each example is buildable independently and includes complete source code.
+The `example/` directory contains small runnable demos for the public APIs and callback interfaces.
 
-**Setup:**
+For setup and usage details, start with these files:
 
-```bash
-./build.sh release   # Builds solver and libLocalMIP.a (required by examples)
-cd example
-./prepare.sh         # Copies libLocalMIP.a, headers, and test instances
-./build.sh           # Builds all examples
-```
+- [solver README]({{ site.data.external_links.repository.readme }})
+- [Model API example README]({{ site.data.external_links.repository.model_api_readme }})
+- [Example directory on GitHub]({{ site.data.external_links.repository.examples_tree }}) for per-demo README files
 
-All examples should be run from the `example/` directory where `test-set/` resides.
+Each example is meant to show one part of the solver interface in isolation, so it is easier to adapt for your own code.
 
 ---
 
@@ -55,6 +52,8 @@ All examples should be run from the `example/` directory where `test-set/` resid
 **Location:** `example/simple-api/`
 
 A minimal example demonstrating basic solver usage. See `example/simple-api/simple_api.cpp`.
+
+This is the shortest C++ example for solving a model file with Local-MIP.
 
 ### What It Does
 
@@ -104,36 +103,9 @@ int main()
 | `is_feasible()` | Check if feasible solution found |
 | `get_obj_value()` | Get objective value |
 
-### Building
+### Where to Go Next
 
-From the `example/simple-api/` directory:
-
-```bash
-g++ -O3 -std=c++20 simple_api.cpp -I../../src -L../../build -lLocalMIP -lpthread -o simple_api_demo
-```
-
-Or use the example build script.
-
-### Running
-
-```bash
-cd example
-./simple-api/simple_api_demo
-```
-
-### Expected Output
-
-```
-c model name: 2club200v15p5scn
-c reading mps file takes 0.14 seconds.
-c original problem has 200 variables and 17013 constraints
-...
-c [     60.00] local search is terminated by timeout.
-o best objective: -69
-Solution is feasible!
-Objective value: -69.0000000000
-Solution written to: example_simple.sol
-```
+Use the [solver README]({{ site.data.external_links.repository.readme }}) for the main build flow and the [example directory on GitHub]({{ site.data.external_links.repository.examples_tree }}) for per-demo notes.
 
 ---
 
@@ -148,14 +120,10 @@ Local-MIP supports modeling via the C++/Python API.
 - C++ demo: `example/model-api/model_api_demo.cpp`
 - Python demo: `python-bindings/model_api_demo.py`
 
-**How to run the demos:**
+**How to continue:**
 
-- C++ demo: follow the build/run instructions shipped in `example/model-api`.
-- Python demo: build Python bindings, then run:
-
-```bash
-python3 python-bindings/model_api_demo.py
-```
+- C++ demo: see the [Model API example README]({{ site.data.external_links.repository.model_api_readme }})
+- Python demo: see the [Python bindings README]({{ site.data.external_links.repository.python_readme }})
 
 ### C++ Demo: `example/model-api/model_api_demo.cpp`
 
@@ -770,41 +738,35 @@ Local_Search::Lift_Scoring_Cbk lift_cbk = [](Scoring::Lift_Ctx& ctx, size_t var_
 
 ## Building All Examples
 
-From the solver directory (after download or clone):
+From the solver repository root, a typical full example build looks like this:
 
 ```bash
-cd Local-MIP-2.0   # or Local-MIP if cloned from git
-./build.sh release
+./build.sh all
+```
+
+If you want the example-only flow, use:
+
+```bash
 cd example
 ./prepare.sh
 ./build.sh
-
-# Or use one command from solver root (builds core + examples + python bindings):
-# ./build.sh all
 ```
 
-This creates a binary for each example in its respective directory.
+Use the [solver README]({{ site.data.external_links.repository.readme }}) for the overall build matrix and the [example directory on GitHub]({{ site.data.external_links.repository.examples_tree }}) for per-demo notes.
 
 ---
 
 ## Running Examples
 
-All examples should be run from the `example/` directory:
+After building from `example/`, representative runs look like this:
 
 ```bash
-cd example
-
-# Run specific example
 ./simple-api/simple_api_demo
 ./start-callback/start_callback_demo
-./restart-callback/restart_callback_demo
-./weight-callback/weight_callback_demo
-./scoring-lift/lift_degree_demo
-./scoring-neighbor/neighbor_random_demo
-./neighbor-config/neighbor_config_demo
-./neighbor-userdata/neighbor_userdata_demo
 ./model-api/model_api_demo
 ```
+
+Most file-based demos accept an optional model path as `argv[1]`. See the relevant README in the [example directory on GitHub]({{ site.data.external_links.repository.examples_tree }}) for per-demo behavior and output notes.
 
 ---
 
@@ -812,7 +774,7 @@ cd example
 
 - **[Tutorials](/tutorials)** - Detailed callback reference and API documentation
 - **[Papers](/papers)** - Academic publications describing the algorithms
-- **[GitHub](https://github.com/shaowei-cai-group/Local-MIP)** - Source code and issues
+- **[GitHub]({{ site.data.external_links.repository.home }})** - Source code and issues
 
 ---
 
