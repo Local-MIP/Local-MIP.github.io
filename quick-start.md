@@ -31,6 +31,7 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20,
           <li><a href="#run-tests">Run Tests</a></li>
         </ul>
       </li>
+      <li><a href="#references">References</a></li>
       <li><a href="#troubleshooting">Troubleshooting</a></li>
       <li><a href="#getting-help">Getting Help</a></li>
     </ul>
@@ -41,7 +42,7 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20,
   <div>
     <p class="quickstart-kicker">Quick Start</p>
     <h1>Run Local-MIP</h1>
-    <p>Install the Python bindings in one line, or build the CLI solver from source when you need a local binary, C++ APIs, examples, or callbacks.</p>
+    <p>Install the Python bindings in a local virtual environment, or build the CLI solver from source when you need a local binary, C++ APIs, examples, or callbacks.</p>
   </div>
   <div class="quickstart-hero-links">
     <a href="{{ site.data.external_links.repository.pypi }}">PyPI Package</a>
@@ -56,15 +57,15 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20,
     <span>Fastest Path</span>
     <h2>Install with pip</h2>
   </div>
-  <p class="quickstart-panel-intro">For Linux x86_64, the published Python bindings are the quickest way to try Local-MIP.</p>
+  <p class="quickstart-panel-intro">For Linux x86_64, the published Python bindings are the quickest way to try Local-MIP. The command below creates a local virtual environment first, so it works on Debian/Ubuntu systems that block global pip installs.</p>
   <div class="quickstart-pip-grid">
     <article class="quickstart-pip-card">
       <span>Install</span>
-      <pre><code class="language-bash">python3 -m pip install localmip</code></pre>
+      <pre><code class="language-bash">python3 -m venv .venv && .venv/bin/python -m pip install localmip</code></pre>
     </article>
     <article class="quickstart-pip-card">
       <span>Import check</span>
-      <pre><code class="language-bash">python3 -c "import localmip_py as lm; print(lm.LocalMIP)"</code></pre>
+      <pre><code class="language-bash">.venv/bin/python -c "import localmip_py as lm; print(lm.LocalMIP)"</code></pre>
     </article>
   </div>
   <p class="quickstart-note">Use the source build below when you need the standalone <code>Local-MIP</code> CLI, the static C++ library, or the repository examples.</p>
@@ -75,7 +76,7 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20,
     <span>Before Source Builds</span>
     <h2>Requirements</h2>
   </div>
-  <p class="quickstart-panel-intro">The source CLI path needs the build tools below. The PyPI path above only needs Python 3.8+ on Linux x86_64.</p>
+  <p class="quickstart-panel-intro">The source CLI path needs the build tools below. The PyPI path above needs Python 3.8+ on Linux x86_64 and the standard <code>venv</code> module.</p>
   <div class="quickstart-requirements">
     <div class="quickstart-requirement"><span>CMake</span><strong>3.15+</strong></div>
     <div class="quickstart-requirement"><span>Compiler</span><strong>C++20 GCC/Clang</strong></div>
@@ -90,7 +91,7 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20,
   </div>
   <p class="quickstart-panel-intro">These commands were verified against the current solver tree and keep the first run to 10 seconds.</p>
 
-  <div class="quickstart-steps">
+  <div class="quickstart-steps quickstart-workflow">
     <article id="step-1-download-and-extract" class="quickstart-step-card">
       <div class="card-kicker">Step 1</div>
       <h3>Download</h3>
@@ -105,25 +106,16 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20,
       <div class="card-kicker">Step 2</div>
       <h3>Build</h3>
       <p>From the repository root, start with the release build. Use <code>./build.sh all</code> when you also need examples and Python bindings.</p>
+      <pre><code class="language-bash">./build.sh release</code></pre>
     </article>
 
     <article id="step-3-run" class="quickstart-step-card">
       <div class="card-kicker">Step 3</div>
       <h3>Run</h3>
       <p>Run from <code>build/</code> so bundled test-set paths resolve correctly.</p>
-    </article>
-  </div>
-
-  <div class="quickstart-command-strip">
-    <div>
-      <span>Build</span>
-      <pre><code class="language-bash">./build.sh release</code></pre>
-    </div>
-    <div>
-      <span>Run</span>
       <pre><code class="language-bash">cd build
 ./Local-MIP -i ../test-set/2club200v15p5scn.mps -t 10</code></pre>
-    </div>
+    </article>
   </div>
 
   <p class="quickstart-note">The build writes the solver binary and static library under <code>build/</code>. Use <code>./Local-MIP --help</code> for the exact CLI flags in your version.</p>
@@ -248,14 +240,14 @@ cd build
   </div>
 </section>
 
-<section class="quickstart-panel quickstart-reference-panel">
+<section id="references" class="quickstart-panel quickstart-reference-panel">
   <div class="quickstart-section-heading">
     <span>References</span>
     <h2>Where to Look Next</h2>
   </div>
   <p>These files contain the full setup details:</p>
   <div class="quickstart-reference-grid">
-    <a href="{{ site.data.external_links.repository.pypi }}"><span>PyPI package</span><strong>One-line Python installation for Linux x86_64</strong></a>
+    <a href="{{ site.data.external_links.repository.pypi }}"><span>PyPI package</span><strong>Virtual-environment Python installation for Linux x86_64</strong></a>
     <a href="{{ site.data.external_links.repository.readme }}"><span>Solver README</span><strong>CLI build, run, parameter-file usage, and tests</strong></a>
     <a href="{{ site.data.external_links.repository.python_readme }}"><span>Python bindings README</span><strong>Python installation, demos, and development builds</strong></a>
     <a href="{{ site.data.external_links.repository.model_api_readme }}"><span>Model API example README</span><strong>Example-specific build and run notes</strong></a>

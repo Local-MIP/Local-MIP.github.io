@@ -17,10 +17,10 @@ keywords: MIP solver, mixed integer programming, local search, lift move operato
       <p class="hero-tagline">Local search for mixed integer programming.</p>
       <p class="hero-copy">CLI, C++/Python APIs, and callbacks for custom search workflows.</p>
 
-      <div class="hero-install" aria-label="Install Local-MIP from PyPI">
-        <span class="hero-install-label">One-command install</span>
-        <code>python3 -m pip install localmip</code>
-        <button class="hero-install-copy" type="button" data-copy-text="python3 -m pip install localmip" aria-label="Copy pip install command">Copy</button>
+      <div class="hero-install" aria-label="Install Local-MIP from PyPI in a virtual environment">
+        <span class="hero-install-label">Venv-safe install</span>
+        <code>python3 -m venv .venv && .venv/bin/python -m pip install localmip</code>
+        <button class="hero-install-copy" type="button" data-copy-text="python3 -m venv .venv && .venv/bin/python -m pip install localmip" aria-label="Copy pip install command">Copy</button>
       </div>
 
       <div class="hero-actions">
