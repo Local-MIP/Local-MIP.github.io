@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Quick Start
-description: Build and run Local-MIP, a local-search solver for mixed integer programming with CLI and C++/Python APIs.
+description: Install and run Local-MIP, a local-search solver for mixed integer programming with CLI and C++/Python APIs.
 keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20, CMake, MPS, LP, callbacks, API
 ---
 
@@ -9,6 +9,7 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20,
   <nav class="doc-sidebar" aria-label="Quick start navigation">
     <div class="doc-sidebar-title">On this page</div>
     <ul class="doc-sidebar-list">
+      <li><a href="#fastest-path-python">Pip Install</a></li>
       <li><a href="#requirements">Requirements</a></li>
       <li><a href="#get-started-in-3-steps">Get Started</a>
         <ul class="doc-sidebar-sublist">
@@ -35,171 +36,282 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20,
     </ul>
   </nav>
 
-  <div class="doc-content" markdown="1">
-# Quick Start
+  <div class="doc-content quickstart-content" markdown="1">
+<section class="quickstart-hero">
+  <div>
+    <p class="quickstart-kicker">Quick Start</p>
+    <h1>Run Local-MIP</h1>
+    <p>Install the Python bindings in one line, or build the CLI solver from source when you need a local binary, C++ APIs, examples, or callbacks.</p>
+  </div>
+  <div class="quickstart-hero-links">
+    <a href="{{ site.data.external_links.repository.pypi }}">PyPI Package</a>
+    <a href="{{ site.data.external_links.repository.releases }}">GitHub Releases</a>
+    <a href="{{ site.data.external_links.repository.readme }}">Solver README</a>
+    <a href="{{ site.data.external_links.repository.python_readme }}">Python README</a>
+  </div>
+</section>
 
-Get started with Local-MIP as a standalone solver, embedded library, or research prototype.
+<section id="fastest-path-python" class="quickstart-panel quickstart-pip-panel">
+  <div class="quickstart-section-heading">
+    <span>Fastest Path</span>
+    <h2>Install with pip</h2>
+  </div>
+  <p class="quickstart-panel-intro">For Linux x86_64, the published Python bindings are the quickest way to try Local-MIP.</p>
+  <div class="quickstart-pip-grid">
+    <article class="quickstart-pip-card">
+      <span>Install</span>
+      <pre><code class="language-bash">python3 -m pip install localmip</code></pre>
+    </article>
+    <article class="quickstart-pip-card">
+      <span>Import check</span>
+      <pre><code class="language-bash">python3 -c "import localmip_py as lm; print(lm.LocalMIP)"</code></pre>
+    </article>
+  </div>
+  <p class="quickstart-note">Use the source build below when you need the standalone <code>Local-MIP</code> CLI, the static C++ library, or the repository examples.</p>
+</section>
 
----
+<section id="requirements" class="quickstart-panel">
+  <div class="quickstart-section-heading">
+    <span>Before Source Builds</span>
+    <h2>Requirements</h2>
+  </div>
+  <p class="quickstart-panel-intro">The source CLI path needs the build tools below. The PyPI path above only needs Python 3.8+ on Linux x86_64.</p>
+  <div class="quickstart-requirements">
+    <div class="quickstart-requirement"><span>CMake</span><strong>3.15+</strong></div>
+    <div class="quickstart-requirement"><span>Compiler</span><strong>C++20 GCC/Clang</strong></div>
+    <div class="quickstart-requirement"><span>Tools</span><strong>bash, make, POSIX utilities</strong></div>
+  </div>
+</section>
 
-## Requirements
+<section id="get-started-in-3-steps" class="quickstart-panel">
+  <div class="quickstart-section-heading">
+    <span>Source CLI Path</span>
+    <h2>Build and Run in 3 Steps</h2>
+  </div>
+  <p class="quickstart-panel-intro">These commands were verified against the current solver tree and keep the first run to 10 seconds.</p>
 
-Before you begin, ensure your system meets these requirements:
+  <div class="quickstart-steps">
+    <article id="step-1-download-and-extract" class="quickstart-step-card">
+      <div class="card-kicker">Step 1</div>
+      <h3>Download</h3>
+      <p>Use a tagged source archive for a stable snapshot, or clone the repository for the latest development version.</p>
+      <div class="quickstart-link-row">
+        <a href="{{ site.data.external_links.repository.releases }}">GitHub Releases</a>
+        <a href="{{ site.data.external_links.repository.home }}">Repository</a>
+      </div>
+    </article>
 
-- **CMake** ≥ 3.15
-- **C++20 compiler** (GCC or Clang)
-- **bash**, make, and standard POSIX utilities
+    <article id="step-2-build" class="quickstart-step-card">
+      <div class="card-kicker">Step 2</div>
+      <h3>Build</h3>
+      <p>From the repository root, start with the release build. Use <code>./build.sh all</code> when you also need examples and Python bindings.</p>
+    </article>
 
----
+    <article id="step-3-run" class="quickstart-step-card">
+      <div class="card-kicker">Step 3</div>
+      <h3>Run</h3>
+      <p>Run from <code>build/</code> so bundled test-set paths resolve correctly.</p>
+    </article>
+  </div>
 
-## Get Started in 3 Steps
+  <div class="quickstart-command-strip">
+    <div>
+      <span>Build</span>
+      <pre><code class="language-bash">./build.sh release</code></pre>
+    </div>
+    <div>
+      <span>Run</span>
+      <pre><code class="language-bash">cd build
+./Local-MIP -i ../test-set/2club200v15p5scn.mps -t 10</code></pre>
+    </div>
+  </div>
 
-### Step 1: Download and Extract
+  <p class="quickstart-note">The build writes the solver binary and static library under <code>build/</code>. Use <code>./Local-MIP --help</code> for the exact CLI flags in your version.</p>
+</section>
 
-Choose the source that matches your workflow:
+<section id="basic-usage" class="quickstart-panel quickstart-usage-panel">
+  <div class="quickstart-section-heading">
+    <span>Basic Usage</span>
+    <h2>Command-Line Parameters</h2>
+  </div>
 
-- **Stable release:** [GitHub Releases]({{ site.data.external_links.repository.releases }})
-- **Repository checkout:** [Local-MIP repository]({{ site.data.external_links.repository.home }})
+  <p>A representative CLI invocation looks like this:</p>
+  <pre><code class="language-bash">./Local-MIP --model_file &lt;model_file&gt; [options]</code></pre>
+  <p>CLI flags support both short and long forms, for example <code>-i</code> and <code>--model_file</code>.</p>
 
-Use a release archive if you want a tagged snapshot, or clone the repository if you want the latest development version.
+  <div id="command-line-parameters" class="quickstart-table-note">Representative options from the current CLI:</div>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Flag</th>
+          <th>Parameter</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>-i</code></td>
+          <td><code>model_file</code></td>
+          <td>Path to input model file (.mps/.lp)</td>
+          <td>Required</td>
+        </tr>
+        <tr>
+          <td><code>-t</code></td>
+          <td><code>time_limit</code></td>
+          <td>Time limit in seconds</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td><code>-s</code></td>
+          <td><code>sol_path</code></td>
+          <td>Path to output solution file (.sol)</td>
+          <td><code>""</code></td>
+        </tr>
+        <tr>
+          <td><code>-l</code></td>
+          <td><code>log_obj</code></td>
+          <td>Log objective values during search</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td><code>-S</code></td>
+          <td><code>random_seed</code></td>
+          <td>Random seed (0 uses default)</td>
+          <td>0</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-### Step 2: Build
-
-Start with the [solver README]({{ site.data.external_links.repository.readme }}) for the full build workflow.
-
-**Common first build:**
-
-```bash
-./build.sh release
-```
-
-For examples and Python bindings, the same README covers `./build.sh all`, and the [Python bindings README]({{ site.data.external_links.repository.python_readme }}) covers the Python-specific setup path.
-
-The main outputs remain the same at a high level: a solver binary and a static library under `build/`.
-
-### Step 3: Run
-
-Run the solver from the generated `build/` directory against a sample `.mps` or `.lp` instance:
-
-```bash
+  <div class="quickstart-subheading">Example</div>
+  <pre><code class="language-bash"># Solve the bundled sample for 10 seconds and save a solution
 cd build
-./Local-MIP --model_file ../test-set/2club200v15p5scn.mps --time_limit 300
-```
+./Local-MIP --model_file ../test-set/2club200v15p5scn.mps --time_limit 10 --sol_path quickstart.sol --log_obj 1</code></pre>
 
-Use the [solver README]({{ site.data.external_links.repository.readme }}) for more build/run variants and `--help` for the available command-line flags.
+  <div id="using-a-parameter-configuration-file" class="quickstart-subheading">Using a Parameter Configuration File</div>
+  <p>Instead of passing all parameters via command line, you can use a configuration file:</p>
+  <pre><code class="language-bash">cd build
+./Local-MIP --param_set_file ../default.set --model_file ../test-set/2club200v15p5scn.mps</code></pre>
+  <p>The repository includes <code>default.set</code> as a template with all available parameters and their default values. Its default time limit is 10 seconds.</p>
 
----
+  <div class="quickstart-format-list">
+    <span>Configuration file format</span>
+    <ul>
+      <li>One parameter per line: <code>parameter_name = value</code></li>
+      <li>Lines starting with <code>#</code> or <code>;</code> are comments</li>
+      <li>Command-line arguments override values from the configuration file</li>
+    </ul>
+  </div>
 
-## Basic Usage
+</section>
 
-### Command-Line Parameters
+<section id="next-steps" class="quickstart-panel">
+  <div class="quickstart-section-heading">
+    <span>After the First Run</span>
+    <h2>Next Steps</h2>
+  </div>
 
-A representative CLI invocation looks like this:
+  <div class="quickstart-next-grid">
+    <article id="explore-more" class="quickstart-next-card">
+      <div class="card-kicker">Explore More</div>
+      <h3>Docs and examples</h3>
+      <p>Use the website pages for releases, tutorials, and runnable examples.</p>
+      <div class="quickstart-link-row">
+        <a href="/software">Software</a>
+        <a href="/tutorials">Tutorials</a>
+        <a href="/examples">Examples</a>
+      </div>
+    </article>
 
-```bash
-./Local-MIP --model_file <model_file> [options]
-```
+    <article id="use-as-a-library" class="quickstart-next-card">
+      <div class="card-kicker">Use as a Library</div>
+      <h3>C++ and Python</h3>
+      <p>Use the PyPI package for Python, or integrate Local-MIP through the C++ API and repository examples.</p>
+      <div class="quickstart-link-row">
+        <a href="{{ site.data.external_links.repository.pypi }}">PyPI Package</a>
+        <a href="{{ site.data.external_links.repository.readme }}">Solver README</a>
+        <a href="{{ site.data.external_links.repository.python_readme }}">Python README</a>
+      </div>
+    </article>
 
-CLI flags support both short and long forms (for example `-i` or `--model_file`).
+    <article id="run-tests" class="quickstart-next-card">
+      <div class="card-kicker">Run Tests</div>
+      <h3>CTest workflow</h3>
+      <p>Start with the fast unit-test subset from <code>build/</code>; reserve full CTest runs for longer development sweeps.</p>
+      <pre><code class="language-bash">ctest --output-on-failure -R "^(api|callbacks|constraint_recognition|scoring|model_manager|reader|move_operations|neighbor_config)$"</code></pre>
+      <div class="quickstart-link-row">
+        <a href="{{ site.data.external_links.repository.readme }}">Test instructions</a>
+      </div>
+    </article>
+  </div>
+</section>
 
-**Representative Options:**
+<section class="quickstart-panel quickstart-reference-panel">
+  <div class="quickstart-section-heading">
+    <span>References</span>
+    <h2>Where to Look Next</h2>
+  </div>
+  <p>These files contain the full setup details:</p>
+  <div class="quickstart-reference-grid">
+    <a href="{{ site.data.external_links.repository.pypi }}"><span>PyPI package</span><strong>One-line Python installation for Linux x86_64</strong></a>
+    <a href="{{ site.data.external_links.repository.readme }}"><span>Solver README</span><strong>CLI build, run, parameter-file usage, and tests</strong></a>
+    <a href="{{ site.data.external_links.repository.python_readme }}"><span>Python bindings README</span><strong>Python installation, demos, and development builds</strong></a>
+    <a href="{{ site.data.external_links.repository.model_api_readme }}"><span>Model API example README</span><strong>Example-specific build and run notes</strong></a>
+    <a href="{{ site.data.external_links.repository.examples_tree }}"><span>Example directory</span><strong>Per-demo README files and source code</strong></a>
+    <a href="{{ site.data.external_links.repository.releases }}"><span>GitHub Releases</span><strong>Download a packaged source archive</strong></a>
+    <a href="{{ site.data.external_links.repository.home }}"><span>Repository home</span><strong>Browse the project online</strong></a>
+  </div>
+</section>
 
-| Flag | Parameter | Description | Default |
-|------|-----------|-------------|---------|
-| `-i` | `model_file` | Path to input model file (.mps/.lp) | Required |
-| `-t` | `time_limit` | Time limit in seconds | 10 |
-| `-s` | `sol_path` | Path to output solution file (.sol) | "" |
-| `-l` | `log_obj` | Log objective values during search | 1 |
-| `-S` | `random_seed` | Random seed (0 uses default) | 0 |
+<section id="troubleshooting" class="quickstart-panel">
+  <div class="quickstart-section-heading">
+    <span>Checks</span>
+    <h2>Troubleshooting</h2>
+  </div>
 
-**Example:**
+  <div class="quickstart-troubleshooting-grid">
+    <article class="quickstart-trouble-card">
+      <span>Build issue</span>
+      <h3>CMake version too old</h3>
+      <p>Install CMake 3.15 or later.</p>
+    </article>
+    <article class="quickstart-trouble-card">
+      <span>Build issue</span>
+      <h3>C++20 compiler not found</h3>
+      <p>Install a C++20-capable compiler (GCC or Clang) and ensure it is on your PATH.</p>
+    </article>
+    <article class="quickstart-trouble-card">
+      <span>Runtime issue</span>
+      <h3>Cannot find input file</h3>
+      <p>Run from the <code>build/</code> directory or use absolute paths.</p>
+    </article>
+    <article class="quickstart-trouble-card">
+      <span>Runtime issue</span>
+      <h3>Slow performance</h3>
+      <p>Prefer a release build when you want the best runtime performance.</p>
+    </article>
+  </div>
+</section>
 
-```bash
-# Solve with 5-minute timeout and save solution
-./Local-MIP --model_file problem.mps --time_limit 300 --sol_path solution.sol --log_obj 1
-```
+<section id="getting-help" class="quickstart-panel quickstart-help-panel">
+  <div class="quickstart-section-heading">
+    <span>Support</span>
+    <h2>Getting Help</h2>
+  </div>
+  <div class="quickstart-help-grid">
+    <a href="/tutorials">Tutorials</a>
+    <a href="/examples">Examples</a>
+    <a href="{{ site.data.external_links.repository.home }}">GitHub repository</a>
+    <a href="{{ site.data.external_links.repository.issues }}">Open an issue</a>
+  </div>
+</section>
 
-### Using a Parameter Configuration File
-
-Instead of passing all parameters via command line, you can use a configuration file:
-
-```bash
-./Local-MIP --param_set_file ../default.set --model_file ../test-set/2club200v15p5scn.mps
-```
-
-The repository includes `default.set` as a template with all available parameters and their default values.
-
-**Configuration File Format:**
-- One parameter per line: `parameter_name = value`
-- Lines starting with `#` or `;` are comments
-- Command-line arguments override values from the configuration file
-
----
-
-## Next Steps
-
-### Explore More
-
-- **[Software Page](/software)** - Get the latest version and previous releases
-- **[Tutorials](/tutorials)** - Complete guide and parameter reference
-- **[Examples](/examples)** - Code examples for C++ API and callbacks
-
-### Use as a Library
-
-- **C++ API** - Integrate Local-MIP into your C++ projects
-- **Python Bindings** - Use from Python with pybind11
-
-See the [Examples page](/examples) for runnable code. For setup and integration details, use `README.md` and `python-bindings/README.md`.
-
-### Run Tests
-
-CTest-based verification is part of the main project workflow. The [solver README]({{ site.data.external_links.repository.readme }}) lists the available test targets and filters.
-
-## Where to Look Next
-
-These files contain the full setup details:
-
-- [solver README]({{ site.data.external_links.repository.readme }}) - CLI build, run, parameter-file usage, and tests
-- [Python bindings README]({{ site.data.external_links.repository.python_readme }}) - Python installation, demos, and development builds
-- [Model API example README]({{ site.data.external_links.repository.model_api_readme }}) - Example-specific build and run notes
-- [Example directory on GitHub]({{ site.data.external_links.repository.examples_tree }}) - Per-demo README files and source code
-- [GitHub Releases]({{ site.data.external_links.repository.releases }}) - Download a packaged source archive
-- [Repository home]({{ site.data.external_links.repository.home }}) - Browse the project online
-
----
-
-## Troubleshooting
-
-### Build Issues
-
-**Problem:** CMake version too old
-Solution: Install CMake 3.15 or later.
-
-**Problem:** C++20 compiler not found
-Solution: Install a C++20-capable compiler (GCC or Clang) and ensure it is on your PATH.
-
-### Runtime Issues
-
-**Problem:** Cannot find input file
-Solution: Ensure you run from the build/ directory or use absolute paths.
-
-**Problem:** Slow performance
-Solution: Prefer a release build when you want the best runtime performance.
-
----
-
-## Getting Help
-
-If you encounter problems:
-
-1. Check the [Tutorials](/tutorials) for detailed information
-2. Review the [Examples](/examples) for code samples
-3. Visit the [GitHub repository]({{ site.data.external_links.repository.home }}) for source code
-4. Open an [issue on GitHub]({{ site.data.external_links.repository.issues }}) for bug reports
-
----
-
-[← Back to Home](/) | [Software →](/software)
+<div class="quickstart-page-nav">
+  <a href="/">Back to Home</a>
+  <a href="/software">Software</a>
+</div>
 
   </div>
 </div>

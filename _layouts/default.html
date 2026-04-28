@@ -344,6 +344,28 @@
           table.parentNode.insertBefore(wrapper, table);
           wrapper.appendChild(table);
         });
+
+        // Copy buttons for compact inline commands outside pre/code blocks.
+        const inlineCopyButtons = document.querySelectorAll('[data-copy-text]');
+        inlineCopyButtons.forEach(function(button) {
+          button.addEventListener('click', function() {
+            const textToCopy = button.getAttribute('data-copy-text');
+            if (!textToCopy) return;
+
+            navigator.clipboard.writeText(textToCopy).then(function() {
+              const originalText = button.textContent;
+              button.textContent = 'Copied!';
+              button.classList.add('copied');
+
+              setTimeout(function() {
+                button.textContent = originalText;
+                button.classList.remove('copied');
+              }, 2000);
+            }).catch(function(err) {
+              console.error('Failed to copy:', err);
+            });
+          });
+        });
       });
     </script>
   </body>
