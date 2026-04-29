@@ -1,116 +1,165 @@
 ---
 layout: default
 title: Papers
+description: Publications, citation guidance, and version notes for Local-MIP research and software.
+keywords: Local-MIP papers, citation, Artificial Intelligence 2025, CP 2024, mixed integer programming, local search
 ---
 
 <div class="doc-layout">
   <nav class="doc-sidebar" aria-label="Papers navigation">
     <div class="doc-sidebar-title">On this page</div>
     <ul class="doc-sidebar-list">
-      <li><a href="#citation-notice">Citation Notice</a></li>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#citation-guidance">Citation Guidance</a></li>
       <li><a href="#publications">Publications</a>
+        <ul class="doc-sidebar-sublist">
+          <li><a href="#ai-2025">AI 2025</a></li>
+          <li><a href="#cp-2024">CP 2024</a></li>
+        </ul>
       </li>
+      <li><a href="#bibtex">BibTeX</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
 
-  <div class="doc-content" markdown="1">
-# Papers & Publications
+  <div class="doc-content papers-content" markdown="1">
+# Papers
 
-Academic publications related to Local-MIP.
+<section id="overview" class="papers-hero">
+  <div class="papers-hero-copy">
+    <p class="papers-kicker">Research Record</p>
+    <h1>Papers & citations</h1>
+    <p>Use this page to cite the published Local-MIP papers and to choose the software version that matches the experiments you want to reproduce.</p>
+  </div>
+  <div class="papers-hero-facts" aria-label="Publication summary">
+    <div><span>Journal</span><strong>Artificial Intelligence 2025</strong></div>
+    <div><span>Conference</span><strong>CP 2024 Best Paper Award</strong></div>
+    <div><span>Reproduction</span><strong>Local-MIP 1.0 archive</strong></div>
+  </div>
+</section>
 
----
+<section id="citation-guidance" class="papers-panel papers-notice-panel">
+  <div class="papers-section-heading">
+    <span>Citation Guidance</span>
+    <h2>Match the paper to the software version</h2>
+  </div>
+  <div class="papers-notice-grid">
+    <article>
+      <span>Published experiments</span>
+      <p>The CP 2024 and Artificial Intelligence 2025 papers report experiments obtained with <strong>Local-MIP 1.0</strong>. Use the archived v1.0.1 release when reproducing those results.</p>
+      <a href="{{ site.data.external_links.repository.archive_v1_0_1 }}">Open v1.0.1 archive</a>
+    </article>
+    <article>
+      <span>Current software</span>
+      <p>The current public repository provides the 2.x codebase with C++/Python APIs, callback hooks, examples, tests, and the MIT license. Cite the published papers for the Local-MIP algorithmic work, and cite the repository when referring to the current software implementation.</p>
+      <a href="{{ site.data.external_links.repository.home }}">Open GitHub repository</a>
+    </article>
+  </div>
+</section>
 
-## Citation Notice
+<section id="publications" class="papers-panel papers-publications-panel">
+  <div class="papers-section-heading">
+    <span>Publications</span>
+    <h2>Published Local-MIP papers</h2>
+  </div>
 
-**Important:** The experimental results reported in the papers below were obtained using **Local-MIP 1.0**, which has been archived in [Local-MIP 1.0](https://github.com/shaowei-cai-group/Local-MIP/releases/tag/v1.0.1) of the repository.
+  <article id="ai-2025" class="papers-publication papers-publication-featured">
+    <div class="papers-publication-meta">
+      <span>Journal Article</span>
+      <strong>Artificial Intelligence, 2025</strong>
+    </div>
+    <div class="papers-publication-body">
+      <h3>Local-MIP: Efficient local search for mixed integer programming</h3>
+      <p class="papers-authors">Peng Lin, Shaowei Cai, Mengchuan Zou, Jinkun Lin</p>
+      <p>The journal article presents Local-MIP as an efficient local-search solver for mixed integer programming and is the primary citation for the published Local-MIP algorithmic work.</p>
+      <div class="papers-link-row">
+        <a href="https://doi.org/10.1016/j.artint.2025.104405">DOI</a>
+        <a href="https://www.sciencedirect.com/science/article/pii/S0004370225001249">Publisher page</a>
+      </div>
+    </div>
+  </article>
 
-If you are reproducing experimental results from these papers, please use Local-MIP 1.0. The current version (v2.0) includes additional features and improvements.
-
----
-
-## Publications
-
-### 1. Journal Version (Artificial Intelligence, 2025)
-
-**Title:** Local-MIP: Efficient local search for mixed integer programming
-
-**Authors:** Peng Lin, Shaowei Cai, Mengchuan Zou, Jinkun Lin
-
-**Links:**
-- **DOI:** [10.1016/j.artint.2025.104405](https://doi.org/10.1016/j.artint.2025.104405)
-- **Publisher:** [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0004370225001249)
-
-**BibTeX:**
-
-{% raw %}
-```bibtex
-@article{LIN2025104405,
-  title = {Local-MIP: Efficient local search for mixed integer programming},
-  journal = {Artificial Intelligence},
-  volume = {348},
-  pages = {104405},
-  year = {2025},
-  issn = {0004-3702},
-  doi = {https://doi.org/10.1016/j.artint.2025.104405},
-  url = {https://www.sciencedirect.com/science/article/pii/S0004370225001249},
-  author = {Peng Lin and Shaowei Cai and Mengchuan Zou and Jinkun Lin},
-}
-```
-{% endraw %}
-
----
-
-### 2. Conference Version (CP 2024) 🏆 **Best Paper Award**
-
-**Title:** An Efficient Local Search Solver for Mixed Integer Programming
-
-**Authors:** Peng Lin, Mengchuan Zou, Shaowei Cai
-
-**Award:** 🏆 **Best Paper Award** at CP 2024
-
-**Links:**
-- **DOI:** [10.4230/LIPIcs.CP.2024.19](https://doi.org/10.4230/LIPIcs.CP.2024.19)
-- **Publisher:** [Dagstuhl Research Online Publication Server](https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.CP.2024.19)
-
-**BibTeX:**
-
-{% raw %}
-```bibtex
-@InProceedings{lin_et_al:LIPIcs.CP.2024.19,
-  author    = {Lin, Peng and Zou, Mengchuan and Cai, Shaowei},
-  title     = {{An Efficient Local Search Solver for Mixed Integer Programming}},
-  booktitle = {30th International Conference on Principles and Practice of Constraint Programming (CP 2024)},
-  pages     = {19:1--19:19},
-  series    = {Leibniz International Proceedings in Informatics (LIPIcs)},
-  ISBN      = {978-3-95977-336-2},
-  ISSN      = {1868-8969},
-  year      = {2024},
-  volume    = {307},
-  editor    = {Shaw, Paul},
-  publisher = {Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik},
-  address   = {Dagstuhl, Germany},
-  URL       = {https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.CP.2024.19},
-  URN       = {urn:nbn:de:0030-drops-206999},
-  doi       = {10.4230/LIPIcs.CP.2024.19},
-  annote    = {Keywords: Mixed Integer Programming, Local Search, Constraint Programming}
-}
-```
-{% endraw %}
+  <article id="cp-2024" class="papers-publication">
+    <div class="papers-publication-meta">
+      <span>Conference Paper</span>
+      <strong>CP 2024 Best Paper Award</strong>
+    </div>
+    <div class="papers-publication-body">
+      <h3>An Efficient Local Search Solver for Mixed Integer Programming</h3>
+      <p class="papers-authors">Peng Lin, Mengchuan Zou, Shaowei Cai</p>
+      <p>The CP 2024 paper is the conference version of the Local-MIP work and received the Best Paper Award at CP 2024.</p>
+      <div class="papers-link-row">
+        <a href="https://doi.org/10.4230/LIPIcs.CP.2024.19">DOI</a>
+        <a href="https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.CP.2024.19">Publisher page</a>
+        <a href="{{ '/assets/pdf/best-paper.pdf' | relative_url }}">Award certificate</a>
+      </div>
+    </div>
+  </article>
+</section>
 
 
----
 
-## Contact
+<section id="bibtex" class="papers-panel papers-bibtex-panel">
+  <div class="papers-section-heading">
+    <span>BibTeX</span>
+    <h2>Copy citation entries</h2>
+  </div>
 
-For questions about the papers or research collaboration:
-- peng.lin.csor@gmail.com
-- **GitHub Issues:** [Local-MIP Repository](https://github.com/shaowei-cai-group/Local-MIP/issues)
-- **GitHub Discussions:** [Start a discussion](https://github.com/shaowei-cai-group/Local-MIP/discussions)
+  <article class="papers-bibtex-card">
+    <h3>Artificial Intelligence 2025</h3>
+    <div class="papers-bibtex-box" aria-label="Artificial Intelligence 2025 BibTeX entry">
+      <span>@article{LIN2025104405,</span>
+      <span>title = {Local-MIP: Efficient local search for mixed integer programming},</span>
+      <span>journal = {Artificial Intelligence},</span>
+      <span>volume = {348},</span>
+      <span>pages = {104405},</span>
+      <span>year = {2025},</span>
+      <span>issn = {0004-3702},</span>
+      <span>doi = {https://doi.org/10.1016/j.artint.2025.104405},</span>
+      <span>author = {Peng Lin and Shaowei Cai and Mengchuan Zou and Jinkun Lin}</span>
+      <span>}</span>
+    </div>
+  </article>
 
----
+  <article class="papers-bibtex-card">
+    <h3>CP 2024</h3>
+    <div class="papers-bibtex-box" aria-label="CP 2024 BibTeX entry">
+      <span>@InProceedings{lin_et_al:LIPIcs.CP.2024.19,</span>
+      <span>author = {Lin, Peng and Zou, Mengchuan and Cai, Shaowei},</span>
+      <span>title = {An Efficient Local Search Solver for Mixed Integer Programming},</span>
+      <span>booktitle = {30th International Conference on Principles and Practice of Constraint Programming (CP 2024)},</span>
+      <span>pages = {19:1--19:19},</span>
+      <span>series = {Leibniz International Proceedings in Informatics (LIPIcs)},</span>
+      <span>ISBN = {978-3-95977-336-2},</span>
+      <span>ISSN = {1868-8969},</span>
+      <span>year = {2024},</span>
+      <span>volume = {307},</span>
+      <span>editor = {Shaw, Paul},</span>
+      <span>publisher = {Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik},</span>
+      <span>address = {Dagstuhl, Germany},</span>
+      <span>doi = {10.4230/LIPIcs.CP.2024.19},</span>
+      <span>annote = {Keywords: Mixed Integer Programming, Local Search, Constraint Programming}</span>
+      <span>}</span>
+    </div>
+  </article>
+</section>
 
-[← Back to Home](/) | [MIPLIB Records →](/miplib-records)
+<section id="contact" class="papers-panel papers-contact-panel">
+  <div class="papers-section-heading">
+    <span>Contact</span>
+    <h2>Questions about citations or reproduction</h2>
+  </div>
+  <div class="papers-contact-grid">
+    <a href="mailto:peng.lin.csor@gmail.com"><span>Email</span><strong>peng.lin.csor@gmail.com</strong></a>
+    <a href="{{ site.data.external_links.repository.issues }}"><span>GitHub</span><strong>Open an issue</strong></a>
+    <a href="https://github.com/shaowei-cai-group/Local-MIP/discussions"><span>GitHub</span><strong>Start a discussion</strong></a>
+  </div>
+</section>
+
+<nav class="papers-page-nav" aria-label="Papers page navigation">
+  <a href="/"><span>Previous</span><strong>Home</strong></a>
+  <a href="/miplib-records"><span>Next</span><strong>MIPLIB Records</strong></a>
+</nav>
 
   </div>
 </div>
