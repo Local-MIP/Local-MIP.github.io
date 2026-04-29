@@ -4048,6 +4048,230 @@ hr {
 }
 
 /* ============================================
+   MIPLIB Records - Table + Resource Grid
+   (hero/panel/heading reuse .papers-* classes)
+   ============================================ */
+
+.papers-panel-intro {
+  color: var(--color-text-secondary);
+  margin: 0 0 1rem;
+  line-height: 1.65;
+}
+
+.papers-panel-intro a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.papers-records-panel {
+  padding: 1.5rem;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: var(--shadow-md);
+}
+
+.mr-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-elevated);
+}
+
+.mr-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.mr-table thead {
+  background: var(--color-bg-tertiary);
+}
+
+.mr-table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  border-bottom: 2px solid var(--color-border-subtle);
+  white-space: nowrap;
+}
+
+.mr-table td {
+  padding: 0.65rem 1rem;
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-border-subtle);
+  vertical-align: middle;
+}
+
+.mr-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.mr-table tbody tr:hover {
+  background: rgba(79, 70, 229, 0.03);
+}
+
+.mr-table td a {
+  color: var(--color-primary);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.mr-table td a:hover {
+  text-decoration: underline;
+}
+
+.mr-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+.mr-highlight {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.mr-highlight strong {
+  color: var(--color-primary);
+}
+
+.mr-footnote {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin: 0.75rem 0 0;
+}
+
+.papers-resource-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.papers-resource-grid a {
+  display: block;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-elevated);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.papers-resource-grid a:hover,
+.papers-resource-grid a:focus {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.papers-resource-grid strong {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-top: 0.15rem;
+}
+
+/* MIPLIB Records - Dark Mode */
+[data-theme="dark"] .papers-records-panel {
+  background: #1e293b;
+  border-color: rgba(226, 232, 240, 0.25);
+}
+
+[data-theme="dark"] .papers-panel-intro a {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .mr-table-wrap {
+  background: #1e293b;
+  border-color: rgba(226, 232, 240, 0.25);
+}
+
+[data-theme="dark"] .mr-table thead {
+  background: #233146;
+}
+
+[data-theme="dark"] .mr-table th {
+  color: #94a3b8;
+  border-bottom-color: rgba(226, 232, 240, 0.25);
+}
+
+[data-theme="dark"] .mr-table td {
+  color: #cbd5e1;
+  border-bottom-color: rgba(226, 232, 240, 0.15);
+}
+
+[data-theme="dark"] .mr-table tbody tr:hover {
+  background: rgba(148, 163, 184, 0.06);
+}
+
+[data-theme="dark"] .mr-table td a {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .mr-highlight {
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .mr-highlight strong {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .mr-footnote {
+  color: #64748b;
+}
+
+[data-theme="dark"] .papers-resource-grid a {
+  background: #233146;
+  border-color: rgba(226, 232, 240, 0.2);
+}
+
+[data-theme="dark"] .papers-resource-grid strong {
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .papers-resource-grid a:hover,
+[data-theme="dark"] .papers-resource-grid a:focus {
+  border-color: #94a3b8;
+  box-shadow: 0 2px 8px rgba(148, 163, 184, 0.1);
+}
+
+/* MIPLIB Records - Responsive */
+@media (max-width: 768px) {
+  .papers-resource-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .mr-table {
+    font-size: 0.8rem;
+  }
+
+  .mr-table th,
+  .mr-table td {
+    padding: 0.5rem 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .papers-resource-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mr-table th,
+  .mr-table td {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* ============================================
    Tables
    ============================================ */
 
