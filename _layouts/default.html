@@ -48,9 +48,13 @@
     <!-- Theme initialization (prevent flash) -->
     <script>
       (function() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-          document.documentElement.setAttribute('data-theme', 'dark');
+        try {
+          const savedTheme = localStorage.getItem('theme');
+          if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+          }
+        } catch (err) {
+          // Keep rendering even when storage is unavailable.
         }
       })();
     </script>
@@ -177,13 +181,17 @@
         themeToggle.addEventListener('click', function() {
           const currentTheme = document.documentElement.getAttribute('data-theme');
           const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-          
+
           if (newTheme === 'light') {
             document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
           } else {
             document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
+          }
+
+          try {
+            localStorage.setItem('theme', newTheme);
+          } catch (err) {
+            // Theme still changes for the current page when storage is blocked.
           }
         });
       }
@@ -241,6 +249,32 @@
             top: 0,
             behavior: 'smooth'
           });
+        });
+      }
+
+      function copyTextToClipboard(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(text);
+        }
+
+        return new Promise(function(resolve, reject) {
+          const textArea = document.createElement('textarea');
+          textArea.value = text;
+          textArea.setAttribute('readonly', '');
+          textArea.style.position = 'fixed';
+          textArea.style.top = '-9999px';
+          textArea.style.left = '-9999px';
+          document.body.appendChild(textArea);
+          textArea.select();
+
+          try {
+            const successful = document.execCommand('copy');
+            document.body.removeChild(textArea);
+            successful ? resolve() : reject(new Error('Copy command failed'));
+          } catch (err) {
+            document.body.removeChild(textArea);
+            reject(err);
+          }
         });
       }
 
@@ -314,7 +348,7 @@
               }
             }
 
-            navigator.clipboard.writeText(textToCopy).then(function() {
+            copyTextToClipboard(textToCopy).then(function() {
               copyButton.textContent = 'Copied!';
               copyButton.classList.add('copied');
 
@@ -352,7 +386,7 @@
             const textToCopy = button.getAttribute('data-copy-text');
             if (!textToCopy) return;
 
-            navigator.clipboard.writeText(textToCopy).then(function() {
+            copyTextToClipboard(textToCopy).then(function() {
               const originalText = button.textContent;
               button.textContent = 'Copied!';
               button.classList.add('copied');

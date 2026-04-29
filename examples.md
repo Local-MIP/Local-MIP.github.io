@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Examples
-description: Code examples for the Local-MIP C++ API, Python bindings, and callback interfaces.
-keywords: Local-MIP examples, C++ API, Python bindings, callbacks, MIP
+description: Runnable Local-MIP examples for file-based solving, modeling, callbacks, neighbor configuration, and scoring.
+keywords: Local-MIP examples, C++ API, Python bindings, callbacks, neighbor configuration, model API, MIP
 ---
 
 <div class="doc-layout">
@@ -10,775 +10,255 @@ keywords: Local-MIP examples, C++ API, Python bindings, callbacks, MIP
     <div class="doc-sidebar-title">On this page</div>
     <ul class="doc-sidebar-list">
       <li><a href="#overview">Overview</a></li>
-      <li><a href="#simple-api">Simple API</a></li>
-      <li><a href="#modeling-api">Modeling API</a></li>
-      <li><a href="#start-callback">Start Callback</a></li>
-      <li><a href="#restart-callback">Restart Callback</a></li>
-      <li><a href="#weight-callback">Weight Callback</a></li>
-      <li><a href="#neighbor-config">Neighbor Config</a></li>
-      <li><a href="#neighbor-userdata">Neighbor Userdata</a></li>
-      <li><a href="#neighbor-scoring">Neighbor Scoring</a></li>
-      <li><a href="#lift-scoring">Lift Scoring</a></li>
-      <li><a href="#building-all-examples">Build</a></li>
-      <li><a href="#running-examples">Running Examples</a></li>
+      <li><a href="#build-and-run">Build and Run</a></li>
+      <li><a href="#example-map">Example Map</a>
+        <ul class="doc-sidebar-sublist">
+          <li><a href="#simple-api">Simple API</a></li>
+          <li><a href="#model-api">Model API</a></li>
+          <li><a href="#start-callback">Start</a></li>
+          <li><a href="#restart-callback">Restart</a></li>
+          <li><a href="#weight-callback">Weight</a></li>
+          <li><a href="#neighbor-config">Neighbor Config</a></li>
+          <li><a href="#neighbor-userdata">User Data</a></li>
+          <li><a href="#neighbor-scoring">Neighbor Scoring</a></li>
+          <li><a href="#lift-scoring">Lift Scoring</a></li>
+        </ul>
+      </li>
+      <li><a href="#quick-recipes">Quick Recipes</a></li>
+      <li><a href="#python-demos">Python Demos</a></li>
       <li><a href="#next-steps">Next Steps</a></li>
     </ul>
   </nav>
 
-  <div class="doc-content" markdown="1">
-
+  <div class="doc-content examples-content" markdown="1">
 # Examples
 
-These examples show how to use Local-MIP for file-based solving, in-memory modeling, and callback-based customization.
-
----
-
-## Overview
-
-The `example/` directory contains small runnable demos for the public APIs and callback interfaces.
-
-For setup and usage details, start with these files:
-
-- [solver README]({{ site.data.external_links.repository.readme }})
-- [Model API example README]({{ site.data.external_links.repository.model_api_readme }})
-- [Example directory on GitHub]({{ site.data.external_links.repository.examples_tree }}) for per-demo README files
-
-Each example is meant to show one part of the solver interface in isolation, so it is easier to adapt for your own code.
-
----
-
-## Simple API
-
-**Location:** `example/simple-api/`
-
-A minimal example demonstrating basic solver usage. See `example/simple-api/simple_api.cpp`.
-
-This is the shortest C++ example for solving a model file with Local-MIP.
-
-### What It Does
-
-- Creates a solver instance
-- Loads a MIP problem from file
-- Sets basic parameters (time limit, solution output)
-- Runs the solver
-- Retrieves solution results
-
-### Code Example
-
-```cpp
-#include "local_mip/Local_MIP.h"
-
-int main()
-{
-  Local_MIP solver;
-
-  // Configure solver
-  solver.set_model_file("test-set/2club200v15p5scn.mps");
-  solver.set_sol_path("example_simple.sol");
-  solver.set_time_limit(60.0);
-  solver.set_log_obj(true);
-
-  // Run solver
-  solver.run();
-
-  // Check results
-  if (solver.is_feasible())
-  {
-    printf("Objective value: %.10f\n", solver.get_obj_value());
-  }
-
-  return 0;
-}
-```
-
-### Key API Methods
-
-| Method | Description |
-|--------|-------------|
-| `set_model_file(path)` | Load MPS/LP file |
-| `set_time_limit(seconds)` | Set time limit in seconds |
-| `set_sol_path(path)` | Specify solution output file |
-| `set_log_obj(true/false)` | Enable objective value logging |
-| `run()` | Start solving |
-| `is_feasible()` | Check if feasible solution found |
-| `get_obj_value()` | Get objective value |
-
-### Where to Go Next
-
-Use the [solver README]({{ site.data.external_links.repository.readme }}) for the main build flow and the [example directory on GitHub]({{ site.data.external_links.repository.examples_tree }}) for per-demo notes.
-
----
-
-## Modeling API
-
-Local-MIP supports modeling via the C++/Python API.
-
-**Locations (from the solver repo root):**
-
-- C++ API header: `src/local_mip/Local_MIP.h`
-- Modeling API header: `src/model_api/Model_API.h`
-- C++ demo: `example/model-api/model_api_demo.cpp`
-- Python demo: `python-bindings/model_api_demo.py`
-
-**How to continue:**
-
-- C++ demo: see the [Model API example README]({{ site.data.external_links.repository.model_api_readme }})
-- Python demo: see the [Python bindings README]({{ site.data.external_links.repository.python_readme }})
-
-### C++ Demo: `example/model-api/model_api_demo.cpp`
-
-This demo shows the end-to-end flow of **building a small MIP in memory** and solving it:
-
-- **Enable modeling mode**: `solver.enable_model_api()`
-- **Set objective sense**: maximize (`Model_API::Sense::maximize`)
-- **Add variables** with bounds, objective coefficients, and types (continuous vs. integer)
-- **Add linear constraints** using the *range* form `lb <= sum(a_j * x_j) <= ub`
-- **Solve and query results**: `run()`, `get_obj_value()`, `is_feasible()`, `get_solution()`
-
-**Model being built (as written in the demo comments):**
-
-- **Maximize**: `x1 + 2*x2 + 3*x3 + x4`
-- **Subject to**:
-  - `-x1 + x2 + x3 + 10*x4 <= 20`
-  - `x1 - 3*x2 + x3 <= 30`
-  - `x2 - 3.5*x4 = 0`
-- **Bounds / integrality**:
-  - `0 <= x1 <= 40`
-  - `0 <= x2`, `0 <= x3`
-  - `2 <= x4 <= 3`, and `x4` is integer
-
-**Key calls (in order):**
-
-- `solver.enable_model_api()`
-- `solver.set_sense(Model_API::Sense::maximize)`
-- `solver.add_var(...)` four times to create `x1..x4` (with bounds, objective coefficients, and `Var_Type`)
-- `solver.add_con(lb, ub, cols, coefs)` three times to add constraints (range form)
-- `solver.run()`, then query `get_obj_value() / is_feasible() / get_solution()`
-
-It also shows an alternative interface to add constraints by **variable names** (commented out in the demo).
-
-### C++ Demo Code (full): `example/model-api/model_api_demo.cpp`
-
-```cpp
-int main()
-{
-  const double inf = std::numeric_limits<double>::infinity();
-
-  // Create a Local-MIP solver instance
-  Local_MIP solver;
-
-  // Enable model API mode
-  solver.enable_model_api();
-
-  // Set optimization sense to maximize
-  solver.set_sense(Model_API::Sense::maximize);
-
-  // Set solver parameters
-  solver.set_time_limit(1.0);
-  solver.set_log_obj(true);
-
-  // Add variables
-  std::cout << "Building model...\n";
-
-  int x1 = solver.add_var("x1", 0.0, 40.0, 1.0, Var_Type::real);
-  int x2 = solver.add_var("x2", 0.0, inf, 2.0, Var_Type::real);
-  int x3 = solver.add_var("x3", 0.0, inf, 3.0, Var_Type::real);
-  int x4 = solver.add_var("x4", 2.0, 3.0, 1.0, Var_Type::general_integer);
-
-  assert(x1 == 0 && x2 == 1 && x3 == 2 && x4 == 3);
-
-  std::cout << "Added 4 variables: x1, x2, x3, x4\n";
-
-  // Add constraints
-  // Constraint 1: -x1 + x2 + x3 + 10*x4 <= 20
-  solver.add_con(-inf, 20.0, std::vector<int>{x1, x2, x3, x4},
-                 std::vector<double>{-1.0, 1.0, 1.0, 10.0});
-
-  // Constraint 2: x1 - 3*x2 + x3 <= 30
-  solver.add_con(-inf, 30.0, std::vector<int>{x1, x2, x3},
-                 std::vector<double>{1.0, -3.0, 1.0});
-
-  // Constraint 3: x2 - 3.5*x4 = 0
-  solver.add_con(0.0, 0.0, std::vector<int>{x2, x4},
-                 std::vector<double>{1.0, -3.5});
-  // Run the solver
-  solver.run();
-  // Get results
-  std::cout << "\nResults:\n";
-  std::cout << "  Objective value: " << solver.get_obj_value() << "\n";
-  std::cout << "  Feasible: " << (solver.is_feasible() ? "Yes" : "No") << "\n";
-  if (solver.is_feasible())
-  {
-    const auto& solution = solver.get_solution();
-    std::cout << "  Solution:\n";
-    std::cout << "    x1 = " << solution[0] << "\n";
-    std::cout << "    x2 = " << solution[1] << "\n";
-    std::cout << "    x3 = " << solution[2] << "\n";
-    std::cout << "    x4 = " << solution[3] << "\n";
-  }
-  return 0;
-}
-```
-
-### Python Demo: `python-bindings/model_api_demo.py`
-
-This script mirrors the C++ demo and is a good reference for the **Python binding names**:
-
-- `lm.LocalMIP()` ↔ `Local_MIP`
-- `solver.enable_model_api()`
-- `solver.set_sense(lm.Sense.maximize)`
-- `solver.add_var(..., lm.VarType.real/general_integer)`
-- `solver.add_con(lb, ub, cols, coefs)`
-- `solver.run()`, then `get_obj_value()`, `is_feasible()`, `get_solution()`
-
-**Key calls (in order):**
-
-- `solver = lm.LocalMIP()`
-- `solver.enable_model_api()`
-- `solver.set_sense(lm.Sense.maximize)`
-- `solver.add_var(..., lm.VarType.real/general_integer)` to add variables
-- `solver.add_con(lb, ub, cols, coefs)` to add constraints
-- `solver.run()`, then `get_obj_value() / is_feasible() / get_solution()`
-
-### Python Demo Code: `python-bindings/model_api_demo.py`
-
-```python
-
-def main():
-    inf = math.inf
-
-    solver = lm.LocalMIP()
-    solver.enable_model_api()
-    solver.set_sense(lm.Sense.maximize)
-
-    solver.set_time_limit(1.0)
-    solver.set_log_obj(True)
-
-    print("Building model...")
-
-    x1 = solver.add_var("x1", 0.0, 40.0, 1.0, lm.VarType.real)
-    x2 = solver.add_var("x2", 0.0, inf, 2.0, lm.VarType.real)
-    x3 = solver.add_var("x3", 0.0, inf, 3.0, lm.VarType.real)
-    x4 = solver.add_var("x4", 2.0, 3.0, 1.0, lm.VarType.general_integer)
-
-    print("Added 4 variables: x1, x2, x3, x4")
-
-    solver.add_con(-inf, 20.0, [x1, x2, x3, x4], [-1.0, 1.0, 1.0, 10.0])
-    solver.add_con(-inf, 30.0, [x1, x2, x3], [1.0, -3.0, 1.0])
-    solver.add_con(0.0, 0.0, [x2, x4], [1.0, -3.5])
-
-    solver.run()
-
-    print("\nResults:")
-    print("  Objective value:", solver.get_obj_value())
-    print("  Feasible:", "Yes" if solver.is_feasible() else "No")
-
-    if solver.is_feasible():
-        sol = solver.get_solution()
-        print("  Solution:")
-        print("    x1 =", sol[0])
-        print("    x2 =", sol[1])
-        print("    x3 =", sol[2])
-        print("    x4 =", sol[3])
-```
-
----
-
-## Start Callback
-
-**Location:** `example/start-callback/`
-
-Demonstrates custom initialization strategies before search begins.
-
-### Purpose
-
-Initialize variable values using custom logic instead of the default start method.
-
-### Key Features
-
-- Access to all variables via context
-- Use RNG for reproducible randomization
-- Pass custom state via `user_data`
-
-### Code Snippet
-
-```cpp
-int call_count = 0;
-
-Local_Search::Start_Cbk cbk = [](Start::Start_Ctx& ctx, void* user_data)
-{
-  auto& values = ctx.m_var_current_value;
-  auto& rng = ctx.m_rng;
-  const auto& binary_vars = ctx.m_shared.m_binary_idx_list;
-
-  if (user_data)
-  {
-    int* counter = static_cast<int*>(user_data);
-    (*counter)++;
-    printf("Callback called %d time(s)\n", *counter);
-  }
-
-  std::uniform_int_distribution<int> dist(0, 1);
-  for (size_t var_idx : binary_vars)
-  {
-    values[var_idx] = dist(rng);
-  }
-};
-```
-
-### Use Cases
-
-- Random initialization
-- Heuristic-based initialization
-- Using prior knowledge of problem structure
-
----
-
-## Restart Callback
-
-**Location:** `example/restart-callback/`
-
-Demonstrates custom restart strategies when search stagnates.
-
-### Purpose
-
-Control what happens when the solver triggers a restart (perturb solution, reset weights, etc.).
-
-### Key Features
-
-- Modify current variable values
-- Adjust constraint weights
-- Implement custom restart strategies
-
-### Code Snippet
-
-```cpp
-void my_restart_callback(Restart::Restart_Ctx& ctx, void* user_data)
-{
-  auto& shared = ctx.m_shared;
-
-  // Flip a subset of binary variables
-  for (size_t idx : shared.m_binary_idx_list)
-  {
-    if (ctx.m_rng() % 100 < 30)  // 30% probability
-    {
-      ctx.m_var_current_value[idx] = 1.0 - ctx.m_var_current_value[idx];
-    }
-  }
-
-  // Reset all constraint weights
-  for (size_t i = 0; i < ctx.m_con_weight.size(); ++i)
-  {
-    ctx.m_con_weight[i] = 1.0;
-  }
-}
-```
-
-### Use Cases
-
-- Diversification strategies
-- Weight reset schemes
-- Hybrid restart approaches
-
----
-
-## Weight Callback
-
-**Location:** `example/weight-callback/`
-
-Demonstrates custom constraint weight update methods.
-
-### Purpose
-
-Customize how constraint weights are updated during search to guide the solver.
-
-### Key Features
-
-- Increase weights on violated constraints
-- Adjust objective weight when feasible
-- Implement custom weight schemes
-
-### Code Snippet
-
-```cpp
-struct WeightStats { int total_calls = 0; int triggered_updates = 0; };
-
-Local_Search::Weight_Cbk weight_cbk = [](Weight::Weight_Ctx& ctx, void* user_data)
-{
-  auto& weights = ctx.m_con_weight;
-  auto& rng = ctx.m_rng;
-  const auto& unsat_idxs = ctx.m_shared.m_con_unsat_idxs;
-
-  WeightStats* stats = static_cast<WeightStats*>(user_data);
-  if (stats) stats->total_calls++;
-
-  std::uniform_real_distribution<double> prob_dist(0.0, 1.0);
-  if (prob_dist(rng) < 0.5)  // 50% chance to update
-  {
-    if (stats) stats->triggered_updates++;
-
-    for (size_t con_idx : unsat_idxs)
-    {
-      weights[con_idx]++;          // Unsatisfied constraints
-    }
-
-    if (ctx.m_shared.m_is_found_feasible && unsat_idxs.empty())
-    {
-      weights[0]++;                // Objective weight (index 0)
-    }
-  }
-};
-```
-
-### Use Cases
-
-- Adaptive weight adjustment
-- Problem-specific weight schemes
-- Hybrid monotone/smooth strategies
-
----
-
-## Neighbor Config
-
-**Location:** `example/neighbor-config/`
-
-Demonstrates how to configure the neighbor list: enable/disable built-ins, reorder them, and mix in custom neighbors with explicit BMS sizes.
-
-### Purpose
-
-Shape the search neighborhood by selecting which operators run, their order, and how many operations each produces.
-
-### Key Features
-
-- Default list (in order): `unsat_mtm_bm`, `sat_mtm`, `flip`, `easy`, `unsat_mtm_bm_random`
-- `clear_neighbor_list()` to remove all operators, `reset_default_neighbor_list()` to restore
-- `add_neighbor(name, bms_con, bms_op)` to add built-ins with BMS constraint/op counts
-- `add_custom_neighbor(name, func, user_data)` to append user-defined operators (clear and re-add in desired order if you want custom operators first)
-- Order matters: operators are invoked in the order added
-
-### Code Snippet
-
-```cpp
-// Custom neighbors
-void my_random_flip(Neighbor::Neighbor_Ctx& ctx, void*) { /* ... */ }
-void my_gradient_descent(Neighbor::Neighbor_Ctx& ctx, void*) { /* ... */ }
-
-int main(int argc, char** argv)
-{
-  const char* instance = (argc > 1) ? argv[1] : "test-set/2club200v15p5scn.mps";
-
-  // Example 2: custom order with built-ins only
-  {
-    Local_MIP solver;
-    solver.clear_neighbor_list();
-    solver.add_neighbor("flip", /*bms_con=*/0, /*bms_op=*/12);
-    solver.add_neighbor("easy", 0, 8);
-    solver.set_model_file(instance);
-    solver.run();
-  }
-
-  // Example 3: default list + custom neighbors appended
-  {
-    Local_MIP solver;
-    solver.add_custom_neighbor("my_random_flip", my_random_flip);
-    solver.add_custom_neighbor("my_gradient_descent", my_gradient_descent);
-    solver.set_model_file(instance);
-    solver.run();
-  }
-
-  // Example 5: mixed order (custom first, then built-ins, then custom)
-  {
-    Local_MIP solver;
-    solver.clear_neighbor_list();
-    solver.add_custom_neighbor("my_random_flip", my_random_flip);
-    solver.add_neighbor("unsat_mtm_bm", 12, 8);
-    solver.add_neighbor("flip", 0, 12);
-    solver.add_custom_neighbor("my_gradient_descent", my_gradient_descent);
-    solver.set_model_file(instance);
-    solver.run();
-  }
-}
-```
-
-### Use Cases
-
-- Reorder or prune default operators for faster iteration
-- Tune BMS sampling (`bms_con`, `bms_op`) to balance breadth vs. depth
-- Mix problem-specific operations with built-ins without recompiling core code
-
----
-
-## Neighbor Userdata
-
-**Location:** `example/neighbor-userdata/`
-
-Demonstrates passing custom state through callbacks via `user_data`.
-
-### Purpose
-
-Show how to maintain custom statistics or state across callback invocations.
-
-### Key Features
-
-- Pass custom data structures to callbacks
-- Track statistics across calls
-- Implement stateful strategies
-
-### Code Snippet
-
-```cpp
-struct NeighborStats { size_t total_calls = 0; size_t binary_flips = 0; };
-
-void smart_flip_neighbor(Neighbor::Neighbor_Ctx& ctx, void* user_data)
-{
-  auto* stats = static_cast<NeighborStats*>(user_data);
-  if (stats) stats->total_calls++;
-
-  const auto& binary_list = ctx.m_shared.m_binary_idx_list;
-  if (binary_list.empty()) { ctx.m_op_size = 0; return; }
-
-  size_t var_idx = binary_list[ctx.m_rng() % binary_list.size()];
-  ctx.m_op_size = 1;
-  ctx.m_op_var_idxs[0] = var_idx;
-  ctx.m_op_var_deltas[0] = (ctx.m_shared.m_var_current_value[var_idx] < 0.5) ? 1.0 : -1.0;
-
-  if (stats) stats->binary_flips++;
-}
-
-int main()
-{
-  Local_MIP solver;
-  NeighborStats stats{};
-
-  solver.clear_neighbor_list();
-  solver.add_custom_neighbor("smart_flip", smart_flip_neighbor, &stats);
-  solver.set_model_file("test-set/2club200v15p5scn.mps");
-  solver.set_time_limit(30.0);
-  solver.run();
-
-  printf("Total calls: %zu, binary flips: %zu\n", stats.total_calls, stats.binary_flips);
-}
-```
-
-### Use Cases
-
-- Adaptive strategies based on history
-- Statistics collection
-- Complex stateful algorithms
-
----
-
-## Neighbor Scoring
-
-**Location:** `example/scoring-neighbor/`
-
-Demonstrates custom scoring functions for the infeasible phase (seeking feasibility).
-
-### Purpose
-
-Customize how candidate operations are ranked when the current solution is infeasible.
-
-### Key Features
-
-- Multi-level tie-breaking with random third-level
-- Binary duplicate filtering via stamp tokens
-- Bonus scores for breakthrough operations
-- Tracks variable age for reporting
-
-### Code Snippet
-
-```cpp
-struct NeighborStats
-{
-  std::mt19937 rng{std::random_device{}()};
-};
-
-void my_neighbor_scoring(Scoring::Neighbor_Ctx& ctx, size_t var_idx, double delta, void* user_data)
-{
-  auto& shared = ctx.m_shared;
-
-  // Skip duplicate binary evaluations using stamp mechanism
-  const auto& var = shared.m_model_manager.var(var_idx);
-  if (var.is_binary())
-  {
-    if (ctx.m_binary_op_stamp[var_idx] == ctx.m_binary_op_stamp_token)
-      return;
-    ctx.m_binary_op_stamp[var_idx] = ctx.m_binary_op_stamp_token;
-  }
-
-  // Calculate custom score based on constraint violation reduction
-  double score = /* compute score */;
-  double subscore = /* compute subscore for tie-breaking */;
-  size_t age = std::max(shared.m_var_last_dec_step[var_idx],
-                        shared.m_var_last_inc_step[var_idx]);
-
-  // Update best candidate if this is better
-  if (score > ctx.m_best_neighbor_score ||
-      (score == ctx.m_best_neighbor_score && subscore > ctx.m_best_neighbor_subscore))
-  {
-    ctx.m_best_var_idx = var_idx;
-    ctx.m_best_delta = delta;
-    ctx.m_best_neighbor_score = score;
-    ctx.m_best_neighbor_subscore = subscore;
-    ctx.m_best_age = age;
-  }
-  // Random tie-break when both scores equal
-  else if (score == ctx.m_best_neighbor_score &&
-           subscore == ctx.m_best_neighbor_subscore)
-  {
-    auto* stats = static_cast<NeighborStats*>(user_data);
-    auto& rng = stats ? stats->rng
-                      : []() -> std::mt19937&
-    {
-      static thread_local std::mt19937 fallback(std::random_device{}());
-      return fallback;
-    }();
-    if ((rng() & 1U) != 0)
-    {
-      ctx.m_best_var_idx = var_idx;
-      ctx.m_best_delta = delta;
-      ctx.m_best_neighbor_score = score;
-      ctx.m_best_neighbor_subscore = subscore;
-      ctx.m_best_age = age;
-    }
-  }
-}
-```
-
-**Key Writable Fields:**
-
-- `ctx.m_best_var_idx`, `ctx.m_best_delta`, `ctx.m_best_neighbor_score`,
-  `ctx.m_best_neighbor_subscore`, `ctx.m_best_age`
-- `ctx.m_binary_op_stamp` / `ctx.m_binary_op_stamp_token` for binary dedup
-
-### Use Cases
-
-- Progress bonus strategies
-- Randomized tie-breaking for diversification
-- Problem-specific scoring
-
----
-
-## Lift Scoring
-
-**Location:** `example/scoring-lift/`
-
-Demonstrates custom scoring functions for the feasible phase (optimizing objective).
-
-### Purpose
-
-Customize how candidate operations are ranked when the current solution is feasible and we're optimizing.
-
-### Key Features
-
-- Objective-based scoring
-- Variable degree tie-breaking
-- Custom optimization criteria
-
-### Code Snippet
-
-```cpp
-struct LiftStats { int total_lift_calls = 0; int degree_tie_breaks = 0; int score_improvements = 0; };
-
-Local_Search::Lift_Scoring_Cbk lift_cbk = [](Scoring::Lift_Ctx& ctx, size_t var_idx, double delta, void* user_data)
-{
-  double lift_score = -ctx.m_shared.m_var_obj_cost[var_idx] * delta;
-  size_t age = std::max(ctx.m_shared.m_var_last_dec_step[var_idx],
-                        ctx.m_shared.m_var_last_inc_step[var_idx]);
-  size_t degree = ctx.m_shared.m_model_manager.var(var_idx).term_num();
-
-  auto* stats = static_cast<LiftStats*>(user_data);
-  if (stats) stats->total_lift_calls++;
-
-  bool should_update = false;
-
-  if (ctx.m_best_lift_score + k_opt_tolerance < lift_score)
-  {
-    should_update = true;
-    if (stats) stats->score_improvements++;
-  }
-  else if (ctx.m_best_lift_score <= lift_score)
-  {
-    if (ctx.m_best_var_idx == SIZE_MAX)
-    {
-      should_update = true;
-    }
-    else
-    {
-      size_t best_degree = ctx.m_shared.m_model_manager.var(ctx.m_best_var_idx).term_num();
-      if (degree < best_degree)
-      {
-        should_update = true;
-        if (stats) stats->degree_tie_breaks++;
-      }
-      else if (degree == best_degree && age < ctx.m_best_age)
-      {
-        should_update = true;
-      }
-    }
-  }
-
-  if (should_update)
-  {
-    ctx.m_best_var_idx = var_idx;
-    ctx.m_best_delta = delta;
-    ctx.m_best_lift_score = lift_score;
-    ctx.m_best_age = age;
-  }
-};
-```
-
-### Use Cases
-
-- Custom objective prioritization
-- Tie-breaking strategies
-- Problem-specific optimization
-
----
-
-## Building All Examples
-
-From the solver repository root, a typical full example build looks like this:
-
-```bash
-./build.sh all
-```
-
-If you want the example-only flow, use:
-
-```bash
+<section class="examples-hero">
+  <div class="examples-hero-copy">
+    <p class="examples-kicker">Runnable Examples</p>
+    <h1>Example Gallery</h1>
+    <p>Use the repository demos as small, isolated references for file-based solving, in-memory modeling, callback hooks, neighbor configuration, and custom scoring.</p>
+  </div>
+  <div class="examples-hero-links" aria-label="Example entry points">
+    <a href="#build-and-run"><span>Build</span><strong>Prepare demos</strong></a>
+    <a href="#simple-api"><span>Start</span><strong>Simple API</strong></a>
+    <a href="#model-api"><span>Model</span><strong>Model API</strong></a>
+    <a href="#neighbor-config"><span>Search</span><strong>Neighbor Config</strong></a>
+  </div>
+</section>
+
+<section id="overview" class="examples-panel examples-overview-panel">
+  <div class="examples-section-heading">
+    <span>Overview</span>
+    <h2>One demo per extension point</h2>
+  </div>
+  <p class="examples-panel-intro">The solver repository keeps C++ examples under <code>example/</code> and Python demos under <code>python-bindings/</code>. Each demo focuses on one public interface so it can be copied into experiments with minimal context.</p>
+  <div class="examples-overview-grid">
+    <article><span>File-backed solving</span><strong><code>example/simple-api/</code></strong><p>Load an MPS/LP file, set common parameters, run, and query results.</p></article>
+    <article><span>Programmatic modeling</span><strong><code>example/model-api/</code></strong><p>Build a small MIP from variables and bounded linear constraints.</p></article>
+    <article><span>Callbacks</span><strong><code>example/*-callback/</code></strong><p>Replace starts, restarts, weights, neighbors, and scoring behavior.</p></article>
+    <article><span>Python</span><strong><code>python-bindings/*.py</code></strong><p>Use the pybind11 module for file-based runs, Model API demos, and smoke tests.</p></article>
+  </div>
+</section>
+
+<section id="build-and-run" class="examples-panel examples-build-panel">
+  <div class="examples-section-heading">
+    <span>Build and Run</span>
+    <h2>Prepare examples from the solver root</h2>
+  </div>
+  <p class="examples-panel-intro">Use <code>./build.sh all</code> from the solver root when you want the core library, examples, and Python bindings prepared together. For the example-only path, build the core library first, then prepare and compile the demos.</p>
+  <div class="examples-build-grid">
+    <article class="examples-command-card">
+      <div class="card-kicker">All-in-one</div>
+      <h3>Build everything</h3>
+      <pre><code class="language-bash">./build.sh all</code></pre>
+    </article>
+    <article class="examples-command-card">
+      <div class="card-kicker">Example-only</div>
+      <h3>Prepare and build demos</h3>
+      <pre><code class="language-bash">./build.sh release
 cd example
 ./prepare.sh
-./build.sh
-```
+./build.sh</code></pre>
+    </article>
+    <article class="examples-command-card">
+      <div class="card-kicker">Representative runs</div>
+      <h3>Run a short demo first</h3>
+      <pre><code class="language-bash">cd example
+./model-api/model_api_demo</code></pre>
+    </article>
+  </div>
+  <p class="examples-note">Run these commands from the solver repository root. The in-memory Model API demo finishes quickly; file-backed demos resolve the bundled sample instance and use their source-defined time limits, often 30-60 seconds. Pass a custom model path as <code>argv[1]</code> when needed.</p>
+</section>
 
-Use the [solver README]({{ site.data.external_links.repository.readme }}) for the overall build matrix and the [example directory on GitHub]({{ site.data.external_links.repository.examples_tree }}) for per-demo notes.
+<section id="example-map" class="examples-panel examples-map-panel">
+  <div class="examples-section-heading">
+    <span>Example Map</span>
+    <h2>Find the demo that matches the module</h2>
+  </div>
+  <p class="examples-panel-intro">This map mirrors the strategy modules in Tutorials and points to runnable repository directories.</p>
+  <div class="examples-map-grid">
+    <article id="simple-api" class="examples-map-card examples-primary-card">
+      <span>File-backed solving</span>
+      <h3>Simple API</h3>
+      <p>Minimal C++ flow: create <code>Local_MIP</code>, set a model file, set a time limit and output path, run, then query feasibility and objective value.</p>
+      <div class="examples-meta"><code>example/simple-api/</code><code>simple_api.cpp</code></div>
+      <div class="examples-card-links"><a href="{{ site.data.external_links.repository.examples_tree }}/simple-api">GitHub directory</a><a href="/tutorials#use-as-a-library">API tutorial</a></div>
+    </article>
 
----
+    <article id="model-api" class="examples-map-card examples-primary-card">
+      <span>Programmatic modeling</span>
+      <h3>Model API</h3>
+      <p>Build a small MIP in memory with objective sense, variables, bounds, constraint ranges, integrality, and solution queries.</p>
+      <div class="examples-meta"><code>example/model-api/</code><code>python-bindings/model_api_demo.py</code></div>
+      <div class="examples-card-links"><a href="{{ site.data.external_links.repository.model_api_readme }}">Model API README</a><a href="/tutorials#modeling-api">Modeling tutorial</a></div>
+    </article>
 
-## Running Examples
+    <article id="start-callback" class="examples-map-card">
+      <span>Start module</span>
+      <h3>Start Callback</h3>
+      <p>Customize initial values before search begins. The demo accesses current values, binary variable indices, RNG, and optional user data.</p>
+      <div class="examples-meta"><code>example/start-callback/</code><code>set_start_cbk</code></div>
+      <div class="examples-card-links"><a href="{{ site.data.external_links.repository.examples_tree }}/start-callback">GitHub directory</a><a href="/tutorials#callback-system">Callback tutorial</a></div>
+    </article>
 
-After building from `example/`, representative runs look like this:
+    <article id="restart-callback" class="examples-map-card">
+      <span>Restart module</span>
+      <h3>Restart Callback</h3>
+      <p>Customize restart behavior after stagnation, including current assignment perturbation and weight changes.</p>
+      <div class="examples-meta"><code>example/restart-callback/</code><code>set_restart_cbk</code></div>
+      <div class="examples-card-links"><a href="{{ site.data.external_links.repository.examples_tree }}/restart-callback">GitHub directory</a><a href="/tutorials#callback-system">Callback tutorial</a></div>
+    </article>
 
-```bash
-./simple-api/simple_api_demo
-./start-callback/start_callback_demo
-./model-api/model_api_demo
-```
+    <article id="weight-callback" class="examples-map-card">
+      <span>Weighting module</span>
+      <h3>Weight Callback</h3>
+      <p>Customize constraint and objective weights. Use this when the default <code>monotone</code> or <code>smooth</code> behavior needs problem-specific changes.</p>
+      <div class="examples-meta"><code>example/weight-callback/</code><code>set_weight_cbk</code></div>
+      <div class="examples-card-links"><a href="{{ site.data.external_links.repository.examples_tree }}/weight-callback">GitHub directory</a><a href="/tutorials#strategy-modules">Strategy modules</a></div>
+    </article>
 
-Most file-based demos accept an optional model path as `argv[1]`. See the relevant README in the [example directory on GitHub]({{ site.data.external_links.repository.examples_tree }}) for per-demo behavior and output notes.
+    <article id="neighbor-config" class="examples-map-card examples-primary-card">
+      <span>Neighbor generation</span>
+      <h3>Neighbor Config</h3>
+      <p>Reset or reorder the built-in neighbor list, tune BMS counts, and mix predefined operators with custom neighbors.</p>
+      <div class="examples-meta"><code>example/neighbor-config/</code><code>clear_neighbor_list</code><code>add_neighbor</code></div>
+      <div class="examples-card-links"><a href="{{ site.data.external_links.repository.examples_tree }}/neighbor-config">GitHub directory</a><a href="/tutorials#neighbor-configuration">Neighbor tutorial</a></div>
+    </article>
 
----
+    <article id="neighbor-userdata" class="examples-map-card">
+      <span>Stateful neighbor</span>
+      <h3>Neighbor Userdata</h3>
+      <p>Pass custom state into neighbor callbacks to collect statistics or make adaptive decisions across invocations.</p>
+      <div class="examples-meta"><code>example/neighbor-userdata/</code><code>add_custom_neighbor</code></div>
+      <div class="examples-card-links"><a href="{{ site.data.external_links.repository.examples_tree }}/neighbor-userdata">GitHub directory</a><a href="/tutorials#callback-system">Callback tutorial</a></div>
+    </article>
 
-## Next Steps
+    <article id="neighbor-scoring" class="examples-map-card">
+      <span>Neighbor scoring</span>
+      <h3>Neighbor Scoring</h3>
+      <p>Replace infeasible-phase move ranking with a custom scoring function and tie-breaking logic.</p>
+      <div class="examples-meta"><code>example/scoring-neighbor/</code><code>set_neighbor_scoring_cbk</code></div>
+      <div class="examples-card-links"><a href="{{ site.data.external_links.repository.examples_tree }}/scoring-neighbor">GitHub directory</a><a href="/tutorials#callback-system">Callback tutorial</a></div>
+    </article>
 
-- **[Tutorials](/tutorials)** - Detailed callback reference and API documentation
-- **[Papers](/papers)** - Academic publications describing the algorithms
-- **[GitHub]({{ site.data.external_links.repository.home }})** - Source code and issues
+    <article id="lift-scoring" class="examples-map-card">
+      <span>Lift scoring</span>
+      <h3>Lift Scoring</h3>
+      <p>Replace feasible-phase lift move ranking, for example to keep objective improvement while changing tie-breaking behavior.</p>
+      <div class="examples-meta"><code>example/scoring-lift/</code><code>set_lift_scoring_cbk</code></div>
+      <div class="examples-card-links"><a href="{{ site.data.external_links.repository.examples_tree }}/scoring-lift">GitHub directory</a><a href="/tutorials#strategy-modules">Strategy modules</a></div>
+    </article>
+  </div>
+</section>
 
----
+<section id="quick-recipes" class="examples-panel examples-recipes-panel">
+  <div class="examples-section-heading">
+    <span>Quick Recipes</span>
+    <h2>Copy the small pattern, not the whole page</h2>
+  </div>
+  <div class="examples-recipe-grid">
+    <article class="examples-code-card">
+      <div class="card-kicker">Simple API</div>
+      <h3>File-backed C++ solve</h3>
+      <pre><code class="language-cpp">Local_MIP solver;
+solver.set_model_file("test-set/2club200v15p5scn.mps");
+solver.set_sol_path("example_simple.sol");
+solver.set_time_limit(10.0);
+solver.set_log_obj(true);
+solver.run();
 
-[← Back to Home](/) | [Tutorials](/tutorials) | [Papers →](/papers)
+if (solver.is_feasible()) {
+  printf("Objective value: %.10f\n", solver.get_obj_value());
+}</code></pre>
+    </article>
+
+    <article class="examples-code-card">
+      <div class="card-kicker">Model API</div>
+      <h3>Range constraints in memory</h3>
+      <pre><code class="language-cpp">Local_MIP solver;
+const double inf = std::numeric_limits&lt;double&gt;::infinity();
+
+solver.enable_model_api();
+solver.set_sense(Model_API::Sense::maximize);
+
+int x1 = solver.add_var("x1", 0.0, 40.0, 1.0, Var_Type::real);
+int x4 = solver.add_var("x4", 2.0, 3.0, 1.0, Var_Type::general_integer);
+
+solver.add_con(-inf, 20.0,
+               std::vector&lt;int&gt;{x1, x4},
+               std::vector&lt;double&gt;{-1.0, 10.0});
+solver.run();</code></pre>
+    </article>
+
+    <article class="examples-code-card">
+      <div class="card-kicker">Neighbor Config</div>
+      <h3>Change the neighbor list</h3>
+      <pre><code class="language-cpp">Local_MIP solver;
+solver.clear_neighbor_list();
+solver.add_custom_neighbor("my_random_flip", my_random_flip_neighbor);
+solver.add_neighbor("unsat_mtm_bm", 12, 8);
+solver.add_neighbor("flip", 0, 12);
+solver.add_custom_neighbor("my_gradient_descent", my_gradient_descent_neighbor);
+solver.set_model_file("test-set/2club200v15p5scn.mps");
+solver.set_time_limit(10.0);
+solver.run();</code></pre>
+    </article>
+  </div>
+</section>
+
+<section id="python-demos" class="examples-panel examples-python-panel">
+  <div class="examples-section-heading">
+    <span>Python Demos</span>
+    <h2>Use the pybind11 module when scripting</h2>
+  </div>
+  <p class="examples-panel-intro">The Python bindings expose core configuration, result queries, parameter-file loading, Model API methods, and structured callback contexts. For a venv-safe install command, start from Quick Start.</p>
+  <div class="examples-python-grid">
+    <article><span>File run</span><strong><code>python-bindings/sample.py</code></strong><p>Loads a bundled sample model, runs the solver, and writes <code>py_example.sol</code>.</p></article>
+    <article><span>Modeling</span><strong><code>python-bindings/model_api_demo.py</code></strong><p>Mirrors the C++ Model API demo using <code>lm.LocalMIP</code>, <code>lm.Sense</code>, and <code>lm.VarType</code>.</p></article>
+    <article><span>Smoke tests</span><strong><code>python-bindings/test_python_api.py</code></strong><p>Covers parameter files, callback contexts, and exposed API methods.</p></article>
+  </div>
+</section>
+
+<section id="next-steps" class="examples-panel examples-resources-panel">
+  <div class="examples-section-heading">
+    <span>Next Steps</span>
+    <h2>Connect examples back to the docs</h2>
+  </div>
+  <div class="examples-resource-grid">
+    <a href="/tutorials#strategy-modules"><span>Tutorials</span><strong>Strategy Modules</strong></a>
+    <a href="/tutorials#callback-system"><span>Tutorials</span><strong>Callback System</strong></a>
+    <a href="/tutorials#modeling-api"><span>Tutorials</span><strong>Modeling API</strong></a>
+    <a href="/quick-start"><span>Start</span><strong>Quick Start</strong></a>
+    <a href="{{ site.data.external_links.repository.examples_tree }}"><span>Source</span><strong>Example Tree</strong></a>
+    <a href="{{ site.data.external_links.repository.readme }}"><span>Source</span><strong>Solver README</strong></a>
+  </div>
+</section>
+
+<nav class="examples-page-nav" aria-label="Examples page navigation">
+  <a href="/tutorials"><span>Previous</span><strong>Tutorials</strong></a>
+  <a href="/papers"><span>Next</span><strong>Papers</strong></a>
+</nav>
 
   </div>
 </div>

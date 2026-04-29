@@ -12,16 +12,7 @@ keywords: MIP solver, mixed integer programming, local search, lift move operato
     </div>
 
     <div class="hero-intro">
-      <p class="hero-eyebrow">Open-source MIP solver</p>
       <h1 class="hero-title">Local-MIP</h1>
-      <p class="hero-tagline">Local search for mixed integer programming.</p>
-      <p class="hero-copy">CLI, C++/Python APIs, and callbacks for custom search workflows.</p>
-
-      <div class="hero-install" aria-label="Install Local-MIP from PyPI in a virtual environment">
-        <span class="hero-install-label">Venv-safe install</span>
-        <code>python3 -m venv .venv && .venv/bin/python -m pip install localmip</code>
-        <button class="hero-install-copy" type="button" data-copy-text="python3 -m venv .venv && .venv/bin/python -m pip install localmip" aria-label="Copy pip install command">Copy</button>
-      </div>
 
       <div class="hero-actions">
         <a class="btn btn-primary" href="/quick-start">Quick Start</a>
@@ -34,6 +25,12 @@ keywords: MIP solver, mixed integer programming, local search, lift move operato
       <div class="hero-people">
         <a href="https://lcs.ios.ac.cn/~caisw/"><span>Project Leader</span><strong>Shaowei Cai</strong></a>
         <a href="https://linpeng0105.github.io/"><span>Developer</span><strong>Peng Lin</strong></a>
+      </div>
+      <br>
+      <div class="hero-install" aria-label="Install Local-MIP from PyPI in a virtual environment">
+        <span class="hero-install-label">Quick install</span>
+        <code>python3 -m venv .venv && .venv/bin/python -m pip install localmip</code>
+        <button class="hero-install-copy" type="button" data-copy-text="python3 -m venv .venv && .venv/bin/python -m pip install localmip" aria-label="Copy pip install command">Copy</button>
       </div>
     </div>
   </div>

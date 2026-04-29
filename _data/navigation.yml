@@ -9,8 +9,8 @@
       url: /tutorials#command-line-usage
     - title: Use as a Library
       url: /tutorials#use-as-a-library
-    - title: Terminology
-      url: /tutorials#terminology
+    - title: Concepts
+      url: /tutorials#algorithm-concepts
     - title: Parameters Reference
       url: /tutorials#parameters-reference
     - title: Callback System
@@ -21,7 +21,7 @@
     - title: Simple API
       url: /examples#simple-api
     - title: Model API
-      url: /examples#modeling-api
+      url: /examples#model-api
     - title: Start Callback
       url: /examples#start-callback
     - title: Restart Callback
@@ -36,10 +36,10 @@
       url: /examples#neighbor-scoring
     - title: Lift Scoring
       url: /examples#lift-scoring
-    - title: Building All Examples
-      url: /examples#building-all-examples
-    - title: Running Examples
-      url: /examples#running-examples
+    - title: Build and Run
+      url: /examples#build-and-run
+    - title: Python Demos
+      url: /examples#python-demos
 - title: Papers
   url: /papers
 - title: Records
