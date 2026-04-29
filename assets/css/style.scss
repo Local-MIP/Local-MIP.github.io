@@ -462,8 +462,8 @@ h2 {
   font-size: 1.65rem;
   border-bottom: 1px solid var(--color-border-subtle);
   padding-bottom: 0.4em;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
 }
 
 h3 {
@@ -1016,7 +1016,7 @@ hr {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.25rem;
-  margin: 1.25rem 0 2.25rem;
+  margin: 1.5rem 0 2.5rem;
 }
 
 .card {
@@ -1111,6 +1111,29 @@ hr {
   color: var(--color-primary-light);
 }
 
+.page-content .wrapper > h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+}
+
+.page-content .wrapper > h2::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 1.5rem;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--color-primary), var(--color-accent));
+  flex-shrink: 0;
+}
+
 .resource-grid {
   display: grid;
   grid-template-columns: minmax(230px, 0.85fr) minmax(380px, 1.35fr) minmax(230px, 0.85fr);
@@ -1193,6 +1216,10 @@ hr {
     radial-gradient(circle at 18% 16%, rgba(20, 184, 166, 0.12), transparent 26%),
     radial-gradient(circle at 92% 82%, rgba(245, 158, 11, 0.08), transparent 28%),
     linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(22, 32, 51, 0.9));
+}
+
+[data-theme="dark"] .page-content .wrapper > h2::before {
+  background: linear-gradient(180deg, #94a3b8, var(--color-accent));
 }
 
 [data-theme="dark"] .hero::after {
@@ -2477,7 +2504,8 @@ hr {
   font-size: 0.875rem;
   text-decoration: none;
   display: inline-block;
-  padding: 0.2rem 0;
+  padding: 0.3rem 0;
+  line-height: 1.5;
   transition: all var(--transition-fast);
   
   &:hover,
@@ -4229,18 +4257,20 @@ hr {
 }
 
 [data-theme="dark"] .papers-resource-grid a {
-  background: #233146;
-  border-color: rgba(226, 232, 240, 0.2);
+  background: #4a7169;
+  border-color: rgba(204, 251, 241, 0.52);
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgba(20, 184, 166, 0.12);
 }
 
 [data-theme="dark"] .papers-resource-grid strong {
-  color: #f1f5f9;
+  color: #ffffff;
 }
 
 [data-theme="dark"] .papers-resource-grid a:hover,
 [data-theme="dark"] .papers-resource-grid a:focus {
-  border-color: #94a3b8;
-  box-shadow: 0 2px 8px rgba(148, 163, 184, 0.1);
+  border-color: #99f6e4;
+  box-shadow: 0 10px 24px rgba(20, 184, 166, 0.22);
 }
 
 /* MIPLIB Records - Responsive */
