@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Papers
-description: Publications, citation guidance, and version notes for Local-MIP research and software.
-keywords: Local-MIP papers, citation, Artificial Intelligence 2025, CP 2024, mixed integer programming, local search
+description: Publications, citation guidance, and version notes for Local-MIP research, the Local-ILP precursor, and software.
+keywords: Local-MIP papers, Local-ILP, citation, Artificial Intelligence 2025, CP 2024, mixed integer programming, integer linear programming, local search
 ---
 
 <div class="doc-layout">
@@ -15,6 +15,7 @@ keywords: Local-MIP papers, citation, Artificial Intelligence 2025, CP 2024, mix
         <ul class="doc-sidebar-sublist">
           <li><a href="#ai-2025">AI 2025</a></li>
           <li><a href="#cp-2024">CP 2024</a></li>
+          <li><a href="#local-ilp-arxiv">Local-ILP arXiv</a></li>
         </ul>
       </li>
       <li><a href="#bibtex">BibTeX</a></li>
@@ -29,11 +30,12 @@ keywords: Local-MIP papers, citation, Artificial Intelligence 2025, CP 2024, mix
   <div class="papers-hero-copy">
     <p class="papers-kicker">Research Record</p>
     <h1>Papers & citations</h1>
-    <p>Use this page to cite the published Local-MIP papers and to choose the software version that matches the experiments you want to reproduce.</p>
+    <p>Use this page to cite the published Local-MIP papers, the Local-ILP precursor, and the software version that matches the experiments you want to reproduce.</p>
   </div>
   <div class="papers-hero-facts" aria-label="Publication summary">
     <div><span>Journal</span><strong>Artificial Intelligence 2025</strong></div>
     <div><span>Conference</span><strong>CP 2024 Best Paper Award</strong></div>
+    <div><span>Precursor</span><strong>Local-ILP arXiv 2023</strong></div>
     <div><span>Reproduction</span><strong>Local-MIP 1.0 archive</strong></div>
   </div>
 </section>
@@ -51,7 +53,7 @@ keywords: Local-MIP papers, citation, Artificial Intelligence 2025, CP 2024, mix
     </article>
     <article>
       <span>Current software</span>
-      <p>The current public repository provides the 2.x codebase with C++/Python APIs, callback hooks, examples, tests, and the MIT license. Cite the published papers for the Local-MIP algorithmic work, and cite the repository when referring to the current software implementation.</p>
+      <p>The current public repository provides the 2.x codebase with C++/Python APIs, callback hooks, examples, tests, and the MIT license. Cite the published papers for the Local-MIP algorithmic work, cite the Local-ILP preprint for the ILP-only precursor, and cite the repository when referring to the current software implementation.</p>
       <a href="{{ site.data.external_links.repository.home }}">Open GitHub repository</a>
     </article>
   </div>
@@ -60,7 +62,7 @@ keywords: Local-MIP papers, citation, Artificial Intelligence 2025, CP 2024, mix
 <section id="publications" class="papers-panel papers-publications-panel">
   <div class="papers-section-heading">
     <span>Publications</span>
-    <h2>Published Local-MIP papers</h2>
+    <h2>Local-MIP publications and precursor</h2>
   </div>
 
   <article id="ai-2025" class="papers-publication papers-publication-featured">
@@ -92,6 +94,22 @@ keywords: Local-MIP papers, citation, Artificial Intelligence 2025, CP 2024, mix
         <a href="https://doi.org/10.4230/LIPIcs.CP.2024.19">DOI</a>
         <a href="https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.CP.2024.19">Publisher page</a>
         <a href="{{ '/assets/pdf/best-paper.pdf' | relative_url }}">Award certificate</a>
+      </div>
+    </div>
+  </article>
+
+  <article id="local-ilp-arxiv" class="papers-publication">
+    <div class="papers-publication-meta">
+      <span>arXiv Preprint</span>
+      <strong>arXiv:2305.00188</strong>
+    </div>
+    <div class="papers-publication-body">
+      <h3>New Characterizations and Efficient Local Search for General Integer Linear Programming</h3>
+      <p class="papers-authors">Peng Lin, Shaowei Cai, Mengchuan Zou, Jinkun Lin</p>
+      <p>This preprint first introduces Local-ILP, the ILP-focused local-search solver that served as the precursor of Local-MIP.</p>
+      <div class="papers-link-row">
+        <a href="https://arxiv.org/abs/2305.00188">arXiv</a>
+        <a href="https://doi.org/10.48550/arXiv.2305.00188">DOI</a>
       </div>
     </div>
   </article>
@@ -139,6 +157,23 @@ keywords: Local-MIP papers, citation, Artificial Intelligence 2025, CP 2024, mix
       <span>address = {Dagstuhl, Germany},</span>
       <span>doi = {10.4230/LIPIcs.CP.2024.19},</span>
       <span>annote = {Keywords: Mixed Integer Programming, Local Search, Constraint Programming}</span>
+      <span>}</span>
+    </div>
+  </article>
+
+  <article class="papers-bibtex-card">
+    <h3>Local-ILP arXiv</h3>
+    <div class="papers-bibtex-box" aria-label="Local-ILP arXiv BibTeX entry">
+      <span>@misc{lin2023newcharacterizationsefficientlocal,</span>
+      <span>title = {New Characterizations and Efficient Local Search for General Integer Linear Programming},</span>
+      <span>author = {Peng Lin and Shaowei Cai and Mengchuan Zou and Jinkun Lin},</span>
+      <span>year = {2023},</span>
+      <span>eprint = {2305.00188},</span>
+      <span>archivePrefix = {arXiv},</span>
+      <span>primaryClass = {math.OC},</span>
+      <span>doi = {10.48550/arXiv.2305.00188},</span>
+      <span>url = {https://arxiv.org/abs/2305.00188},</span>
+      <span>note = {First submitted on 29 April 2023; introduces Local-ILP, the precursor of Local-MIP}</span>
       <span>}</span>
     </div>
   </article>
