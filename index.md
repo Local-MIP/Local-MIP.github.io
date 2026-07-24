@@ -22,11 +22,6 @@ keywords: MIP solver, mixed integer programming, local search, lift move operato
         <a class="btn btn-ghost" href="/examples">Examples</a>
       </div>
 
-      <div class="hero-people">
-        <a href="https://lcs.ios.ac.cn/~caisw/"><span>Project Leader</span><strong>Shaowei Cai</strong></a>
-        <a href="https://linpeng0105.github.io/"><span>Developer</span><strong>Peng Lin</strong></a>
-      </div>
-      <br>
       <div class="hero-install" aria-label="Install Local-MIP from PyPI in a virtual environment">
         <span class="hero-install-label">Quick install</span>
         <code>python3 -m venv .venv && .venv/bin/python -m pip install localmip</code>
@@ -103,6 +98,15 @@ keywords: MIP solver, mixed integer programming, local search, lift move operato
     </div>
   </div>
 </div>
+
+## Team
+
+**Project Leader:** [Shaowei Cai](https://lcs.ios.ac.cn/~caisw/)
+
+**Developers**
+
+- **Local-MIP 2.0:** [Peng Lin](https://linpeng0105.github.io/)
+- **Local-MIP 1.0:** [Peng Lin](https://linpeng0105.github.io/), Mengchuan Zou, Jinkun Lin
 
 ---
 
