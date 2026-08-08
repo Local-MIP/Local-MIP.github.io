@@ -46,7 +46,7 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20,
   </div>
   <div class="quickstart-hero-links">
     <a href="{{ site.data.external_links.repository.pypi }}">PyPI Package</a>
-    <a href="{{ site.data.external_links.repository.releases }}">GitHub Releases</a>
+    <a href="{{ site.data.external_links.repository.latest_release }}">{{ site.data.external_links.repository.latest_version }} Release</a>
     <a href="{{ site.data.external_links.repository.readme }}">Solver README</a>
     <a href="{{ site.data.external_links.repository.python_readme }}">Python README</a>
   </div>
@@ -57,7 +57,7 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20,
     <span>Fastest Path</span>
     <h2>Install with pip</h2>
   </div>
-  <p class="quickstart-panel-intro">For Linux x86_64, the published Python bindings are the quickest way to try Local-MIP. The command below creates a local virtual environment first, so it works on Debian/Ubuntu systems that block global pip installs.</p>
+  <p class="quickstart-panel-intro">For CPython 3.8-3.12 on Linux x86_64, the published {{ site.data.external_links.repository.latest_python_version }} wheels are the quickest way to try Local-MIP. The command below creates a local virtual environment first, so it works on Debian/Ubuntu systems that block global pip installs.</p>
   <div class="quickstart-pip-grid">
     <article class="quickstart-pip-card">
       <span>Install</span>
@@ -76,7 +76,7 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20,
     <span>Before Source Builds</span>
     <h2>Requirements</h2>
   </div>
-  <p class="quickstart-panel-intro">The source CLI path needs the build tools below. The PyPI path above needs Python 3.8+ on Linux x86_64 and the standard <code>venv</code> module.</p>
+  <p class="quickstart-panel-intro">The source CLI path needs the build tools below. The wheel path above targets CPython 3.8-3.12 on Linux x86_64 and needs the standard <code>venv</code> module. A legacy local bindings build also requires <code>pybind11&gt;=2.10,&lt;3</code>.</p>
   <div class="quickstart-requirements">
     <div class="quickstart-requirement"><span>CMake</span><strong>3.15+</strong></div>
     <div class="quickstart-requirement"><span>Compiler</span><strong>C++20 GCC/Clang</strong></div>
@@ -97,7 +97,7 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20,
       <h3>Download</h3>
       <p>Use a tagged source archive for a stable snapshot, or clone the repository for the latest development version.</p>
       <div class="quickstart-link-row">
-        <a href="{{ site.data.external_links.repository.releases }}">GitHub Releases</a>
+        <a href="{{ site.data.external_links.repository.latest_release }}">{{ site.data.external_links.repository.latest_version }} Release</a>
         <a href="{{ site.data.external_links.repository.home }}">Repository</a>
       </div>
     </article>
@@ -105,7 +105,7 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20,
     <article id="step-2-build" class="quickstart-step-card">
       <div class="card-kicker">Step 2</div>
       <h3>Build</h3>
-      <p>From the repository root, start with the release build. Use <code>./build.sh all</code> when you also need examples and Python bindings.</p>
+      <p>From the repository root, start with the release build. Use <code>./build.sh all</code> when you also need examples and Python bindings; the local bindings step expects CPython 3.8-3.12 and <code>pybind11&gt;=2.10,&lt;3</code>.</p>
       <pre><code class="language-bash">./build.sh release</code></pre>
     </article>
 
@@ -162,6 +162,18 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20,
           <td><code>""</code></td>
         </tr>
         <tr>
+          <td><code>-k</code></td>
+          <td><code>start_sol_path</code></td>
+          <td>Path to a warm-start solution file (.sol)</td>
+          <td><code>""</code></td>
+        </tr>
+        <tr>
+          <td><code>-m</code></td>
+          <td><code>start</code></td>
+          <td>Built-in start method: <code>zero</code>, <code>random</code>, <code>objective</code>, or <code>locks</code></td>
+          <td><code>zero</code></td>
+        </tr>
+        <tr>
           <td><code>-l</code></td>
           <td><code>log_obj</code></td>
           <td>Log objective values during search</td>
@@ -181,6 +193,14 @@ keywords: Local-MIP installation, MIP solver tutorial, local search, MIP, C++20,
   <pre><code class="language-bash"># Solve the bundled sample for 10 seconds and save a solution
 cd build
 ./Local-MIP --model_file ../test-set/2club200v15p5scn.mps --time_limit 10 --sol_path quickstart.sol --log_obj 1</code></pre>
+
+  <div class="quickstart-subheading">Warm Start and Built-in Initialization</div>
+  <p>Use a previous <code>.sol</code> file with <code>--start_sol_path</code>, or select a built-in start method with <code>--start</code>. A warm-start file may omit variables; supplied values are validated against finiteness, bounds, and integrality.</p>
+  <pre><code class="language-bash"># Reuse a prior solution
+./Local-MIP --model_file ../test-set/2club200v15p5scn.mps --start_sol_path quickstart.sol --time_limit 10
+
+# Start from objective-guided finite bounds
+./Local-MIP --model_file ../test-set/2club200v15p5scn.mps --start objective --time_limit 10</code></pre>
 
   <div id="using-a-parameter-configuration-file" class="quickstart-subheading">Using a Parameter Configuration File</div>
   <p>Instead of passing all parameters via command line, you can use a configuration file:</p>
@@ -232,7 +252,7 @@ cd build
       <div class="card-kicker">Run Tests</div>
       <h3>CTest workflow</h3>
       <p>Start with the fast unit-test subset from <code>build/</code>; reserve full CTest runs for longer development sweeps.</p>
-      <pre><code class="language-bash">ctest --output-on-failure -R "^(api|callbacks|constraint_recognition|scoring|model_manager|reader|move_operations|neighbor_config)$"</code></pre>
+      <pre><code class="language-bash">ctest --output-on-failure -R "^(api|callbacks|start_strategies|constraint_recognition|scoring|model_manager|reader|move_operations|neighbor_config|shared_model|activity_arithmetic)$"</code></pre>
       <div class="quickstart-link-row">
         <a href="{{ site.data.external_links.repository.readme }}">Test instructions</a>
       </div>
@@ -247,12 +267,12 @@ cd build
   </div>
   <p>These files contain the full setup details:</p>
   <div class="quickstart-reference-grid">
-    <a href="{{ site.data.external_links.repository.pypi }}"><span>PyPI package</span><strong>Virtual-environment Python installation for Linux x86_64</strong></a>
+    <a href="{{ site.data.external_links.repository.pypi }}"><span>PyPI {{ site.data.external_links.repository.latest_python_version }}</span><strong>CPython 3.8-3.12 manylinux x86_64 wheels</strong></a>
     <a href="{{ site.data.external_links.repository.readme }}"><span>Solver README</span><strong>CLI build, run, parameter-file usage, and tests</strong></a>
     <a href="{{ site.data.external_links.repository.python_readme }}"><span>Python bindings README</span><strong>Python installation, demos, and development builds</strong></a>
     <a href="{{ site.data.external_links.repository.model_api_readme }}"><span>Model API example README</span><strong>Example-specific build and run notes</strong></a>
     <a href="{{ site.data.external_links.repository.examples_tree }}"><span>Example directory</span><strong>Per-demo README files and source code</strong></a>
-    <a href="{{ site.data.external_links.repository.releases }}"><span>GitHub Releases</span><strong>Download a packaged source archive</strong></a>
+    <a href="{{ site.data.external_links.repository.latest_release }}"><span>{{ site.data.external_links.repository.latest_version }} Release</span><strong>Download the current tagged source archive</strong></a>
     <a href="{{ site.data.external_links.repository.home }}"><span>Repository home</span><strong>Browse the project online</strong></a>
   </div>
 </section>

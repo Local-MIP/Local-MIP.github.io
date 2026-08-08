@@ -24,8 +24,6 @@ keywords: Local-MIP papers, Local-ILP, citation, Artificial Intelligence 2025, C
   </nav>
 
   <div class="doc-content papers-content" markdown="1">
-# Papers
-
 <section id="overview" class="papers-hero">
   <div class="papers-hero-copy">
     <p class="papers-kicker">Research Record</p>
@@ -53,8 +51,8 @@ keywords: Local-MIP papers, Local-ILP, citation, Artificial Intelligence 2025, C
     </article>
     <article>
       <span>Current software</span>
-      <p>The current public repository provides the 2.x codebase with C++/Python APIs, callback hooks, examples, tests, and the MIT license. Cite the published papers for the Local-MIP algorithmic work, cite the Local-ILP preprint for the ILP-only precursor, and cite the repository when referring to the current software implementation.</p>
-      <a href="{{ site.data.external_links.repository.home }}">Open GitHub repository</a>
+      <p>The current stable release is <strong>Local-MIP {{ site.data.external_links.repository.latest_version }}</strong>, with C++/Python APIs, validated warm starts, prepared-model reuse, callback hooks, examples, tests, and the MIT license. Cite the published papers for the Local-MIP algorithmic work, cite the Local-ILP preprint for the ILP-only precursor, and cite the repository when referring to the current software implementation.</p>
+      <a href="{{ site.data.external_links.repository.latest_release }}">Open {{ site.data.external_links.repository.latest_version }} release</a>
     </article>
   </div>
 </section>

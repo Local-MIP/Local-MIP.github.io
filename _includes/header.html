@@ -1,30 +1,31 @@
 <header class="site-header" role="banner">
   <div class="wrapper nav-wrapper">
     <a class="brand" rel="author" href="{{ "/" | relative_url }}">
-      <img src="{{ '/assets/images/localmip.png' | relative_url }}" alt="Local-MIP logo" class="brand-logo" />
+      <img src="{{ '/assets/images/localmip.png' | relative_url }}" alt="" class="brand-logo" />
       <span class="site-title">{{ site.title | escape }}</span>
     </a>
 
-    <input type="checkbox" id="nav-toggle" class="nav-toggle" />
-    <label for="nav-toggle" class="nav-toggle-label" aria-label="Toggle navigation">
-      <span></span>
-      <span></span>
-      <span></span>
-    </label>
-
-    <nav class="site-nav" aria-label="Primary navigation">
+    <nav id="primary-navigation" class="site-nav" aria-label="Primary navigation">
       <ul class="nav-list">
         {%- assign nav_items = site.data.navigation -%}
         {%- if nav_items -%}
           {%- for item in nav_items -%}
             <li class="nav-item {% if item.children %}has-children{% endif %}">
-              <a href="{{ item.url | relative_url }}">{{ item.title | escape }}</a>
               {%- if item.children -%}
-                <ul class="nav-dropdown">
+                {%- assign submenu_id = 'submenu-' | append: forloop.index -%}
+                <div class="nav-link-row">
+                  <a href="{{ item.url | relative_url }}">{{ item.title | escape }}</a>
+                  <button type="button" class="submenu-toggle" aria-controls="{{ submenu_id }}" aria-expanded="false" aria-label="Open {{ item.title | escape }} submenu">
+                    <span aria-hidden="true">▾</span>
+                  </button>
+                </div>
+                <ul id="{{ submenu_id }}" class="nav-dropdown">
                   {%- for child in item.children -%}
                     <li><a href="{{ child.url | relative_url }}">{{ child.title | escape }}</a></li>
                   {%- endfor -%}
                 </ul>
+              {%- else -%}
+                <a href="{{ item.url | relative_url }}">{{ item.title | escape }}</a>
               {%- endif -%}
             </li>
           {%- endfor -%}
@@ -39,10 +40,11 @@
           {%- endfor -%}
         {%- endif -%}
       </ul>
-      
-      <!-- Theme Toggle Button -->
-      <button id="theme-toggle" class="theme-toggle" aria-label="切换主题" title="切换亮色/深色模式">
-        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    </nav>
+
+    <div class="header-actions">
+      <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Switch to dark theme" title="Switch to dark theme">
+        <svg class="icon-sun" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="5"></circle>
           <line x1="12" y1="1" x2="12" y2="3"></line>
           <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -53,10 +55,16 @@
           <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
-        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="icon-moon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
       </button>
-    </nav>
+
+      <button type="button" id="nav-toggle" class="nav-toggle-label" aria-controls="primary-navigation" aria-expanded="false" aria-label="Open navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
   </div>
 </header>

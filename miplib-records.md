@@ -16,8 +16,6 @@ keywords: MIPLIB records, MIP benchmark, mixed integer programming, local search
   </nav>
 
   <div class="doc-content papers-content" markdown="1">
-# MIPLIB Records
-
 <section id="overview" class="papers-hero">
   <div class="papers-hero-copy">
     <p class="papers-kicker">Benchmark Results</p>

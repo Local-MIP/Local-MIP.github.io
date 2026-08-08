@@ -15,6 +15,7 @@ keywords: Local-MIP examples, C++ API, Python bindings, callbacks, neighbor conf
         <ul class="doc-sidebar-sublist">
           <li><a href="#simple-api">Simple API</a></li>
           <li><a href="#model-api">Model API</a></li>
+          <li><a href="#parallel-multiseed">Parallel Multi-seed</a></li>
           <li><a href="#start-callback">Start</a></li>
           <li><a href="#restart-callback">Restart</a></li>
           <li><a href="#weight-callback">Weight</a></li>
@@ -31,19 +32,17 @@ keywords: Local-MIP examples, C++ API, Python bindings, callbacks, neighbor conf
   </nav>
 
   <div class="doc-content examples-content" markdown="1">
-# Examples
-
 <section class="examples-hero">
   <div class="examples-hero-copy">
     <p class="examples-kicker">Runnable Examples</p>
     <h1>Example Gallery</h1>
-    <p>Use the repository demos as small, isolated references for file-based solving, in-memory modeling, callback hooks, neighbor configuration, and custom scoring.</p>
+    <p>Use the repository demos as small, isolated references for file-based solving, in-memory modeling, shared-model multi-seed runs, callback hooks, neighbor configuration, and custom scoring.</p>
   </div>
   <div class="examples-hero-links" aria-label="Example entry points">
     <a href="#build-and-run"><span>Build</span><strong>Prepare demos</strong></a>
     <a href="#simple-api"><span>Start</span><strong>Simple API</strong></a>
     <a href="#model-api"><span>Model</span><strong>Model API</strong></a>
-    <a href="#neighbor-config"><span>Search</span><strong>Neighbor Config</strong></a>
+    <a href="#parallel-multiseed"><span>Seeds</span><strong>Parallel Runs</strong></a>
   </div>
 </section>
 
@@ -56,6 +55,8 @@ keywords: Local-MIP examples, C++ API, Python bindings, callbacks, neighbor conf
   <div class="examples-overview-grid">
     <article><span>File-backed solving</span><strong><code>example/simple-api/</code></strong><p>Load an MPS/LP file, set common parameters, run, and query results.</p></article>
     <article><span>Programmatic modeling</span><strong><code>example/model-api/</code></strong><p>Build a small MIP from variables and bounded linear constraints.</p></article>
+    <article><span>Shared prepared model</span><strong><code>example/parallel-multiseed/</code></strong><p>Run independent solver seeds in caller-owned threads without copying model data.</p></article>
+    <article><span>Warm starts</span><strong><code>--start_sol_path</code></strong><p>Load partial <code>.sol</code> assignments with domain validation, or choose one of four built-in start methods.</p></article>
     <article><span>Callbacks</span><strong><code>example/*-callback/</code></strong><p>Replace starts, restarts, weights, neighbors, and scoring behavior.</p></article>
     <article><span>Python</span><strong><code>python-bindings/*.py</code></strong><p>Use the pybind11 module for file-based runs, Model API demos, and smoke tests.</p></article>
   </div>
@@ -66,7 +67,7 @@ keywords: Local-MIP examples, C++ API, Python bindings, callbacks, neighbor conf
     <span>Build and Run</span>
     <h2>Prepare examples from the solver root</h2>
   </div>
-  <p class="examples-panel-intro">Use <code>./build.sh all</code> from the solver root when you want the core library, examples, and Python bindings prepared together. For the example-only path, build the core library first, then prepare and compile the demos.</p>
+  <p class="examples-panel-intro">Use <code>./build.sh all</code> from the solver root when you want the core library, examples, and Python bindings prepared together. The local bindings step expects CPython 3.8-3.12 and <code>pybind11&gt;=2.10,&lt;3</code>. For the example-only path, build the core library first, then prepare and compile the C++ demos.</p>
   <div class="examples-build-grid">
     <article class="examples-command-card">
       <div class="card-kicker">All-in-one</div>
@@ -109,9 +110,17 @@ cd example
     <article id="model-api" class="examples-map-card examples-primary-card">
       <span>Programmatic modeling</span>
       <h3>Model API</h3>
-      <p>Build a small MIP in memory with objective sense, variables, bounds, constraint ranges, integrality, and solution queries.</p>
+      <p>Build a small MIP with <code>Model_Builder</code>, freeze it with <code>prepare()</code>, then solve it through <code>Local_MIP(model)</code>.</p>
       <div class="examples-meta"><code>example/model-api/</code><code>python-bindings/model_api_demo.py</code></div>
       <div class="examples-card-links"><a href="{{ site.data.external_links.repository.model_api_readme }}">Model API README</a><a href="/tutorials#modeling-api">Modeling tutorial</a></div>
+    </article>
+
+    <article id="parallel-multiseed" class="examples-map-card examples-primary-card">
+      <span>Caller-managed parallelism</span>
+      <h3>Parallel Multi-seed</h3>
+      <p>Prepare one immutable model, create independent solver instances with different seeds, run them in application-owned threads, and select the best finite feasible objective.</p>
+      <div class="examples-meta"><code>example/parallel-multiseed/</code><code>Prepared_Model::from_file</code></div>
+      <div class="examples-card-links"><a href="{{ site.data.external_links.repository.parallel_multiseed_readme }}">Example README</a><a href="/tutorials#shared-prepared-models">Shared-model tutorial</a></div>
     </article>
 
     <article id="start-callback" class="examples-map-card">
@@ -196,19 +205,37 @@ if (solver.is_feasible()) {
     <article class="examples-code-card">
       <div class="card-kicker">Model API</div>
       <h3>Range constraints in memory</h3>
-      <pre><code class="language-cpp">Local_MIP solver;
+      <pre><code class="language-cpp">Model_Builder builder;
 const double inf = std::numeric_limits&lt;double&gt;::infinity();
 
-solver.enable_model_api();
-solver.set_sense(Model_API::Sense::maximize);
+builder.set_sense(Model_Builder::Sense::maximize);
 
-int x1 = solver.add_var("x1", 0.0, 40.0, 1.0, Var_Type::real);
-int x4 = solver.add_var("x4", 2.0, 3.0, 1.0, Var_Type::general_integer);
+int x1 = builder.add_var("x1", 0.0, 40.0, 1.0, Var_Type::real);
+int x4 = builder.add_var("x4", 2.0, 3.0, 1.0, Var_Type::general_integer);
 
-solver.add_con(-inf, 20.0,
-               std::vector&lt;int&gt;{x1, x4},
-               std::vector&lt;double&gt;{-1.0, 10.0});
+builder.add_con(-inf, 20.0,
+                std::vector&lt;int&gt;{x1, x4},
+                std::vector&lt;double&gt;{-1.0, 10.0});
+auto model = builder.prepare();
+Local_MIP solver(model);
 solver.run();</code></pre>
+    </article>
+
+    <article class="examples-code-card">
+      <div class="card-kicker">Prepared Model</div>
+      <h3>Independent solver seeds</h3>
+      <pre><code class="language-cpp">Model_Prepare_Options options;
+auto model = Prepared_Model::from_file("instance.mps", options);
+
+Local_MIP seed_1(model);
+Local_MIP seed_2(model);
+seed_1.set_random_seed(1);
+seed_2.set_random_seed(2);
+
+std::thread first([&] { seed_1.run(); });
+std::thread second([&] { seed_2.run(); });
+first.join();
+second.join();</code></pre>
     </article>
 
     <article class="examples-code-card">
@@ -232,10 +259,11 @@ solver.run();</code></pre>
     <span>Python Demos</span>
     <h2>Use the pybind11 module when scripting</h2>
   </div>
-  <p class="examples-panel-intro">The Python bindings expose core configuration, result queries, parameter-file loading, Model API methods, and structured callback contexts. For a venv-safe install command, start from Quick Start.</p>
+  <p class="examples-panel-intro">The Python bindings expose core configuration, result queries, parameter-file loading, model builders, prepared models, and structured callback contexts. For a venv-safe install command, start from Quick Start.</p>
   <div class="examples-python-grid">
     <article><span>File run</span><strong><code>python-bindings/sample.py</code></strong><p>Loads a bundled sample model, runs the solver, and writes <code>py_example.sol</code>.</p></article>
-    <article><span>Modeling</span><strong><code>python-bindings/model_api_demo.py</code></strong><p>Mirrors the C++ Model API demo using <code>lm.LocalMIP</code>, <code>lm.Sense</code>, and <code>lm.VarType</code>.</p></article>
+    <article><span>Modeling</span><strong><code>python-bindings/model_api_demo.py</code></strong><p>Builds with <code>lm.ModelBuilder</code>, prepares the model, and solves it with <code>lm.LocalMIP(model)</code>.</p></article>
+    <article><span>Parallel seeds</span><strong><code>lm.PreparedModel</code></strong><p>Shares frozen model data across independent Python workers; <code>run()</code> releases the GIL.</p></article>
     <article><span>Smoke tests</span><strong><code>python-bindings/test_python_api.py</code></strong><p>Covers parameter files, callback contexts, and exposed API methods.</p></article>
   </div>
 </section>

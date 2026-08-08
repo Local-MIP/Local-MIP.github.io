@@ -22,6 +22,7 @@ mathjax: true
           <li><a href="#c-static-library">C++ API</a></li>
           <li><a href="#python-bindings">Python</a></li>
           <li><a href="#modeling-api">Modeling API</a></li>
+          <li><a href="#shared-prepared-models">Shared Models</a></li>
         </ul>
       </li>
       <li><a href="#algorithm-concepts">Concepts</a>
@@ -45,13 +46,11 @@ mathjax: true
   </nav>
 
   <div class="doc-content tutorials-content" markdown="1">
-# Tutorials
-
 <section class="tutorials-hero">
   <div class="tutorials-hero-copy">
     <p class="tutorials-kicker">Learning Path</p>
     <h1>Learn <span>Local-MIP</span></h1>
-    <p>Start with file-based solving, then move to the C++ or Python APIs, in-memory modeling, and callback hooks for custom local-search behavior.</p>
+    <p>Start with file-based solving, then move to the C++ or Python APIs, in-memory modeling, shared prepared models, and callback hooks for custom local-search behavior.</p>
   </div>
   <div class="tutorials-hero-links" aria-label="Tutorial entry points">
     <a href="#command-line-usage"><span>01</span><strong>Command Line</strong></a>
@@ -135,11 +134,12 @@ random_seed = 42
 log_obj = 1
 
 # Built-in strategy choices
-start = zero
+start = objective
 restart = best
 weight = monotone
 lift_scoring = lift_age
 neighbor_scoring = progress_bonus</code></pre>
+    <p class="tutorials-note">The built-in start choices are <code>zero</code>, <code>random</code>, <code>objective</code>, and <code>locks</code>. Add <code>start_sol_path = previous.sol</code> to load a validated warm start instead.</p>
   </div>
 </section>
 
@@ -179,7 +179,7 @@ int main() {
     <article id="python-bindings" class="tutorials-code-card">
       <div class="card-kicker">Python bindings</div>
       <h3>Install in a local venv</h3>
-      <p>For Linux x86_64, the published Python bindings are the shortest path. The venv command avoids system Python package restrictions.</p>
+      <p>For CPython 3.8-3.12 on Linux x86_64, the published {{ site.data.external_links.repository.latest_python_version }} wheels are the shortest path. The venv command avoids system Python package restrictions.</p>
       <pre><code class="language-bash">python3 -m venv .venv && .venv/bin/python -m pip install localmip
 .venv/bin/python -c "import localmip_py as lm; print(lm.LocalMIP)"</code></pre>
       <pre><code class="language-python">import localmip_py as lm
@@ -205,7 +205,7 @@ if solver.is_feasible():
     <span>Modeling API</span>
     <h2>Build a model in memory</h2>
   </div>
-  <p class="tutorials-panel-intro">Use the Model API when you want to add variables and constraints from code instead of reading a model file. Build the model once, call <code>run()</code> once, and create a fresh solver instance for another solve.</p>
+  <p class="tutorials-panel-intro">Use the Model API when you want to add variables and constraints from code instead of reading a model file. Build through <code>ModelBuilder</code>, call <code>prepare()</code> to freeze the model, then pass the prepared model to a single-use solver instance.</p>
 
   <div class="tutorials-model-grid">
     <article class="tutorials-code-card">
@@ -214,17 +214,18 @@ if solver.is_feasible():
       <pre><code class="language-python">import math
 import localmip_py as lm
 
-solver = lm.LocalMIP()
-solver.enable_model_api()
-solver.set_sense(lm.Sense.minimize)
-solver.set_time_limit(1.0)
+builder = lm.ModelBuilder()
+builder.set_sense(lm.Sense.minimize)
 
-x1 = solver.add_var("x1", 0.0, 1.0, 1.0, lm.VarType.real)
-x2 = solver.add_var("x2", 0.0, 10.0, -0.5, lm.VarType.general_integer)
+x1 = builder.add_var("x1", 0.0, 1.0, 1.0, lm.VarType.real)
+x2 = builder.add_var("x2", 0.0, 10.0, -0.5, lm.VarType.general_integer)
 
 # x1 + 2*x2 <= 20
-solver.add_con(-math.inf, 20.0, [x1, x2], [1.0, 2.0])
+builder.add_con(-math.inf, 20.0, [x1, x2], [1.0, 2.0])
 
+model = builder.prepare()
+solver = lm.LocalMIP(model)
+solver.set_time_limit(1.0)
 solver.run()
 if solver.is_feasible():
     sol = solver.get_solution()
@@ -236,17 +237,64 @@ if solver.is_feasible():
       <div class="card-kicker">API surface</div>
       <h3>Selected methods</h3>
       <div class="tutorials-method-grid">
-        <span><code>enable_model_api()</code><em>Enable programmatic modeling first.</em></span>
-        <span><code>set_sense(Sense)</code><em>Choose minimize or maximize.</em></span>
-        <span><code>add_var(name, lb, ub, cost, type)</code><em>Add a variable and objective coefficient.</em></span>
-        <span><code>add_con(lb, ub, cols, coefs)</code><em>Add a bounded linear constraint.</em></span>
-        <span><code>set_integrality(col/name, type)</code><em>Change variable type when needed.</em></span>
+        <span><code>ModelBuilder()</code><em>Create a mutable in-memory model.</em></span>
+        <span><code>builder.set_sense(Sense)</code><em>Choose minimize or maximize.</em></span>
+        <span><code>builder.add_var(...)</code><em>Add a variable and objective coefficient.</em></span>
+        <span><code>builder.add_con(...)</code><em>Add a bounded linear constraint.</em></span>
+        <span><code>builder.prepare(options)</code><em>Normalize and freeze the model.</em></span>
+        <span><code>LocalMIP(model)</code><em>Create an independent solver over the prepared model.</em></span>
         <span><code>get_solution()</code><em>Read the incumbent vector after a run.</em></span>
       </div>
-      <p class="tutorials-note">Constraint bounds use <code>lb <= expression <= ub</code>. Use infinity for one-sided constraints and equal bounds for equality constraints.</p>
+      <p class="tutorials-note">Constraint bounds use <code>lb <= expression <= ub</code>. Preparation settings such as feasibility tolerance, zero tolerance, bound strengthening, and equality splitting belong to <code>ModelPrepareOptions</code>.</p>
       <div class="tutorials-card-links">
         <a href="{{ site.data.external_links.repository.model_api_readme }}">Model API README</a>
         <a href="/examples#model-api">Examples</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="shared-prepared-models" class="tutorials-panel tutorials-model-panel">
+  <div class="tutorials-section-heading">
+    <span>Shared Models</span>
+    <h2>Run independent seeds over one prepared model</h2>
+  </div>
+  <p class="tutorials-panel-intro">Local-MIP {{ site.data.external_links.repository.latest_version }} can share one immutable <code>PreparedModel</code> across multiple solver instances without copying model data. Each solver keeps independent RNG, callbacks, timers, search state, and incumbents; the application creates the workers and selects the best result.</p>
+
+  <div class="tutorials-model-grid">
+    <article class="tutorials-code-card">
+      <div class="card-kicker">Python workers</div>
+      <h3>Caller-managed multi-seed run</h3>
+      <pre><code class="language-python">import threading
+import localmip_py as lm
+
+model = lm.PreparedModel.from_file("instance.mps")
+solvers = [lm.LocalMIP(model) for _ in range(4)]
+
+for seed, solver in enumerate(solvers, start=1):
+    solver.set_random_seed(seed)
+    solver.set_time_limit(10.0)
+
+workers = [threading.Thread(target=s.run) for s in solvers]
+for worker in workers:
+    worker.start()
+for worker in workers:
+    worker.join()</code></pre>
+    </article>
+
+    <article class="tutorials-api-list">
+      <div class="card-kicker">Execution model</div>
+      <h3>Important boundaries</h3>
+      <div class="tutorials-method-grid">
+        <span><code>PreparedModel.from_file(...)</code><em>Parse, preprocess, and freeze file-backed model data once.</em></span>
+        <span><code>LocalMIP(model)</code><em>Create one single-use, single-trajectory solver.</em></span>
+        <span><code>threading.Thread</code><em>The caller owns scheduling and joins workers.</em></span>
+        <span><code>run()</code><em>Releases the Python GIL; Python callbacks reacquire it.</em></span>
+      </div>
+      <p class="tutorials-note">Local-MIP does not synchronize incumbents or create an internal thread pool. Shared callback user data must be synchronized by the application.</p>
+      <div class="tutorials-card-links">
+        <a href="{{ site.data.external_links.repository.parallel_multiseed_readme }}">Parallel example README</a>
+        <a href="/examples#parallel-multiseed">Runnable example</a>
       </div>
     </article>
   </div>
@@ -284,7 +332,7 @@ if solver.is_feasible():
     <h3>Six strategy modules</h3>
     <p>The current implementation exposes these modules through parameters and callbacks. Each module links to its runnable example.</p>
     <div class="tutorials-module-grid">
-      <a href="/examples#start-callback"><span>Start</span><strong><code>zero</code>, <code>random</code></strong><em>Start Callback example</em></a>
+      <a href="/examples#start-callback"><span>Start</span><strong><code>zero</code>, <code>random</code>, <code>objective</code>, <code>locks</code></strong><em>Start Callback example</em></a>
       <a href="/examples#restart-callback"><span>Restart</span><strong><code>random</code>, <code>best</code>, <code>hybrid</code></strong><em>Restart Callback example</em></a>
       <a href="/examples#lift-scoring"><span>Lift scoring</span><strong><code>lift_age</code>, <code>lift_random</code></strong><em>Lift Scoring example</em></a>
       <a href="/examples#neighbor-config"><span>Neighbor generation</span><strong>built-in and custom neighbors</strong><em>Neighbor Config example</em></a>
@@ -310,6 +358,7 @@ if solver.is_feasible():
       <tbody>
         <tr><td data-label="Parameter"><code>model_file</code></td><td data-label="Description">Path to input model file (<code>.mps</code>/<code>.lp</code>). Required for CLI runs.</td><td data-label="Flag"><code>-i</code></td><td data-label="Type">string</td><td data-label="Range">-</td><td data-label="Default"><code>""</code></td></tr>
         <tr><td data-label="Parameter"><code>sol_path</code></td><td data-label="Description">Path to output solution file (<code>.sol</code>).</td><td data-label="Flag"><code>-s</code></td><td data-label="Type">string</td><td data-label="Range">-</td><td data-label="Default"><code>""</code></td></tr>
+        <tr><td data-label="Parameter"><code>start_sol_path</code></td><td data-label="Description">Path to a warm-start solution file (<code>.sol</code>).</td><td data-label="Flag"><code>-k</code></td><td data-label="Type">string</td><td data-label="Range">-</td><td data-label="Default"><code>""</code></td></tr>
         <tr><td data-label="Parameter"><code>param_set_file</code></td><td data-label="Description">Path to parameter configuration file (<code>.set</code>).</td><td data-label="Flag"><code>-c</code></td><td data-label="Type">string</td><td data-label="Range">-</td><td data-label="Default"><code>""</code></td></tr>
         <tr><td data-label="Parameter"><code>time_limit</code></td><td data-label="Description">Time limit in seconds.</td><td data-label="Flag"><code>-t</code></td><td data-label="Type">double</td><td data-label="Range"><code>[0, 1e8]</code></td><td data-label="Default"><code>10</code></td></tr>
         <tr><td data-label="Parameter"><code>random_seed</code></td><td data-label="Description">Random seed for local search. <code>0</code> uses the default behavior.</td><td data-label="Flag"><code>-S</code></td><td data-label="Type">int</td><td data-label="Range"><code>[0, 2147483647]</code></td><td data-label="Default"><code>0</code></td></tr>
@@ -345,7 +394,7 @@ if solver.is_feasible():
         <tr><th>Parameter</th><th>Description</th><th>Flag</th><th>Type</th><th>Range</th><th>Default</th></tr>
       </thead>
       <tbody>
-        <tr><td data-label="Parameter"><code>bms_unsat_con</code></td><td data-label="Description">BMS unsatisfied constraint sample size.</td><td data-label="Flag"><code>-u</code></td><td data-label="Type">int</td><td data-label="Range"><code>[0, 100000000]</code></td><td data-label="Default"><code>12</code></td></tr>
+        <tr><td data-label="Parameter"><code>bms_unsat_con</code></td><td data-label="Description">BMS unsatisfied constraint sample size.</td><td data-label="Flag"><code>-u</code></td><td data-label="Type">int</td><td data-label="Range"><code>[0, 100000000]</code></td><td data-label="Default"><code>10</code></td></tr>
         <tr><td data-label="Parameter"><code>bms_unsat_ops</code></td><td data-label="Description">BMS MTM unsatisfied operations.</td><td data-label="Flag"><code>-p</code></td><td data-label="Type">int</td><td data-label="Range"><code>[0, 100000000]</code></td><td data-label="Default"><code>2250</code></td></tr>
         <tr><td data-label="Parameter"><code>bms_sat_con</code></td><td data-label="Description">BMS satisfied constraint sample size.</td><td data-label="Flag"><code>-v</code></td><td data-label="Type">int</td><td data-label="Range"><code>[0, 100000000]</code></td><td data-label="Default"><code>1</code></td></tr>
         <tr><td data-label="Parameter"><code>bms_sat_ops</code></td><td data-label="Description">BMS MTM satisfied operations.</td><td data-label="Flag"><code>-o</code></td><td data-label="Type">int</td><td data-label="Range"><code>[0, 100000000]</code></td><td data-label="Default"><code>80</code></td></tr>
@@ -365,7 +414,7 @@ if solver.is_feasible():
         <tr><th>Parameter</th><th>Description</th><th>Flag</th><th>Values</th><th>Default</th></tr>
       </thead>
       <tbody>
-        <tr><td data-label="Parameter"><code>start</code></td><td data-label="Description">Start method.</td><td data-label="Flag"><code>-m</code></td><td data-label="Values"><code>zero</code>, <code>random</code></td><td data-label="Default"><code>zero</code></td></tr>
+        <tr><td data-label="Parameter"><code>start</code></td><td data-label="Description">Built-in start method.</td><td data-label="Flag"><code>-m</code></td><td data-label="Values"><code>zero</code>, <code>random</code>, <code>objective</code>, <code>locks</code></td><td data-label="Default"><code>zero</code></td></tr>
         <tr><td data-label="Parameter"><code>restart</code></td><td data-label="Description">Restart strategy.</td><td data-label="Flag"><code>-y</code></td><td data-label="Values"><code>random</code>, <code>best</code>, <code>hybrid</code></td><td data-label="Default"><code>best</code></td></tr>
         <tr><td data-label="Parameter"><code>weight</code></td><td data-label="Description">Constraint weight update method.</td><td data-label="Flag"><code>-w</code></td><td data-label="Values"><code>smooth</code>, <code>monotone</code></td><td data-label="Default"><code>monotone</code></td></tr>
         <tr><td data-label="Parameter"><code>lift_scoring</code></td><td data-label="Description">Feasible-phase lift scoring method.</td><td data-label="Flag"><code>-f</code></td><td data-label="Values"><code>lift_age</code>, <code>lift_random</code></td><td data-label="Default"><code>lift_age</code></td></tr>
@@ -426,7 +475,7 @@ solver.run();</code></pre>
       <span><code>set_neighbor_scoring_cbk(callback, user_data)</code><em>Infeasible-phase scoring.</em></span>
       <span><code>set_lift_scoring_cbk(callback, user_data)</code><em>Feasible-phase scoring.</em></span>
     </div>
-    <p class="tutorials-note">Use repository examples as the runnable source of truth: <code>start-callback/</code>, <code>restart-callback/</code>, <code>weight-callback/</code>, <code>neighbor-config/</code>, <code>neighbor-userdata/</code>, <code>scoring-neighbor/</code>, and <code>scoring-lift/</code>.</p>
+    <p class="tutorials-note">Use repository examples as the runnable source of truth. Values written by start/restart callbacks and custom moves are validated for finiteness, bounds, and integrality before the solver accepts them.</p>
   </article>
 </section>
 

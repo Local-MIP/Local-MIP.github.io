@@ -3,6 +3,14 @@ title: Local-MIP
 description: A Local Search Solver for Mixed Integer Programming
 url: "https://local-mip.github.io"
 baseurl: ""
+lang: en_US
+logo: /assets/images/localmip.png
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: /assets/images/localmip.png
 
 # Build Settings
 markdown: kramdown
@@ -17,10 +25,8 @@ exclude:
   - ruby/
   - submodules/
   - update-solver.sh
-  - 布局错误.jpg
-  - Local-MIP-2.0/build/
-  - Local-MIP-2.0/example/build/
-  - Local-MIP-2.0/python-bindings/build/
+  - AIJ-Local-MIP.pdf
+  - CODE_BLOCK_OPTIMIZATION.md
 
 # Plugins
 plugins:

@@ -24,10 +24,10 @@ keywords: Local-MIP software, MIP solver download, localmip PyPI, Local-MIP rele
       <div class="software-hero-copy">
         <p class="software-kicker">Software</p>
         <h1>Get Local-MIP</h1>
-        <p>Use the published Python bindings through a local virtual environment, or download the source tree when you need the CLI solver, C++ API, examples, callbacks, or reproducible archived versions.</p>
+        <p>Install the published {{ site.data.external_links.repository.latest_python_version }} Python bindings through a local virtual environment, or download the tagged source tree when you need the CLI solver, C++ API, examples, callbacks, or reproducible archived versions.</p>
         <div class="software-hero-actions">
           <a class="btn btn-primary" href="{{ site.data.external_links.repository.pypi }}">PyPI Package</a>
-          <a class="btn btn-secondary" href="{{ site.data.external_links.repository.releases }}">GitHub Releases</a>
+          <a class="btn btn-secondary" href="{{ site.data.external_links.repository.latest_release }}">{{ site.data.external_links.repository.latest_version }} Release</a>
           <a class="btn btn-ghost" href="{{ site.data.external_links.repository.home }}">Source Code</a>
         </div>
       </div>
@@ -39,7 +39,7 @@ keywords: Local-MIP software, MIP solver download, localmip PyPI, Local-MIP rele
           <code>python3 -m venv .venv && .venv/bin/python -m pip install localmip</code>
           <button type="button" data-copy-text="python3 -m venv .venv && .venv/bin/python -m pip install localmip" aria-label="Copy pip install command">Copy</button>
         </div>
-        <p>Documented for Linux x86_64 with Python 3.8+. Uses <code>venv</code> to avoid externally managed system Python installs.</p>
+        <p>PyPI provides {{ site.data.external_links.repository.latest_python_version }} wheels for CPython 3.8-3.12 on manylinux x86_64. Uses <code>venv</code> to avoid externally managed system Python installs.</p>
       </aside>
     </section>
 
@@ -51,9 +51,9 @@ keywords: Local-MIP software, MIP solver download, localmip PyPI, Local-MIP rele
 
       <div class="software-channel-grid">
         <article class="software-channel-card software-channel-primary">
-          <div class="card-kicker">Python</div>
+          <div class="card-kicker">Python {{ site.data.external_links.repository.latest_python_version }}</div>
           <h3>PyPI package</h3>
-          <p>Install the published Python bindings in a local virtual environment when you want the shortest path to importing <code>localmip_py</code>.</p>
+          <p>Install a published CPython 3.8-3.12 manylinux x86_64 wheel in a local virtual environment when you want the shortest path to importing <code>localmip_py</code>.</p>
           <div class="software-card-links">
             <a href="{{ site.data.external_links.repository.pypi }}">Open PyPI</a>
             <a href="{{ site.data.external_links.repository.python_readme }}">Python README</a>
@@ -62,10 +62,11 @@ keywords: Local-MIP software, MIP solver download, localmip PyPI, Local-MIP rele
 
         <article class="software-channel-card">
           <div class="card-kicker">Tagged source</div>
-          <h3>GitHub Releases</h3>
-          <p>Use tagged archives and release notes when you need a stable source snapshot.</p>
+          <h3>Local-MIP {{ site.data.external_links.repository.latest_version }}</h3>
+          <p>The {{ site.data.external_links.repository.latest_version }} release focuses on certified activity arithmetic, more reliable extended-precision fallback behavior, final-solution verification, and higher-precision output.</p>
           <div class="software-card-links">
-            <a href="{{ site.data.external_links.repository.releases }}">View Releases</a>
+            <a href="{{ site.data.external_links.repository.latest_release }}">Open {{ site.data.external_links.repository.latest_version }}</a>
+            <a href="{{ site.data.external_links.repository.releases }}">All Releases</a>
           </div>
         </article>
 
@@ -75,7 +76,7 @@ keywords: Local-MIP software, MIP solver download, localmip PyPI, Local-MIP rele
           <p>Clone or browse the main repository when you need the current development tree and full project history.</p>
           <div class="software-card-links">
             <a href="{{ site.data.external_links.repository.home }}">Browse Source</a>
-            <a href="{{ site.data.external_links.repository.readme }}">Solver README</a>
+            <a href="{{ site.data.external_links.repository.development_readme }}">Development README</a>
           </div>
         </article>
       </div>
@@ -91,7 +92,7 @@ keywords: Local-MIP software, MIP solver download, localmip PyPI, Local-MIP rele
         <article class="software-path-card">
           <div class="software-path-number">01</div>
           <h3>Install Python bindings</h3>
-          <p>For Linux x86_64, create a local virtual environment, install from PyPI, and import the module with the same interpreter.</p>
+          <p>For a published CPython 3.8-3.12 manylinux x86_64 wheel, create a local virtual environment, install from PyPI, and import the module with the same interpreter.</p>
           <pre><code class="language-bash">python3 -m venv .venv && .venv/bin/python -m pip install localmip
 .venv/bin/python -c "import localmip_py as lm; print(lm.LocalMIP)"</code></pre>
         </article>
@@ -106,7 +107,7 @@ keywords: Local-MIP software, MIP solver download, localmip PyPI, Local-MIP rele
         <article class="software-path-card">
           <div class="software-path-number">03</div>
           <h3>Build everything</h3>
-          <p>Use the full build when you also need examples and the local pybind11 module.</p>
+          <p>Use the full build when you also need examples and the local pybind11 module. The legacy local bindings build expects a supported CPython interpreter and <code>pybind11&gt;=2.10,&lt;3</code>.</p>
           <pre><code class="language-bash">./build.sh all</code></pre>
         </article>
       </div>
@@ -123,8 +124,8 @@ keywords: Local-MIP software, MIP solver download, localmip PyPI, Local-MIP rele
       <div class="software-included-grid">
         <div><span>CLI</span><strong><code>build/Local-MIP</code></strong><p>Standalone solver binary for file-based runs.</p></div>
         <div><span>C++</span><strong><code>build/libLocalMIP.a</code></strong><p>Static library with headers under <code>src/</code>.</p></div>
-        <div><span>Python</span><strong><code>localmip_py</code></strong><p>pybind11 bindings with result queries, parameter files, and modeling support.</p></div>
-        <div><span>Examples</span><strong><code>example/</code></strong><p>C++ API demos for simple usage, model building, callbacks, and custom search components.</p></div>
+        <div><span>Python</span><strong><code>localmip_py</code></strong><p>pybind11 bindings with result queries, parameter files, prepared models, and modeling support.</p></div>
+        <div><span>Examples</span><strong><code>example/</code></strong><p>C++ API demos for simple usage, model building, multi-seed parallelism, callbacks, and custom search components.</p></div>
         <div><span>Tests</span><strong><code>tests/</code></strong><p>CTest targets for unit, integration, and instance-driven checks.</p></div>
         <div><span>Data</span><strong><code>test-set/</code></strong><p>Bundled sample <code>.mps</code> and <code>.lp</code> instances for demos and smoke tests.</p></div>
       </div>
@@ -139,8 +140,8 @@ keywords: Local-MIP software, MIP solver download, localmip PyPI, Local-MIP rele
       <div class="software-requirement-grid">
         <article>
           <span>PyPI path</span>
-          <h3>Python 3.8+ on Linux x86_64</h3>
-          <p>The package metadata requires Python 3.8+ and is documented for Linux x86_64. On Debian/Ubuntu, use a virtual environment rather than installing into the system Python.</p>
+          <h3>CPython 3.8-3.12 on Linux x86_64</h3>
+          <p>PyPI publishes {{ site.data.external_links.repository.latest_python_version }} manylinux x86_64 wheels for CPython 3.8 through 3.12. Repository development builds should use the same interpreter range with <code>pybind11&gt;=2.10,&lt;3</code>; <code>pip install ./python-bindings</code> installs that build dependency in isolation.</p>
         </article>
         <article>
           <span>Source builds</span>
@@ -163,12 +164,12 @@ keywords: Local-MIP software, MIP solver download, localmip PyPI, Local-MIP rele
 
       <div class="software-version-grid">
         <article>
-          <span>Software snapshots</span>
-          <h3>Releases and main repository</h3>
-          <p>Use GitHub Releases for tagged source archives, or the repository for the current development tree.</p>
+          <span>Current stable source</span>
+          <h3>Local-MIP {{ site.data.external_links.repository.latest_version }}</h3>
+          <p>This release certifies when activity updates are exact in IEEE binary64 and uses a faster <code>double</code> path for those models, while retaining <code>long double</code> for other models. Final solution verification recomputes activities in extended precision, and objective/solution output uses 17 significant digits. The broader 2.x line also includes validated warm starts, four initialization methods, immutable prepared models, and caller-managed multi-seed execution.</p>
           <div class="software-card-links">
-            <a href="{{ site.data.external_links.repository.releases }}">GitHub Releases</a>
-            <a href="{{ site.data.external_links.repository.home }}">Repository</a>
+            <a href="{{ site.data.external_links.repository.latest_release }}">Release {{ site.data.external_links.repository.latest_version }}</a>
+            <a href="{{ site.data.external_links.repository.latest_source }}">Tagged source</a>
           </div>
         </article>
 

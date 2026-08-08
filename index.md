@@ -42,7 +42,7 @@ keywords: MIP solver, mixed integer programming, local search, lift move operato
   </div>
 
   <div class="hero-modules">
-    <h4 class="hero-section-title">Customizable Modules</h4>
+    <h2 class="hero-section-title">Customizable Modules</h2>
     <div class="hero-tags">
       <span class="hero-tag">Initialization</span>
       <span class="hero-tag">Restart Strategies</span>
@@ -174,6 +174,6 @@ keywords: MIP solver, mixed integer programming, local search, lift move operato
 </div>
 
 <div class="release-meta">
-  <a href="{{ site.data.external_links.repository.releases }}"><span>Latest Release</span><strong>GitHub Releases</strong></a>
+  <a href="{{ site.data.external_links.repository.latest_release }}"><span>Latest Release</span><strong>Local-MIP {{ site.data.external_links.repository.latest_version }}</strong></a>
   <a href="{{ site.data.external_links.repository.license }}"><span>License</span><strong>MIT License</strong></a>
 </div>

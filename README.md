@@ -1,102 +1,62 @@
 # Local-MIP.github.io
 
-这是Local-MIP项目的GitHub Pages网站，采用极简学术风格设计。
+Local-MIP 官方网站，使用 Jekyll 构建并通过 GitHub Pages 部署。
 
-## 网站结构
+## 主要内容
 
-```
-Local-MIP.github.io/
-├── _config.yml           # Jekyll配置文件
-├── index.md              # 首页
-├── docs.md               # 文档页面（Markdown使用指南）
-├── about.md              # 关于页面
-├── assets/
-│   └── css/
-│       └── style.scss    # 自定义样式（极简黑白风格）
-├── .github/
-│   └── workflows/
-│       └── pages.yml     # GitHub Pages自动部署
-├── Gemfile               # Ruby依赖
-└── .gitignore            # Git忽略文件
-```
+- `index.md`: 首页、项目亮点与团队信息
+- `software.md`: 稳定版本、安装方式与系统要求
+- `quick-start.md`: Python 和 CLI 快速开始
+- `tutorials.md`: CLI、C++/Python API、参数与回调教程
+- `examples.md`: 与求解器仓库同步的可运行示例
+- `papers.md`: 论文、引用与版本复现说明
+- `miplib-records.md`: MIPLIB 2017 结果
+- `submodules/solver`: 固定到稳定标签的 Local-MIP 源码子模块
+- `_data/external_links.yml`: 稳定版本号及固定版本链接
+- `assets/css/style.scss`: 站点样式
 
-## 快速开始
+## 同步 Local-MIP 版本
 
-### 1. 启用GitHub Pages
-
-在你的仓库设置中启用GitHub Pages：
-
-1. 进入仓库的 **Settings** → **Pages**
-2. 在 **Source** 中选择 **GitHub Actions**
-3. 保存设置
-
-### 2. 推送代码
+当前网站与 Local-MIP `v2.0.9` 保持一致。
 
 ```bash
-git add .
-git commit -m "初始化网站"
-git push origin main
+# 更新到指定稳定标签
+./update-solver.sh v2.0.9
+
+# 或选择远端最新稳定语义版本标签
+./update-solver.sh
 ```
 
-推送后，GitHub Actions会自动构建和部署你的网站。几分钟后，你可以通过 `https://local-mip.github.io` 访问。
+脚本只切换到形如 `vX.Y.Z` 的稳定标签，并在子模块存在未提交改动时停止。更新子模块后，还需要同步：
 
-### 3. 本地预览（可选）
+1. `_data/external_links.yml` 中的版本号和固定标签链接。
+2. `software.md` 中的发布说明与 PyPI 支持范围。
+3. `quick-start.md`、`tutorials.md` 和 `examples.md` 中的参数、API 与示例。
 
-如果你想在本地预览网站：
+## 本地构建
 
 ```bash
-# （推荐）把 gems 安装到项目目录，避免无 sudo 环境/WSL 下写系统目录导致 PermissionError
 bundle config set --local path "vendor/bundle"
-
-# 安装依赖（包含 github-pages）
 bundle install
-
-# 启动本地服务器
+bundle exec jekyll build
 bundle exec jekyll serve
-
-# 访问 http://localhost:4000
 ```
 
-## 如何编辑内容
+本地预览地址为 `http://127.0.0.1:4000/`。
 
-### 添加新页面
+## 验证
 
-1. 在项目根目录创建一个新的 `.md` 文件，例如 `research.md`
-2. 添加YAML头部：
+```bash
+# Jekyll 配置与构建
+bundle exec jekyll doctor
+bundle exec jekyll build
 
-```yaml
----
-layout: default
-title: 研究内容
----
+# 检查子模块版本
+git -C submodules/solver describe --tags --exact-match HEAD
+
+# 构建 Local-MIP
+cd submodules/solver
+./build.sh release
 ```
 
-3. 使用Markdown编写内容
-4. 在 `index.md` 中添加链接：`[研究内容](research.md)`
-
-### 编辑现有页面
-
-直接编辑对应的 `.md` 文件即可，支持完整的Markdown语法。
-
-### 修改样式
-
-编辑 `assets/css/style.scss` 文件来自定义网站样式。
-
-## 功能特点
-
-- ✅ **极简设计**：黑白配色，专注内容
-- ✅ **Markdown编辑**：使用熟悉的Markdown语法
-- ✅ **响应式布局**：自适应各种屏幕尺寸
-- ✅ **自动部署**：推送代码自动更新网站
-- ✅ **SEO优化**：内置SEO插件
-
-## 技术栈
-
-- [Jekyll](https://jekyllrb.com/) - 静态网站生成器
-- [GitHub Pages](https://pages.github.com/) - 托管服务
-- [Minima](https://github.com/jekyll/minima) - Jekyll主题
-- Markdown - 内容编辑
-
-## 许可证
-
-MIT License
+网站构建会排除求解器子模块、开发说明和本地构建产物。推送到 `main` 后，`.github/workflows/pages.yml` 会构建并部署 GitHub Pages。
